@@ -11,4 +11,6 @@ package school_manager.model;
  */
 public class Parent extends Person {
     
+    Student child;
+    
 }

@@ -17,13 +17,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import school_manager.MainApp;
+import school_manager.helpers.MainReferenced;
 
 /**
  * FXML Controller class
  *
  * @author abrasha
  */
-public class LoginFragmentController implements Initializable {
+public class LoginFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
 
@@ -75,10 +76,10 @@ public class LoginFragmentController implements Initializable {
     public void cancelClicked() {
 
     }
-
+    
+    @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
-        System.out.println("LoginC: " + (mainApp == null));
     }
 
 }

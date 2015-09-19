@@ -14,13 +14,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 import school_manager.MainApp;
+import school_manager.helpers.MainReferenced;
 
 /**
  * FXML Controller class
  *
  * @author abrasha
  */
-public class RootLayoutController implements Initializable {
+public class RootLayoutController implements Initializable, MainReferenced {
 
     MainApp mainApp;
 
@@ -50,6 +51,7 @@ public class RootLayoutController implements Initializable {
     public void menuLoginClicked() {
     }
 
+    @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }

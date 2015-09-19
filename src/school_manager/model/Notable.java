@@ -9,9 +9,12 @@ package school_manager.model;
  *
  * @author abrasha
  */
-public class Student extends Person {
+public interface Notable {
     
-    Parent parent;
-    Group group;
+    String specialNotes = "";
+    
+    public void addNote(String note);
+    public String getNote();
+    public void removeNotes();
     
 }

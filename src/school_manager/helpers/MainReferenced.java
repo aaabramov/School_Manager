@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package school_manager.model;
+package school_manager.helpers;
+
+import school_manager.MainApp;
 
 /**
  *
  * @author abrasha
  */
-public class Student extends Person {
+public interface MainReferenced {
     
-    Parent parent;
-    Group group;
+    public void setMainApp(MainApp mainApp);
     
 }
