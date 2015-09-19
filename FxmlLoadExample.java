@@ -39,21 +39,6 @@ private void createTest(Stage stage) throws SceneException{
             
             System.out.println(e.getMessage());
             
-        } finally {
-            
-            
-            
         }
-      
-      
-      
-        
-      /*  initDatabase();
-        initRootLayout();
-        initLoginWindow();
-        
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();*/
         
     }
