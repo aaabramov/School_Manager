@@ -9,8 +9,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import school_manager.MainApp;
 
 /**
  * FXML Controller class
@@ -19,13 +25,24 @@ import javafx.scene.control.ComboBox;
  */
 public class LoginFragmentController implements Initializable {
 
-    private String[] userTypes = {
+    MainApp mainApp;
+
+    @FXML
+    private Button buttonOK;
+    @FXML
+    private Button buttonCancel;
+    @FXML
+    private TextField tfLogin;
+    @FXML
+    private PasswordField tfPassword;
+
+    private final String[] userTypes = {
         "Student", "Teacher", "Parent", "Administator"
     };
-    
+
     @FXML
     private ComboBox<String> typeOfUserComboBox;
-    
+
     /**
      * Initializes the controller class.
      */
@@ -34,7 +51,34 @@ public class LoginFragmentController implements Initializable {
         // TODO
         typeOfUserComboBox.setItems(FXCollections.observableArrayList(userTypes));
         typeOfUserComboBox.setValue(userTypes[0]);
-        
-    }    
-    
+
+    }
+
+    @FXML
+    public void okClicked() {
+
+        VBox menuPane;
+        FXMLLoader loader = new FXMLLoader();
+
+        try {
+
+            loader.setLocation(getClass().getResource("ParentMenuFragment.fxml"));
+            menuPane = (VBox) loader.load();
+            mainApp.setMenu(menuPane);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @FXML
+    public void cancelClicked() {
+
+    }
+
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+        System.out.println("LoginC: " + (mainApp == null));
+    }
+
 }

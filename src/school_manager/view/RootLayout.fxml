@@ -9,15 +9,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.RootLayoutController">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.RootLayoutController">
    <top>
       <VBox alignment="CENTER" prefHeight="3.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Menu">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem mnemonicParsing="false" text="Login" />
                         <MenuItem mnemonicParsing="false" text="Unspecified Action" />
                         <MenuItem mnemonicParsing="false" text="Unspecified Action" />
                   </items>
