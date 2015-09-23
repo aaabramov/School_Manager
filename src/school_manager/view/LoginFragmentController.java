@@ -16,8 +16,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import jdk.nashorn.internal.parser.JSONParser;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
+
+
 
 /**
  * FXML Controller class
@@ -25,7 +28,7 @@ import school_manager.helpers.MainReferenced;
  * @author abrasha
  */
 public class LoginFragmentController implements Initializable, MainReferenced {
-
+    
     MainApp mainApp;
 
     @FXML
@@ -65,9 +68,15 @@ public class LoginFragmentController implements Initializable, MainReferenced {
 
             loader.setLocation(getClass().getResource("ParentMenuFragment.fxml"));
             menuPane = (VBox) loader.load();
+            
+            ParentMenuFragmentController parentMenuController = loader.getController();
+            parentMenuController.setMainApp(mainApp);
+            
             mainApp.setMenu(menuPane);
+            mainApp.setStatus("Parent menu set.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            mainApp.setStatus("Error setting parent menu.");
         }
 
     }

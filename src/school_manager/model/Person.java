@@ -12,19 +12,68 @@ import school_manager.helpers.DateTimeConverter;
  *
  * @author abrasha
  */
-public class Person implements Notable {
+public abstract class Person implements Notable {
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSpecialNotes() {
+        return specialNotes;
+    }
+
+    public void setSpecialNotes(String specialNotes) {
+        this.specialNotes = specialNotes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     private String firstName;
     private String lastName;
+    private String patronymic;
+    private String address;
+    private String phone;
     private LocalDate birthday;
     private Sex sex;
     private String specialNotes;
+    private int id;
     
-    public Person(String firstName, String lastName, String birthday, Sex sex){
+    public Person(int id, String firstName, String lastName, String patronymic, String address, String phone, String birthday, Sex sex, String specialNotes){
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.address = address;
         this.birthday = DateTimeConverter.parse(birthday);
         this.sex = sex;
+        this.specialNotes = specialNotes;
+        this.phone = phone;
     }
     
     public Person(String firstName, String lastName, LocalDate birthday, Sex sex){

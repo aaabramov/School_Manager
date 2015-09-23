@@ -12,7 +12,5 @@ import school_manager.MainApp;
  * @author abrasha
  */
 public interface MainReferenced {
-    
-    public void setMainApp(MainApp mainApp);
-    
+    public void setMainApp(MainApp ma);
 }

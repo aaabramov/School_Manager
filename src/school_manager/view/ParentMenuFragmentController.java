@@ -5,14 +5,18 @@
  */
 package school_manager.view;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
 
 /**
- * FXML Controller class
  *
  * @author abrasha
  */
@@ -20,17 +24,62 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
 
     MainApp mainApp;
     
+    @FXML
+    private Button buttonMyProfile;
+    
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    public void initialize(URL url, ResourceBundle rb){}    
 
     @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+    
+    @FXML
+    public void buttonMyProfileClicked(){
+        
+        FXMLLoader loader = new FXMLLoader();
+        
+        try {
+            
+            loader.setLocation(getClass().getResource("ParentProfileFragment.fxml"));
+            BorderPane pane = (BorderPane)loader.load();
+            
+            ParentProfileFragmentController parentProfileController = loader.getController();
+            parentProfileController.setMainApp(mainApp);
+            
+            mainApp.setContent(pane);
+            mainApp.setStatus("Parent profile loaded.");
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            mainApp.setStatus("Error loading parent profile.");
+        }
+        
+    }
+    
+    @FXML
+    public void buttonMySettingsClicked(){
+        
+        FXMLLoader loader = new FXMLLoader();
+        
+        try {
+            
+            loader.setLocation(getClass().getResource("ParentSettingsFragment.fxml"));
+            BorderPane pane = (BorderPane)loader.load();
+            
+            ParentSettingsFragmentController parentSettingsController = loader.getController();
+            parentSettingsController.setMainApp(mainApp);
+            
+            mainApp.setContent(pane);
+            mainApp.setStatus("Parent settings loaded.");
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            mainApp.setStatus("Error loading parents settings.");
+        }
+        
     }
     
 }

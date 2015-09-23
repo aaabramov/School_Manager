@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package school_manager;
 
 import java.io.IOException;
@@ -14,13 +9,20 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import school_manager.helpers.DatabaseManager;
 import school_manager.view.LoginFragmentController;
 import school_manager.view.RootLayoutController;
 
 public class MainApp extends Application {
 
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+        DatabaseManager.load();
+        
+        System.out.println(DatabaseManager.getStudentById(1));
+        
+        DatabaseManager.close();
+        System.exit(0);
     }
 
     RootLayoutController rootController;

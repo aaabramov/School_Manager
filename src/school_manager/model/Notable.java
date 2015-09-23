@@ -11,8 +11,6 @@ package school_manager.model;
  */
 public interface Notable {
     
-    String specialNotes = "";
-    
     public void addNote(String note);
     public String getNote();
     public void removeNotes();
