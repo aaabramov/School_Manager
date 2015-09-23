@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Parent;
 
 /**
  *
@@ -23,6 +24,7 @@ import school_manager.helpers.MainReferenced;
 public class ParentMenuFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Parent parent;
     
     @FXML
     private Button buttonMyProfile;
@@ -36,6 +38,10 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
     @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+    
+    public void setParent(Parent parent){
+        this.parent = parent;
     }
     
     @FXML

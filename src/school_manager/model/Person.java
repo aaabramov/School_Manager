@@ -14,17 +14,50 @@ import school_manager.helpers.DateTimeConverter;
  */
 public abstract class Person implements Notable {
 
-    public String getPatronymic() {
+
+    private String firstName;
+    private String lastName;
+    private String patronymic;
+    private String address;
+    private String phone;
+    private LocalDate birthday;
+    private Sex sex;
+    private String specialNotes;
+    
+    public Person(String firstName, String lastName, String patronymic, String address, String phone, String birthday, Sex sex, String specialNotes){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.address = address;
+        this.birthday = DateTimeConverter.parse(birthday);
+        this.sex = sex;
+        this.specialNotes = specialNotes;
+        this.phone = phone;
+    }
+    
+    public Person(){
+        firstName = "";
+        lastName = "";
+        birthday = LocalDate.now();
+        sex = Sex.UNKNOWN;
+    }
+    
+    
+    
+    public String getPatronymic(){
         return patronymic;
     }
 
-    public void setPatronymic(String patronymic) {
+    public void setPatronymic(String patronymic){
         this.patronymic = patronymic;
     }
 
-    public String getAddress() {
+    public String getAddress(){
         return address;
     }
+    
+    
+    
 
     public void setAddress(String address) {
         this.address = address;
@@ -46,72 +79,20 @@ public abstract class Person implements Notable {
         this.specialNotes = specialNotes;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    private String firstName;
-    private String lastName;
-    private String patronymic;
-    private String address;
-    private String phone;
-    private LocalDate birthday;
-    private Sex sex;
-    private String specialNotes;
-    private int id;
-    
-    public Person(int id, String firstName, String lastName, String patronymic, String address, String phone, String birthday, Sex sex, String specialNotes){
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
-        this.address = address;
-        this.birthday = DateTimeConverter.parse(birthday);
-        this.sex = sex;
-        this.specialNotes = specialNotes;
-        this.phone = phone;
-    }
-    
-    public Person(String firstName, String lastName, LocalDate birthday, Sex sex){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.sex = sex;
-    }
-    
-    public Person(){
-        firstName = "";
-        lastName = "";
-        birthday = LocalDate.now();
-        sex = Sex.UNKNOWN;
-    }
-    
-    
-    
     @Override
-    public void addNote(String note){
+    public void addNote(String note) {
         specialNotes += "; " + note;
     }
 
     @Override
-    public String getNote(){
+    public String getNote() {
         return specialNotes;
     }
 
     @Override
-    public void removeNotes(){
+    public void removeNotes() {
         specialNotes = "";
     }
-    
-    public enum Sex {
-        MALE, FEMALE, UNKNOWN
-    }
-    
-    
 
     public String getFirstName() {
         return firstName;
@@ -143,6 +124,11 @@ public abstract class Person implements Notable {
 
     public void setSex(Sex sex) {
         this.sex = sex;
+    }
+
+    public enum Sex {
+
+        MALE, FEMALE, UNKNOWN
     }
     
     

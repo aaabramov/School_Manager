@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.LoginFragmentController">
+<BorderPane prefHeight="343.0" prefWidth="571.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.LoginFragmentController">
    <top>
       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
@@ -20,22 +20,20 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <center>
-      <GridPane alignment="CENTER" hgap="10.0" prefHeight="90.0" prefWidth="390.0" vgap="10.0" BorderPane.alignment="CENTER_RIGHT">
+      <GridPane alignment="CENTER" hgap="10.0" prefHeight="84.0" prefWidth="551.0" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="119.0" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="119.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="341.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Login:" />
             <Label text="Password:" GridPane.rowIndex="1" />
             <TextField fx:id="tfLogin" promptText="Enter login..." GridPane.columnIndex="1" />
             <PasswordField fx:id="tfPassword" promptText="Enter password..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="typeOfUserComboBox" prefHeight="25.0" prefWidth="501.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -49,7 +47,7 @@
       <HBox alignment="BOTTOM_RIGHT" prefHeight="84.0" prefWidth="490.0" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
             <Button fx:id="buttonOK" mnemonicParsing="false" onAction="#okClicked" text="OK" />
-            <Button fx:id="buttonCancel" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="buttonCancel" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelClicked" text="Cancel" />
          </children>
       </HBox>
    </bottom>

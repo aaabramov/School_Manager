@@ -11,13 +11,14 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import jdk.nashorn.internal.parser.JSONParser;
 import school_manager.MainApp;
+import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 
 
@@ -40,50 +41,48 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     @FXML
     private PasswordField tfPassword;
 
-    private final String[] userTypes = {
-        "Student", "Teacher", "Parent", "Administator"
-    };
-
-    @FXML
-    private ComboBox<String> typeOfUserComboBox;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        typeOfUserComboBox.setItems(FXCollections.observableArrayList(userTypes));
-        typeOfUserComboBox.setValue(userTypes[0]);
-
+        //TODO
     }
 
     @FXML
     public void okClicked() {
 
-        VBox menuPane;
-        FXMLLoader loader = new FXMLLoader();
-
-        try {
-
-            loader.setLocation(getClass().getResource("ParentMenuFragment.fxml"));
-            menuPane = (VBox) loader.load();
+        String login = tfLogin.getText();
+        String password = tfPassword.getText();
+        
+        if (!login.isEmpty() && !password.isEmpty()){
             
-            ParentMenuFragmentController parentMenuController = loader.getController();
-            parentMenuController.setMainApp(mainApp);
+            if (DatabaseManager.authorize(login, password)){
+                
+                mainApp.setAccountInfo(DatabaseManager.getAccountInfoByLogin(login));
+                mainApp.setStatus("Authorization failed.");
+                
+            } else {
+                
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Authorization failed");
+                alert.setContentText("Wrong login or password!");
+                alert.showAndWait();
+                
+            }
             
-            mainApp.setMenu(menuPane);
-            mainApp.setStatus("Parent menu set.");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            mainApp.setStatus("Error setting parent menu.");
         }
+        
+        
 
     }
 
     @FXML
     public void cancelClicked() {
-
+            
+        tfPassword.clear();
+        tfLogin.clear();
+        
     }
     
     @Override

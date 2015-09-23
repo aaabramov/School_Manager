@@ -9,26 +9,26 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import school_manager.helpers.AccountInfo;
 import school_manager.helpers.DatabaseManager;
 import school_manager.view.LoginFragmentController;
+import school_manager.view.ParentMenuFragmentController;
 import school_manager.view.RootLayoutController;
 
 public class MainApp extends Application {
 
+    
+    
     public static void main(String[] args) {
-        //launch(args);
         DatabaseManager.load();
-        
-        System.out.println(DatabaseManager.getStudentById(1));
-        
-        DatabaseManager.close();
-        System.exit(0);
+        launch(args);
     }
 
-    RootLayoutController rootController;
-    VBox contentPane;
-    VBox menuPane;
-    Label statusLabel;
+    private RootLayoutController rootController;
+    private VBox contentPane;
+    private VBox menuPane;
+    private Label statusLabel;
+    private AccountInfo accountInfo;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -111,4 +111,50 @@ public class MainApp extends Application {
         }
     }
 
+    public void setAccountInfo(AccountInfo accountInfo){
+        
+        if (accountInfo != null){
+            
+            this.accountInfo = accountInfo;
+            switch (accountInfo.getAccType()){
+                
+                case STUDENT:
+                    
+                    break;
+                case TEACHER:
+                    VBox parentMenuPane;
+                    FXMLLoader loader = new FXMLLoader();
+
+                    try {
+
+                        loader.setLocation(getClass().getResource("view/ParentMenuFragment.fxml"));
+                        parentMenuPane = (VBox) loader.load();
+
+                        ParentMenuFragmentController parentMenuController = loader.getController();
+                        parentMenuController.setMainApp(this);
+                        //TODO parentMenuController.setParent(null);
+
+                        setMenu(parentMenuPane);
+                        setStatus("Parent menu set.");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        setStatus("Error setting parent menu.");
+                    }
+                    break;
+                case PARENT:
+                    
+                    break;
+                case ADMIN:
+                    
+                    break;
+                default:
+
+                    break;
+                
+            }
+            
+        }
+        
+    }
+    
 }

@@ -16,8 +16,8 @@ public class Student extends Person {
     
     String groupCode;
 
-    public Student(int id, String firstName, String lastName, String patronymic, String address, String phone, String birthday, Sex sex, String specialNotes, String groupCode) {
-        super(id, firstName, lastName, patronymic, address, phone, birthday, sex, specialNotes);
+    public Student(String firstName, String lastName, String patronymic, String address, String phone, String birthday, Sex sex, String specialNotes, String groupCode) {
+        super(firstName, lastName, patronymic, address, phone, birthday, sex, specialNotes);
         this.groupCode = groupCode;
     }
     

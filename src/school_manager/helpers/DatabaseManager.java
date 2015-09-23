@@ -10,6 +10,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.scene.control.Alert;
+import school_manager.MainApp;
+import school_manager.model.Parent;
+import school_manager.model.Person;
 import school_manager.model.Person.Sex;
 import school_manager.model.Student;
 
@@ -26,9 +30,10 @@ public class DatabaseManager {
     private static final String DBName = "projectdb";
     private static final String DBLogin = "root";
     private static final String DBPassword = "root";
-    
+
         
     public static void load(){
+        
         
         try {
             
@@ -86,22 +91,85 @@ public class DatabaseManager {
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
                 String bday = rs.getString("bday");
-                Sex sex = rs.getInt("sex") == 1 ? Sex.MALE : Sex.FEMALE;
                 String specialNotes = rs.getString("special_notes");
                 String groupCode = getGroupCodeById(rs.getInt("group_id"));
-                        // TODO
+                Sex sex = rs.getInt("sex") == 1 ? Sex.MALE : Sex.FEMALE;
                 
-                result = new Student(id, firstName, lastName, patronymic, address, phone, bday, sex, specialNotes, groupCode);
-                
+                result = new Student(firstName, lastName, patronymic, address, phone, bday, sex, specialNotes, groupCode);
             }
             
-        } catch (Exception e){
+        } catch (SQLException e){
+            
+            System.out.println("Error quering data: " + "SELECT * FROM students WHERE id = " + id);
             
         }
         
         return result;
         
     }
+    
+    
+    
+    public static Parent getParentBuId(int id){
+        
+        
+        
+    }
+    
+    
+    
+    public static boolean authorize(String login, String password){
+        
+        boolean success = false;
+        
+        try {
+            
+            ResultSet rs = statement.executeQuery("SELECT password FROM users WHERE login = \"" + login + "\"");
+            
+            if (rs.next()){
+                String dbpassword = rs.getString("password");
+                
+                success = dbpassword.equals(password);
+            }
+            
+        } catch (SQLException e){
+            
+            System.out.println("Error quering data: " + "SELECT password FROM users WHERE login = \"" + login + "\"");
+            
+        }
+        
+        return success;
+        
+    }
+    
+    
+    
+    public static AccountInfo getAccountInfoByLogin(String login){
+        
+        AccountInfo result = null;
+        
+        try {
+            
+            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE login = \"" + login + "\"");
+            
+            if (rs.next()){
+                
+                result = new AccountInfo(rs.getInt("acc_type"), login, rs.getInt("acc_id"));
+                
+            }
+            
+        } catch (SQLException e){
+            
+            System.out.println("Error quering data: " + "SELECT * FROM users WHERE login = \"" + login + "\"");
+            
+        }
+            
+            
+        return result;
+        
+    }
+    
+    
     
     public static String getGroupCodeById(int id){
         
@@ -121,6 +189,5 @@ public class DatabaseManager {
         
     }
         
-    
     
 }
