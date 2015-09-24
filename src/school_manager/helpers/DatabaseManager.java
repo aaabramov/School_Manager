@@ -112,8 +112,10 @@ public class DatabaseManager {
     
     public static Parent getParentBuId(int id){
         
+        Parent result = null;
+        //TODO
         
-        
+        return result;
     }
     
     
