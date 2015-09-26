@@ -29,7 +29,7 @@ public class DatabaseManager {
     private static final String DBPassword = "root";
 
         
-    public static void load(){
+    static {
         
         
         try {
