@@ -5,13 +5,13 @@
  */
 package school_manager.helpers;
 
+import school_manager.model.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import school_manager.model.Parent;
-import school_manager.model.Person.Sex;
 import school_manager.model.Student;
 
 /**
@@ -19,174 +19,118 @@ import school_manager.model.Student;
  * @author abrasha
  */
 public class DatabaseManager {
-    
+
     private static Connection connection = null;
     private static Statement statement = null;
+    private static PreparedStatement preStatement = null;
     private static final String DBAddress = "127.0.0.1";
     private static final String DBPort = "3306";
-    private static final String DBName = "projectdb";
+    private static final String DBName = "schooldb";
     private static final String DBLogin = "root";
     private static final String DBPassword = "root";
+    private static final int LOGIN_START = 10001;
+    private static final int STUDENT_TYPE = 0;
+    private static final int TEACHER_TYPE = 1;
+    private static final int PARENT_TYPE = 2;
+    private static final int ADMIN_TYPE = 3;
 
-        
+    // loading database connection  
     static {
-        
-        
+
         try {
-            
+
             String dbUrl = "jdbc:mysql://" + DBAddress + ":" + DBPort + "/" + DBName;
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(dbUrl, DBLogin, DBPassword);
-            
-            if (connection == null){
+
+            if (connection == null) {
                 System.err.println("Error in creating connection(null)");
             } else {
-                
+
                 statement = connection.createStatement();
-                
+
             }
-                
-            
-        } catch (ClassNotFoundException | SQLException e){
-            
+
+        } catch (ClassNotFoundException | SQLException e) {
+
             System.out.println("Error connectiong to db: " + e.getMessage());
-            
+
         }
-        
+
     }
-    
-    
-    
-    public static void close(){
-        
+
+    public static void close() {
+
         try {
-            
-            connection.close();
-            statement.close();
-            
-        } catch (Exception e){
-            
+            if (connection != null) {
+                connection.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+
+        } catch (Exception e) {
+
             System.out.println("Error in closing db: " + e.getMessage());
-            
+
         }
     }
-    
-    
-    
-    public static Student getStudentById(int id){
-        
-        Student result = null;
-        
+
+    public static void insertStudent(Student added) {
         try {
-            // TODO
-            ResultSet rs = statement.executeQuery("SELECT * FROM students WHERE id = " + id);
-            if (rs.next()){
-                
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String patronymic = rs.getString("patronymic");
-                String address = rs.getString("address");
-                String phone = rs.getString("phone");
-                String bday = rs.getString("bday");
-                String specialNotes = rs.getString("special_notes");
-                String groupCode = getGroupCodeById(rs.getInt("group_id"));
-                Sex sex = rs.getInt("sex") == 1 ? Sex.MALE : Sex.FEMALE;
-                
-                result = new Student(firstName, lastName, patronymic, address, phone, bday, sex, specialNotes, groupCode);
-            }
+
+            int insertedId = getLastIdFromUsers() + 1;
+            int login = insertedId + LOGIN_START;
             
-        } catch (SQLException e){
+            insertUser(new User(insertedId, login, User.AccType.STUDENT));
             
-            System.out.println("Error quering data: " + "SELECT * FROM students WHERE id = " + id);
-            
+            String sqlStatement = "INSERT INTO students"
+                    + "(id_student, fname, lname, patronymic, id_group, bday, address, phone, notes) "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, insertedId);
+            preStatement.setString(2, added.getFirstName());
+            preStatement.setString(3, added.getLastName());
+            preStatement.setString(4, added.getPatronymic());
+            preStatement.setInt(5, added.getId_group());
+            preStatement.setString(6, added.getBirthday());
+            preStatement.setString(7, added.getAddress());
+            preStatement.setString(8, added.getPhone());
+            preStatement.setString(9, added.getNotes());
+            preStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error adding student: " + e.getMessage());
         }
-        
-        return result;
-        
+
     }
-    
-    
-    
-    public static Parent getParentBuId(int id){
-        
-        Parent result = null;
-        //TODO
-        
-        return result;
-    }
-    
-    
-    
-    public static boolean authorize(String login, String password){
-        
-        boolean success = false;
-        
+
+    public static void insertUser(User user) {
         try {
-            
-            ResultSet rs = statement.executeQuery("SELECT password FROM users WHERE login = \"" + login + "\"");
-            
-            if (rs.next()){
-                String dbpassword = rs.getString("password");
-                
-                success = dbpassword.equals(password);
-            }
-            
-        } catch (SQLException e){
-            
-            System.out.println("Error quering data: " + "SELECT password FROM users WHERE login = \"" + login + "\"");
-            
+            String sqlStatement = ("INSERT INTO users (login, password, acc_type) VALUES (?, ?, ?);");
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, user.getLogin());
+            preStatement.setString(2, user.getPassword());
+            preStatement.setInt(3, user.getAccTypeCode());
+            preStatement.executeUpdate();
+        } catch (SQLException e) {
+
         }
-        
-        return success;
-        
+
     }
-    
-    
-    
-    public static AccountInfo getAccountInfoByLogin(String login){
-        
-        AccountInfo result = null;
-        
+
+    private static int getLastIdFromUsers() {
+
         try {
-            
-            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE login = \"" + login + "\"");
-            
-            if (rs.next()){
-                
-                result = new AccountInfo(rs.getInt("acc_type"), login, rs.getInt("acc_id"));
-                
+
+            ResultSet rs = statement.executeQuery("SELECT MAX(id_user) max_id FROM users;");
+            if (rs.next()) {
+                System.out.println("Max id found");
             }
-            
-        } catch (SQLException e){
-            
-            System.out.println("Error quering data: " + "SELECT * FROM users WHERE login = \"" + login + "\"");
-            
+            int last_id = rs.getInt("max_id");
+            return last_id;
+        } catch (SQLException e) {
+
         }
-            
-            
-        return result;
-        
     }
-    
-    
-    
-    public static String getGroupCodeById(int id){
-        
-        try {
-            
-            ResultSet rs = statement.executeQuery("SELECT code FROM groups WHERE id = " + id);
-            
-            if (rs.next()){
-                return rs.getString("code");
-            }
-            
-        } catch (Exception e){
-            
-        }
-        
-        return "";
-        
-    }
-        
-    
+
 }

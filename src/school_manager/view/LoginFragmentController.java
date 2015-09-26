@@ -48,6 +48,7 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     @FXML
     public void okClicked() {
 
+        /*
         String login = tfLogin.getText();
         String password = tfPassword.getText();
         
@@ -68,7 +69,7 @@ public class LoginFragmentController implements Initializable, MainReferenced {
             }
             
         }
-        
+        */
         
 
     }

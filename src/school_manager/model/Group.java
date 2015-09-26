@@ -16,21 +16,21 @@ public class Group implements Notable {
     private int id;
     private String code;
     private ArrayList<Student> list;
-    private Teacher teacher;
+    private Teacher curator;
     private String specialNotes;
 
     public Group(int id, String code, ArrayList<Student> list, Teacher teacher, String specialNotes) {
         this.id = id;
         this.code = code;
         this.list = list;
-        this.teacher = teacher;
+        this.curator = teacher;
         this.specialNotes = specialNotes;
     }
 
-    public Group(String code, ArrayList<Student> list, Teacher teacher) {
+    public Group(String code, ArrayList<Student> list, Teacher curator) {
         this.code = code;
         this.list = list;
-        this.teacher = teacher;
+        this.curator = curator;
     }
     
     @Override
@@ -49,7 +49,7 @@ public class Group implements Notable {
     }
     
     public Teacher getTeacher(){
-        return teacher;
+        return curator;
     }
     
     public ArrayList<Student> getList(){

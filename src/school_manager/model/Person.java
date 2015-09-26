@@ -5,59 +5,44 @@
  */
 package school_manager.model;
 
-import java.time.LocalDate;
-import school_manager.helpers.DateTimeConverter;
-
 /**
  *
  * @author abrasha
  */
 public abstract class Person implements Notable {
 
-
     private String firstName;
     private String lastName;
     private String patronymic;
     private String address;
     private String phone;
-    private LocalDate birthday;
-    private Sex sex;
-    private String specialNotes;
-    
-    public Person(String firstName, String lastName, String patronymic, String address, String phone, String birthday, Sex sex, String specialNotes){
+    private String bday;
+    private String notes;
+
+    public Person(String firstName, String lastName, String patronymic, String address, String phone, String birthday, String notes) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.patronymic = patronymic;
         this.address = address;
-        this.birthday = DateTimeConverter.parse(birthday);
-        this.sex = sex;
-        this.specialNotes = specialNotes;
+        this.bday = birthday;
+        this.notes = notes;
         this.phone = phone;
     }
-    
-    public Person(){
-        firstName = "";
-        lastName = "";
-        birthday = LocalDate.now();
-        sex = Sex.UNKNOWN;
+
+    public Person() {
     }
-    
-    
-    
-    public String getPatronymic(){
+
+    public String getPatronymic() {
         return patronymic;
     }
 
-    public void setPatronymic(String patronymic){
+    public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return address;
     }
-    
-    
-    
 
     public void setAddress(String address) {
         this.address = address;
@@ -72,30 +57,46 @@ public abstract class Person implements Notable {
     }
 
     public String getSpecialNotes() {
-        return specialNotes;
+        return notes;
     }
 
     public void setSpecialNotes(String specialNotes) {
-        this.specialNotes = specialNotes;
+        this.notes = specialNotes;
     }
 
     @Override
     public void addNote(String note) {
-        specialNotes += "; " + note;
+        notes += "; " + note;
     }
 
     @Override
     public String getNote() {
-        return specialNotes;
+        return notes;
     }
 
     @Override
     public void removeNotes() {
-        specialNotes = "";
+        notes = "";
     }
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public String getBday() {
+        return bday;
+    }
+
+    public void setBday(String bday) {
+        this.bday = bday;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public void setFirstName(String firstName) {
@@ -110,27 +111,12 @@ public abstract class Person implements Notable {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public String getBirthday() {
+        return bday;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setBirthday(String birthday) {
+        this.bday = birthday;
     }
 
-    public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
-
-    public enum Sex {
-
-        MALE, FEMALE, UNKNOWN
-    }
-    
-    
-    
 }

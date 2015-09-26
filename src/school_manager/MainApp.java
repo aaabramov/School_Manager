@@ -9,8 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import school_manager.helpers.AccountInfo;
-import school_manager.helpers.DatabaseManager;
+import school_manager.model.User;
+import school_manager.model.Student;
 import school_manager.view.LoginFragmentController;
 import school_manager.view.ParentMenuFragmentController;
 import school_manager.view.RootLayoutController;
@@ -21,22 +21,30 @@ public class MainApp extends Application {
     
     public static void main(String[] args) {
         launch(args);
+        
     }
 
     private RootLayoutController rootController;
     private VBox contentPane;
     private VBox menuPane;
     private Label statusLabel;
-    private AccountInfo accountInfo;
+    private User accountInfo;
 
+    
+    
     @Override
     public void start(Stage stage) throws Exception {
 
-        Scene scene = initRootLayout();
+        /*Scene scene = initRootLayout();
         initLogin();
 
         stage.setScene(scene);
-        stage.show();
+        stage.show();*/
+        /*FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("view/AdminStudentInsertionFragment.fxml"));
+        stage.setScene(new Scene(loader.load()));
+        stage.show();*/
+        
     }
 
     private Scene initRootLayout() {
@@ -110,7 +118,7 @@ public class MainApp extends Application {
         }
     }
 
-    public void setAccountInfo(AccountInfo accountInfo){
+    public void setAccountInfo(User accountInfo){
         
         if (accountInfo != null){
             
