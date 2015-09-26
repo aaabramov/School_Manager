@@ -191,6 +191,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
+INSERT INTO `students` VALUES (1,'Abramov','Andrew','Volodymyrovich',1,'08.12.96','Kn. Zaton Street','+380978847064','I will be happy if it works.');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,6 +232,9 @@ CREATE TABLE `teachers` (
   `lname` varchar(45) NOT NULL,
   `patronymic` varchar(45) DEFAULT NULL,
   `subjects` varchar(128) DEFAULT NULL,
+  `bday` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `address` varchar(45) DEFAULT NULL,
   `notes` varchar(2048) DEFAULT NULL,
   KEY `fk_teachers_1_idx` (`id_teachers`),
   CONSTRAINT `fk_teachers_1` FOREIGN KEY (`id_teachers`) REFERENCES `users` (`id_user`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -259,7 +263,7 @@ CREATE TABLE `users` (
   `password` varchar(32) NOT NULL,
   `acc_type` int(11) NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,6 +272,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'10002','5N1VhUGw',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -280,4 +285,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-26 13:08:41
+-- Dump completed on 2015-09-27  0:45:10
