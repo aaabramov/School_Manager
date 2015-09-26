@@ -10,10 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javafx.scene.control.Alert;
-import school_manager.MainApp;
 import school_manager.model.Parent;
-import school_manager.model.Person;
 import school_manager.model.Person.Sex;
 import school_manager.model.Student;
 
