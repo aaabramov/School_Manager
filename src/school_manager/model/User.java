@@ -31,18 +31,24 @@ public class User {
 
         int result = -1;
 
+        
         switch (accType) {
 
             case STUDENT:
                 result = 0;
+                break;
             case TEACHER:
                 result = 1;
+                break;
             case PARENT:
                 result = 2;
+                break;
             case ADMIN:
                 result = 3;
+                break;
             case UNKNOWN:
                 result = -1;
+                break;
 
         }
 

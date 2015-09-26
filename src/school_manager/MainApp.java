@@ -10,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import school_manager.model.User;
-import school_manager.model.Student;
 import school_manager.view.LoginFragmentController;
 import school_manager.view.ParentMenuFragmentController;
 import school_manager.view.RootLayoutController;
@@ -40,10 +39,10 @@ public class MainApp extends Application {
 
         stage.setScene(scene);
         stage.show();*/
-        /*FXMLLoader loader = new FXMLLoader();
+        FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("view/AdminStudentInsertionFragment.fxml"));
         stage.setScene(new Scene(loader.load()));
-        stage.show();*/
+        stage.show();
         
     }
 

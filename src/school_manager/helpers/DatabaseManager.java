@@ -120,17 +120,20 @@ public class DatabaseManager {
 
     private static int getLastIdFromUsers() {
 
+        int result = -1;
+        
         try {
 
             ResultSet rs = statement.executeQuery("SELECT MAX(id_user) max_id FROM users;");
             if (rs.next()) {
                 System.out.println("Max id found");
             }
-            int last_id = rs.getInt("max_id");
-            return last_id;
+            result = rs.getInt("max_id");
         } catch (SQLException e) {
 
         }
+        
+        return result;
     }
 
 }
