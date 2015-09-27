@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import school_manager.model.Student;
+import school_manager.model.Teacher;
 
 /**
  *
@@ -167,6 +168,36 @@ public final class DatabaseManager {
         }
         
         return result;
+        
+    }
+    
+    /**
+ *
+ * @author bepa
+ */
+    
+    public static void insertTeacher(Teacher added) {
+        try{
+            
+            int insertedId = getLastIdFromUsers() + 1;
+            int login = insertedId + LOGIN_START;
+            
+            insertUser(new User(insertedId, login, User.AccType.TEACHER));
+            
+            String sqlStatement = "INSERT INTO teachers" 
+                    + "(id_teachers, fname, lname, patronymic, subjects, notes)"
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, insertedId);
+            preStatement.setString(2, added.getFirstName());
+            
+            
+            
+            
+            
+        }catch(SQLException e){
+            System.out.println("Error adding teacher: " + e.getMessage());
+        }
         
     }
     

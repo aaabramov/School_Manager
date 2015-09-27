@@ -24,8 +24,7 @@ public class Teacher extends Person {
         private String notes;
         private String subjects;
 
-        public Builder() {
-        }
+        public Builder() {}
 
         public Builder fname(String fname) {
             this.firstName = fname;
