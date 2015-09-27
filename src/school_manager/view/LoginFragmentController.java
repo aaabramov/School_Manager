@@ -9,11 +9,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
@@ -43,7 +41,7 @@ public class LoginFragmentController implements Initializable, MainReferenced {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //TODO
+        infoField.setTextFill(Color.RED);
     }
 
     @FXML

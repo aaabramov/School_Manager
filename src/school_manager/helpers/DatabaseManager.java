@@ -34,7 +34,12 @@ public final class DatabaseManager {
     public static final int PARENT_TYPE = 2;
     public static final int ADMIN_TYPE = 3;
 
-    // loading database connection  
+    /**
+     * 
+     * @author abrasha
+     * 
+     * loading database connection
+     */
     static {
 
         try {
@@ -58,7 +63,13 @@ public final class DatabaseManager {
         }
 
     }
-
+    
+    /**
+     * 
+     * @author abrasha
+     * 
+     * closes databases connection
+     */
     public static void close() {
 
         try {
@@ -75,7 +86,14 @@ public final class DatabaseManager {
 
         }
     }
-
+    
+    /**
+     * 
+     * @author abrasha
+     * 
+     * inserts new student to database
+     */
+    
     public static void insertStudent(Student added) {
         try {
 
@@ -103,7 +121,13 @@ public final class DatabaseManager {
         }
 
     }
-
+    
+    /**
+     * 
+     * @author abrasha
+     * 
+     * inserts new user to database
+     */
     public static void insertUser(User user) {
         try {
             String sqlStatement = ("INSERT INTO users (login, password, acc_type) VALUES (?, ?, ?);");
@@ -114,10 +138,18 @@ public final class DatabaseManager {
             preStatement.executeUpdate();
         } catch (SQLException e) {
 
+            System.out.println("insertUser failed: " + e.getMessage());
+            
         }
 
     }
 
+    /**
+     * 
+     * @author abrasha
+     * 
+     * returns the last inserted id from users table
+     */
     private static int getLastIdFromUsers() {
 
         int result = -1;
@@ -131,28 +163,29 @@ public final class DatabaseManager {
             result = rs.getInt("max_id");
         } catch (SQLException e) {
 
+            System.out.println("getLastIdFromUsers failed: " + e.getMessage());
+            
         }
         
         return result;
     }
 
+    /**
+     * 
+     * @author abrasha
+     * 
+     * process of authorization into programm
+     */
     public static User authorize(int login, String password){
         
         User result = null;
-        
-        System.out.println("Login: " + login);
-        System.out.println("Pass: " + password);
         
         try {
             preStatement = connection.prepareStatement("SELECT * FROM users WHERE login = ?;");
             preStatement.setInt(1, login);
             ResultSet rs = preStatement.executeQuery();
             
-            
             if (rs.next()){
-                
-                System.out.println("DBLogin: " + rs.getInt("login"));
-                System.out.println("DBPass: " + rs.getString("password"));
                 
                 String dbpass = rs.getString("password");
                 
@@ -163,7 +196,9 @@ public final class DatabaseManager {
             }
             
         } catch (SQLException e){
-            e.printStackTrace();
+            
+            System.out.println("authorize fail: " + e.getMessage());
+            
         }
         
         return result;
