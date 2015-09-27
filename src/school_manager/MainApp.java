@@ -35,12 +35,14 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Scene scene = initRootLayout();
+       /* Scene scene = initRootLayout();
         initLogin();
-
+*/
+        System.out.println(DatabaseManager.getSubjectById(1));
+  /*      
         stage.setScene(scene);
         stage.show();
-        
+    */    
     }
 
     @Override

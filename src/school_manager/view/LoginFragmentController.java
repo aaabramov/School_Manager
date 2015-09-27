@@ -36,9 +36,6 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     @FXML
     private Label infoField;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         infoField.setTextFill(Color.RED);
@@ -63,7 +60,7 @@ public class LoginFragmentController implements Initializable, MainReferenced {
             } else {
                 
                 infoField.setText("Wrong login or password");
-                mainApp.setStatus("Authorization unsuccessful.");
+                mainApp.setStatus("Authorization failed.");
                 
             }
             

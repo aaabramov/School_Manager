@@ -9,6 +9,6 @@ package school_manager.model;
  *
  * @author abrasha
  */
-public class Admin extends Person {
+public class Admin {
     
 }
