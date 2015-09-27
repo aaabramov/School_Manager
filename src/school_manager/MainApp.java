@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import school_manager.helpers.DatabaseManager;
 import school_manager.model.User;
 import school_manager.view.LoginFragmentController;
 import school_manager.view.ParentMenuFragmentController;
@@ -34,15 +35,18 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        /*Scene scene = initRootLayout();
+        Scene scene = initRootLayout();
         initLogin();
 
         stage.setScene(scene);
-        stage.show();*/
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("view/AdminStudentInsertionFragment.fxml"));
-        stage.setScene(new Scene(loader.load()));
         stage.show();
+        
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        DatabaseManager.close();
         
     }
 
@@ -80,7 +84,7 @@ public class MainApp extends Application {
             pane = (BorderPane) loader.load();
             loginController = loader.getController();
             loginController.setMainApp(this);
-            contentPane.getChildren().add(pane);
+            setContent(pane);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

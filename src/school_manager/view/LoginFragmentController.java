@@ -9,13 +9,16 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.Effect;
+import javafx.scene.paint.Color;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.User;
 
 
 
@@ -29,13 +32,11 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     MainApp mainApp;
 
     @FXML
-    private Button buttonOK;
-    @FXML
-    private Button buttonCancel;
-    @FXML
     private TextField tfLogin;
     @FXML
     private PasswordField tfPassword;
+    @FXML
+    private Label infoField;
 
     /**
      * Initializes the controller class.
@@ -48,28 +49,27 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     @FXML
     public void okClicked() {
 
-        /*
-        String login = tfLogin.getText();
+        int login = Integer.valueOf(tfLogin.getText());
         String password = tfPassword.getText();
         
-        if (!login.isEmpty() && !password.isEmpty()){
+        
+        if (!password.isEmpty()){
             
-            if (DatabaseManager.authorize(login, password)){
+            User result = DatabaseManager.authorize(login, password);
+            
+            if (result != null){
                 
-                mainApp.setAccountInfo(DatabaseManager.getAccountInfoByLogin(login));
-                mainApp.setStatus("Authorization failed.");
+                mainApp.setAccountInfo(result);
+                mainApp.setStatus("Authorization successful.");
                 
             } else {
                 
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Authorization failed");
-                alert.setContentText("Wrong login or password!");
-                alert.showAndWait();
+                infoField.setText("Wrong login or password");
+                mainApp.setStatus("Authorization unsuccessful.");
                 
             }
             
         }
-        */
         
 
     }

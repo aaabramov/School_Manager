@@ -5,7 +5,7 @@
  */
 package school_manager.model;
 
-import school_manager.helpers.PasswordGenerator;
+import school_manager.helpers.DatabaseManager;
 
 /**
  *
@@ -16,14 +16,40 @@ public class User {
     private AccType accType;
     private int login;
     private int id;
-    private String password;
 
     public User(int id, int login, AccType accType){
 
         this.id = id;
         this.login = login;
         this.accType = accType;
-        this.password = PasswordGenerator.generate();
+
+    }
+    
+    public User(int id, int login, int accType){
+
+        this.id = id;
+        this.login = login;
+        
+        switch (accType){
+            
+            case DatabaseManager.STUDENT_TYPE:
+                this.accType = AccType.STUDENT;
+                break;
+            case DatabaseManager.TEACHER_TYPE:
+                this.accType = AccType.TEACHER;                
+                break;
+            case DatabaseManager.PARENT_TYPE:
+                this.accType = AccType.PARENT;
+                break;
+            case DatabaseManager.ADMIN_TYPE:
+                this.accType = AccType.ADMIN;
+                break;
+            default:
+                this.accType = AccType.UNKNOWN;
+                break;
+            
+        }
+        
 
     }
 
@@ -77,14 +103,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public enum AccType {

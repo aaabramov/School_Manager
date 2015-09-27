@@ -18,7 +18,7 @@ import school_manager.model.Student;
  *
  * @author abrasha
  */
-public class DatabaseManager {
+public final class DatabaseManager {
 
     private static Connection connection = null;
     private static Statement statement = null;
@@ -28,11 +28,11 @@ public class DatabaseManager {
     private static final String DBName = "aabrasha_smdb";
     private static final String DBLogin = "aabrasha_andrew";
     private static final String DBPassword = "123234q";
-    private static final int LOGIN_START = 10001;
-    private static final int STUDENT_TYPE = 0;
-    private static final int TEACHER_TYPE = 1;
-    private static final int PARENT_TYPE = 2;
-    private static final int ADMIN_TYPE = 3;
+    public static final int LOGIN_START = 10001;
+    public static final int STUDENT_TYPE = 0;
+    public static final int TEACHER_TYPE = 1;
+    public static final int PARENT_TYPE = 2;
+    public static final int ADMIN_TYPE = 3;
 
     // loading database connection  
     static {
@@ -109,7 +109,7 @@ public class DatabaseManager {
             String sqlStatement = ("INSERT INTO users (login, password, acc_type) VALUES (?, ?, ?);");
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, user.getLogin());
-            preStatement.setString(2, user.getPassword());
+            preStatement.setString(2, PasswordGenerator.generate());
             preStatement.setInt(3, user.getAccTypeCode());
             preStatement.executeUpdate();
         } catch (SQLException e) {
@@ -136,4 +136,38 @@ public class DatabaseManager {
         return result;
     }
 
+    public static User authorize(int login, String password){
+        
+        User result = null;
+        
+        System.out.println("Login: " + login);
+        System.out.println("Pass: " + password);
+        
+        try {
+            preStatement = connection.prepareStatement("SELECT * FROM users WHERE login = ?;");
+            preStatement.setInt(1, login);
+            ResultSet rs = preStatement.executeQuery();
+            
+            
+            if (rs.next()){
+                
+                System.out.println("DBLogin: " + rs.getInt("login"));
+                System.out.println("DBPass: " + rs.getString("password"));
+                
+                String dbpass = rs.getString("password");
+                
+                if (password.equals(dbpass)){
+                    result = new User(rs.getInt("id_user"), login, rs.getInt("acc_type"));
+                }
+                
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+        return result;
+        
+    }
+    
 }
