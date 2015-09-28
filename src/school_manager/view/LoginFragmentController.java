@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package school_manager.view;
 
 import java.net.URL;
@@ -51,6 +46,8 @@ public class LoginFragmentController implements Initializable, MainReferenced {
         if (!password.isEmpty()){
             
             User result = DatabaseManager.authorize(login, password);
+            
+            
             
             if (result != null){
                 

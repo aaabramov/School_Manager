@@ -29,20 +29,17 @@ public class MainApp extends Application {
     private VBox menuPane;
     private Label statusLabel;
     private User accountInfo;
-
     
     
     @Override
     public void start(Stage stage) throws Exception {
 
-       /* Scene scene = initRootLayout();
+        Scene scene = initRootLayout();
         initLogin();
-*/
-        System.out.println(DatabaseManager.getSubjectById(1));
-  /*      
+        
         stage.setScene(scene);
         stage.show();
-    */    
+       
     }
 
     @Override
