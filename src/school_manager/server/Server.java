@@ -31,32 +31,16 @@ public class Server {
         while(true){
             System.out.println("Waiting for clients...");
             client = serverSocket.accept();
-            System.out.println("The following client has connected:");
-            //A client has connected to this server. Send welcome message
             Thread thread = new Thread(new RequestHandler(client));
             thread.start();
         }     
     }
     
-    
-    
-    /**
-    * Creates a SocketServer object and starts the server.
-    *
-    * @param args
-    */
-    public static void main(String[] args) {
-        // Setting a default port number.
+    public static void main(String[] args) throws IOException {
         int portNumber = 9991;
         
-        try {
-            // initializing the Socket Server
-            Server socketServer = new Server(portNumber);
-            socketServer.start();
-            
-            } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Server socketServer = new Server(portNumber);
+        socketServer.start();
     }
     
 }

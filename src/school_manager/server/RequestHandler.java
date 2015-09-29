@@ -40,21 +40,13 @@ public class RequestHandler implements Runnable {
     private void readResponse() throws IOException, InterruptedException {
         String userInput;
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        String request = "";
         while ((userInput = stdIn.readLine()) != null) {
-            if (userInput.equals("TIME?")) {
-                System.out.println("REQUEST TO SEND TIME RECEIVED. SENDING CURRENT TIME");
-                sendTime();
-                break;
-            }
-            System.out.println(userInput);
+            request += userInput;
         }
-    }
-
-    private void sendTime() throws IOException, InterruptedException {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-        writer.write(new Date().toString());
-        writer.flush();
-        writer.close();
+        
+        System.out.println("Request: " + request);
+        
     }
 
 }

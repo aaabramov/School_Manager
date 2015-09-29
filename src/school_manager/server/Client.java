@@ -46,7 +46,7 @@ public class Client {
     
     public void askForTime() throws IOException{
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
-       writer.write("TIME?");
+       writer.write("get_student");
        writer.newLine();
        writer.flush();
     }
@@ -57,9 +57,7 @@ public class Client {
         try {
             //trying to establish connection to the server
             client.connect();
-            //asking server for time
             client.askForTime();
-            //waiting to read response from server
             client.readResponse();
             
         } catch (UnknownHostException e) {
