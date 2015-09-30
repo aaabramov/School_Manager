@@ -9,36 +9,35 @@ package school_manager.model;
  *
  * @author abrasha
  */
-
 public class Student extends Person {
 
     private int id_group;
 
-    public int getId_group() {
-        return id_group;
-    }
+    public int getId_group(){ return id_group; }
 
     public void setId_group(int id_group) {
         this.id_group = id_group;
     }
 
-    public static class Builder extends Person.Builder<Student.Builder>{
-        
+    public static class Builder extends Person.Builder<Student.Builder> {
+
         private int id_group;
-        
-        public Builder(){}
-        
-        public Builder id_group(int id_group){
+
+        public Builder() {
+        }
+
+        public Builder id_group(int id_group) {
             this.id_group = id_group; return this;
         }
-        
-        public Student build(){
-            return new Student(this);
+
+        @Override
+        public Student build() {
+            return (new Student(this));
         }
-        
+
     }
-    
-    public Student(Student.Builder builder){
+
+    public Student(Student.Builder builder) {
         super(builder);
         this.id_group = builder.id_group;
     }

@@ -11,8 +11,28 @@ package school_manager.model;
  */
 public class Parent extends Person {
     
-    Student child;
+    private int idChild;
     
-    public Parent(){}
+    public Parent(Parent.Builder builder){
+        
+        super(builder);
+        this.idChild = builder.id_child;
+        
+    }
+    
+    public static class Builder extends Person.Builder<Parent.Builder> {
+        
+       int id_child;
+       
+       public Builder idChild(int idChild){
+           this.id_child = idChild; return this;
+       }
+       
+       @Override
+       public Parent build(){
+           return (new Parent(this));
+       }
+       
+    }
     
 }

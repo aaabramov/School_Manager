@@ -18,22 +18,12 @@ public abstract class Person implements Notable {
     private String phone;
     private String bday;
     private String notes;
-
-    public Person(String firstName, String lastName, String patronymic, String address, String phone, String birthday, String notes) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
-        this.address = address;
-        this.bday = birthday;
-        this.notes = notes;
-        this.phone = phone;
-    }
     
     /**
     *
     * @author bepa
     */
-        public static class Builder <T extends Person.Builder>{
+        public static abstract class Builder <T extends Person.Builder>{
             private String firstName;
             private String lastName;
             private String patronymic;
@@ -45,39 +35,34 @@ public abstract class Person implements Notable {
             public Builder(){}
             
             public T fName(String fname){
-                this.firstName = fname;
-                return (T)this;
+                this.firstName = fname; return (T)this;
             }
             
             public T lName(String lname){
-                this.lastName = lname;
-                return  (T)this;
+                this.lastName = lname; return  (T)this;
             }
             
             public T patronymic(String patr){
-                this.patronymic = patr;
-                return (T)this;
+                this.patronymic = patr; return (T)this;
             }
             
             public T address(String addr){
-                this.address = addr;
-                return (T)this;
+                this.address = addr; return (T)this;
             }
             
             public T bday(String BDay){
-                this.bday = BDay;
-                return (T)this;
+                this.bday = BDay; return (T)this;
             }
             
             public T notes(String note){
-                this.notes = note;
-                return (T)this;
+                this.notes = note; return (T)this;
             }
             
             public T phone(String phone){
-                this.phone = phone;
-                return (T)this;
+                this.phone = phone; return (T)this;
             }
+            
+            public abstract Person build();
             
         }
         
