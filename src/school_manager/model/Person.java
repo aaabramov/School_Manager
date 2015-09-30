@@ -5,18 +5,27 @@
  */
 package school_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author abrasha
  */
-public abstract class Person implements Notable {
+public abstract class Person {
 
-    private String firstName;
-    private String lastName;
+    @JsonProperty("fname")
+    private String fName;
+    @JsonProperty("lName")
+    private String lName;
+    @JsonProperty("patronymic")
     private String patronymic;
+    @JsonProperty("address")
     private String address;
+    @JsonProperty("phone")
     private String phone;
+    @JsonProperty("bday")
     private String bday;
+    @JsonProperty("notes")
     private String notes;
     
     /**
@@ -24,8 +33,8 @@ public abstract class Person implements Notable {
     * @author bepa
     */
         public static abstract class Builder <T extends Person.Builder>{
-            private String firstName;
-            private String lastName;
+            private String fName;
+            private String lName;
             private String patronymic;
             private String address;
             private String bday;
@@ -35,11 +44,11 @@ public abstract class Person implements Notable {
             public Builder(){}
             
             public T fName(String fname){
-                this.firstName = fname; return (T)this;
+                this.fName = fname; return (T)this;
             }
             
             public T lName(String lname){
-                this.lastName = lname; return  (T)this;
+                this.lName = lname; return  (T)this;
             }
             
             public T patronymic(String patr){
@@ -70,8 +79,8 @@ public abstract class Person implements Notable {
 
     public Person(Builder builder) {
         
-        this.firstName = builder.firstName;
-        this.lastName = builder.lastName;
+        this.fName = builder.fName;
+        this.lName = builder.lName;
         this.patronymic = builder.patronymic;
         this.address = builder.address;
         this.phone = builder.phone;
@@ -112,23 +121,16 @@ public abstract class Person implements Notable {
         this.notes = specialNotes;
     }
 
-    @Override
     public void addNote(String note) {
         notes += "; " + note;
     }
 
-    @Override
     public String getNote() {
         return notes;
     }
 
-    @Override
     public void removeNotes() {
         notes = "";
-    }
-
-    public String getFirstName() {
-        return firstName;
     }
 
     public String getBday() {
@@ -147,24 +149,27 @@ public abstract class Person implements Notable {
         this.notes = notes;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getBirthday() {
         return bday;
     }
 
     public void setBirthday(String birthday) {
         this.bday = birthday;
+    }
+    public String getFName() {
+        return fName;
+    }
+
+    public void setFName(String fName) {
+        this.fName = fName;
+    }
+
+    public String getLName() {
+        return lName;
+    }
+
+    public void setLName(String lName) {
+        this.lName = lName;
     }
 
 }

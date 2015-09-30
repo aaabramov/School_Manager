@@ -9,45 +9,42 @@ import java.util.ArrayList;
 
 
 
-public class Group implements Notable {
+public class Group {
 
-    private int id;
+    private int idGroup;
     private String code;
     private ArrayList<Student> list;
-    private Teacher curator;
+    private int idCurator;
     private String specialNotes;
 
-    public Group(int id, String code, ArrayList<Student> list, Teacher teacher, String specialNotes) {
-        this.id = id;
+    public Group(int idGroup, String code, ArrayList<Student> list, int idCurator, String specialNotes) {
+        this.idGroup = idGroup;
         this.code = code;
         this.list = list;
-        this.curator = teacher;
+        this.idCurator = idCurator;
         this.specialNotes = specialNotes;
     }
 
-    public Group(String code, ArrayList<Student> list, Teacher curator) {
+    public Group(String code, ArrayList<Student> list, int idGroup) {
         this.code = code;
         this.list = list;
-        this.curator = curator;
+        this.idGroup = idGroup;
     }
 
-    @Override
     public void addNote(String note){
         specialNotes += "; " + note;
     }
 
-    @Override
     public String getNote(){
         return specialNotes;
     }
 
-    @Override
     public void removeNotes(){
         specialNotes = "";
     }
 
-    public Teacher getTeacher(){
-        return curator;
+    public int getTeacher(){
+        return idCurator;
     }
 
     public ArrayList<Student> getList(){

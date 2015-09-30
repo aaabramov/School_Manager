@@ -30,7 +30,7 @@ public class Request {
 
     public static void main(String[] args) {
 
-        Request r = new Request("user:get?id_user=1&name=Andrew");
+        Request r = new Request("user:get?name=Andrew&group=22");
         System.out.println(r);
 
     }

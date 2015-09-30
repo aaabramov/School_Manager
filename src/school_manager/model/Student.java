@@ -46,8 +46,8 @@ public class Student extends Person {
     public String toString() {
 
         String result = "Student profile:"
-                + "\nFirst name: " + getFirstName()
-                + "\nLast name: " + getLastName()
+                + "\nFirst name: " + getFName()
+                + "\nLast name: " + getLName()
                 + "\nPatronymic: " + getPatronymic()
                 + "\nClass: " + id_group
                 + "\nAddress: " + getAddress()

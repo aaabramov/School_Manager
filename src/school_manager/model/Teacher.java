@@ -48,8 +48,8 @@ public class Teacher extends Person {
     public String toString(){
         
         String result = "Teacher profile:"
-                + "\nFirst name: " + getFirstName()
-                + "\nLast name: " + getLastName()
+                + "\nFirst name: " + getFName()
+                + "\nLast name: " + getLName()
                 + "\nPatronymic: " + getPatronymic()
                 + "\nAddress: " + getAddress()
                 + "\nPhone:" + getPhone()
