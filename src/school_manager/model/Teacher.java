@@ -12,57 +12,22 @@ package school_manager.model;
 public class Teacher extends Person {
 
     private String subjects;
+    
+    public String getSubjects() {
+        return subjects;
+    }
 
-    public static class Builder {
-//TODO remove address, phone, bday
-//TODO add subjects
-        private String firstName;
-        private String lastName;
-        private String patronymic;
-        private String address;
-        private String phone;
-        private String bday;
-        private String notes;
+    public void setSubjects(String subjects) {
+        this.subjects = subjects;
+    }
+
+    public static class Builder extends Person.Builder<Teacher.Builder>{
+        
         private String subjects;
 
         public Builder() {}
-
-        public Builder fname(String fname) {
-            this.firstName = fname;
-            return this;
-        }
-
-        public Builder lname(String lname) {
-            this.lastName = lname;
-            return this;
-        }
-
-        public Builder patronymic(String patronymic) {
-            this.patronymic = patronymic;
-            return this;
-        }
-
-        public Builder bday(String bday) {
-            this.bday = bday;
-            return this;
-        }
-
-        public Builder address(String address) {
-            this.address = address;
-            return this;
-        }
-
-        public Builder phone(String phone) {
-            this.phone = phone;
-            return this;
-        }
-
-        public Builder notes(String notes) {
-            this.notes = notes;
-            return this;
-        }
-
-        public Builder subjects(String subjects) {
+        
+        public Builder subjects(String subjects){
             this.subjects = subjects;
             return this;
         }
@@ -73,18 +38,25 @@ public class Teacher extends Person {
 
     }
 
-    public Teacher(Builder builder) {
+    public Teacher(Teacher.Builder builder) {
 
-        super(builder.firstName, builder.lastName, builder.patronymic, builder.address, builder.phone, builder.bday, builder.notes);
+        super(builder);
         this.subjects = builder.subjects;
     }
 
-    public String getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(String subjects) {
-        this.subjects = subjects;
+    @Override
+    public String toString(){
+        
+        String result = "Teacher profile:"
+                + "\nFirst name: " + getFirstName()
+                + "\nLast name: " + getLastName()
+                + "\nPatronymic: " + getPatronymic()
+                + "\nAddress: " + getAddress()
+                + "\nPhone:" + getPhone()
+                + "\nBirthday: " + getBirthday()
+                + "\nSubjects: " + subjects;
+        
+        return result;
     }
 
 }
