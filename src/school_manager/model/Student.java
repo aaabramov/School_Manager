@@ -12,7 +12,7 @@ package school_manager.model;
 
 public class Student extends Person {
 
-    int id_group;
+    private int id_group;
 
     public int getId_group() {
         return id_group;
@@ -22,56 +22,24 @@ public class Student extends Person {
         this.id_group = id_group;
     }
 
-    /*public static class Builder {
-
-        private String firstName;
-        private String lastName;
-        private String patronymic;
-        private String address;
-        private String phone;
-        private String bday;
-        private String notes;
+    public static class Builder extends Person.Builder<Student.Builder>{
+        
         private int id_group;
+        
         public Builder(){}
-        public Builder fname(String fname){
-            this.firstName = fname; return this;
-        }
-        public Builder lname(String lname){
-            this.lastName = lname; return this;
-        }
-        public Builder patronymic(String patronymic){
-            this.patronymic = patronymic; return this;
-        }
+        
         public Builder id_group(int id_group){
             this.id_group = id_group; return this;
         }
-        public Builder bday(String bday){
-            this.bday = bday; return this;
-        }
-        public Builder address(String address){
-            this.address = address; return this;
-        }
-        public Builder phone(String phone){
-            this.phone = phone; return this;
-        }
-        public Builder notes(String notes){
-            this.notes = notes; return this;
-        }
+        
         public Student build(){
             return new Student(this);
         }
-
-    }*/
-    
-    public 
-
-    public Student(String firstName, String lastName, String patronymic, String address, String phone, String birthday, String specialNotes, int id_group) {
-        super(firstName, lastName, patronymic, address, phone, birthday, specialNotes);
-        this.id_group = id_group;
+        
     }
-
+    
     public Student(Student.Builder builder){
-        super(builder.firstName, builder.lastName, builder.patronymic, builder.address, builder.phone, builder.bday, builder.notes);
+        super(builder);
         this.id_group = builder.id_group;
     }
 

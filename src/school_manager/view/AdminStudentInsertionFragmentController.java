@@ -58,8 +58,8 @@ public class AdminStudentInsertionFragmentController implements Initializable {
         String notes = tfNotes.getText();
         
         Student added = new Student.Builder()
-                .fname(fname)
-                .lname(lname)
+                .fName(fname)
+                .lName(lname)
                 .patronymic(patronymic)
                 .bday(bday)
                 .address(address)

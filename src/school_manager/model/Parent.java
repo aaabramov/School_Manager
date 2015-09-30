@@ -13,4 +13,6 @@ public class Parent extends Person {
     
     Student child;
     
+    public Parent(){}
+    
 }

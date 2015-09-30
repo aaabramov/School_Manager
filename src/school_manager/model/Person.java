@@ -33,7 +33,7 @@ public abstract class Person implements Notable {
     *
     * @author bepa
     */
-        public static class Builder {
+        public static class Builder <T extends Person.Builder>{
             private String firstName;
             private String lastName;
             private String patronymic;
@@ -43,41 +43,56 @@ public abstract class Person implements Notable {
             private String notes;
             
             public Builder(){}
-            public Builder firstName(String fname){
+            
+            public T fName(String fname){
                 this.firstName = fname;
-                return this;
+                return (T)this;
             }
             
-            public Builder lastName(String lname){
+            public T lName(String lname){
                 this.lastName = lname;
-                return  this;
+                return  (T)this;
             }
             
-            public Builder patronymic(String patr){
+            public T patronymic(String patr){
                 this.patronymic = patr;
-                return this;
+                return (T)this;
             }
             
-            public Builder address(String addr){
+            public T address(String addr){
                 this.address = addr;
-                return this;
+                return (T)this;
             }
             
-            public Builder bday(String BDay){
+            public T bday(String BDay){
                 this.bday = BDay;
-                return this;
+                return (T)this;
             }
             
-            public Builder notes(String note){
+            public T notes(String note){
                 this.notes = note;
-                return this;
+                return (T)this;
+            }
+            
+            public T phone(String phone){
+                this.phone = phone;
+                return (T)this;
             }
             
         }
         
-    
+        
 
-    public Person() {
+    public Person(Builder builder) {
+        
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.patronymic = builder.patronymic;
+        this.address = builder.address;
+        this.phone = builder.phone;
+        this.bday = builder.bday;
+        this.notes = builder.notes;
+        
     }
 
     public String getPatronymic() {
