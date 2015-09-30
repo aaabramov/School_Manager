@@ -16,31 +16,29 @@ import java.net.Socket;
 public class Server {
     
     private ServerSocket serverSocket;
-    private int port;
-    
-    public Server(int port) {
-        this.port = port;
-    }
+    private int port = 9991;
+    private boolean running = true;
     
     public void start() throws IOException {
         System.out.println("Starting the socket server at port:" + port);
-        serverSocket = new ServerSocket(9991);
+        serverSocket = new ServerSocket(port);
 
         Socket client = null;
         
-        while(true){
+        while(running){
             System.out.println("Waiting for clients...");
             client = serverSocket.accept();
-            Thread thread = new Thread(new RequestHandler(client));
+            Thread thread = new Thread(new RequestHandler(client, this));
             thread.start();
         }     
     }
     
+    public void setRunnig(boolean running){
+        this.running = running;
+    }
+    
     public static void main(String[] args) throws IOException {
-        int portNumber = 9991;
-        
-        Server socketServer = new Server(portNumber);
-        socketServer.start();
+        new Server().start();
     }
     
 }

@@ -6,12 +6,9 @@
 package school_manager.server;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Date;
 
 /**
  *
@@ -19,10 +16,12 @@ import java.util.Date;
  */
 public class RequestHandler implements Runnable {
 
-    private Socket client;
+    private final Socket client;
+    private final Server server;
 
-    public RequestHandler(Socket client) {
+    public RequestHandler(Socket client, Server server) {
         this.client = client;
+        this.server =  server;
     }
 
     @Override
@@ -30,10 +29,8 @@ public class RequestHandler implements Runnable {
         try {
             System.out.println("Thread started with name:" + Thread.currentThread().getName());
             readResponse();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (IOException | InterruptedException e) {
+
         }
     }
 
@@ -44,9 +41,16 @@ public class RequestHandler implements Runnable {
         while ((userInput = stdIn.readLine()) != null) {
             request += userInput;
         }
+
+        parseRequest(request);
         
-        System.out.println("Request: " + request);
-        
+
+    }
+    
+    private void parseRequest(String request){
+        /* TODO
+        if (request.startsWith("get"));
+        */
     }
 
 }
