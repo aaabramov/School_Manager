@@ -8,6 +8,8 @@ package school_manager.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import school_manager.MainApp;
+import school_manager.model.Teacher;
 
 /**
  * FXML Controller class
@@ -16,6 +18,9 @@ import javafx.fxml.Initializable;
  */
 public class TeacherLessonFragmentController implements Initializable {
 
+    
+    MainApp mainApp;
+    Teacher teacher;
     /**
      * Initializes the controller class.
      */
@@ -23,5 +28,9 @@ public class TeacherLessonFragmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    public void setMainApp(MainApp mainApp){
+        this.mainApp = mainApp;
+    }
     
 }
