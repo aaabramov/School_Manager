@@ -14,7 +14,8 @@ public class Teacher extends Person {
     private String subjects;
 
     public static class Builder {
-
+//TODO remove address, phone, bday
+//TODO add subjects
         private String firstName;
         private String lastName;
         private String patronymic;
