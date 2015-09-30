@@ -11,8 +11,8 @@
    <top>
       <GridPane prefHeight="320.0" prefWidth="580.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="150.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="444.0" minWidth="10.0" prefWidth="430.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -25,19 +25,19 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="fname" />
-            <Label text="lname" GridPane.rowIndex="1" />
-            <Label text="patronymic" GridPane.rowIndex="2" />
-            <Label text="group_id" GridPane.rowIndex="3" />
-            <Label text="bday" GridPane.rowIndex="4" />
-            <Label text="address" GridPane.rowIndex="5" />
-            <Label text="phone" GridPane.rowIndex="6" />
-            <Label text="notes" GridPane.rowIndex="7" />
+            <Label text="First Name" />
+            <Label text="Last Name" GridPane.rowIndex="1" />
+            <Label text="Patronymic" GridPane.rowIndex="2" />
+            <Label text="Group id" GridPane.rowIndex="3" />
+            <Label text="Birthday" GridPane.rowIndex="4" />
+            <Label text="Address" GridPane.rowIndex="5" />
+            <Label text="Phone number" GridPane.rowIndex="6" />
+            <Label text="Special notes" GridPane.rowIndex="7" />
             <TextField fx:id="tfFName" GridPane.columnIndex="1" />
             <TextField fx:id="tfLName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="tfPatronymic" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="tfIdGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="tfBDay" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="tfBDay" promptText="dd.mm.yy" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="tfAddress" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="tfPhone" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="tfNotes" GridPane.columnIndex="1" GridPane.rowIndex="7" />
