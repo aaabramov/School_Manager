@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import school_manager.model.Teacher;
 
@@ -31,10 +30,19 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
     private TextField tfPatronymic;
     
     @FXML
-    private TextField tfSubjects;
+    private TextField tfBDay;
+    
+    @FXML
+    private TextField tfAdress;
+    
+    @FXML
+    private TextField tfPhone;
     
     @FXML
     private TextField tfNotes;
+    
+    @FXML
+    private TextField tfSubjects;
     
     /**
      * Initializes the controller class.
@@ -49,6 +57,9 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
         String fname = tfFname.getText();
         String lname = tfLname.getText();
         String patronymic = tfPatronymic.getText();
+        String bday =tfBDay.getText();
+        String address = tfAdress.getText();
+        String phone = tfPhone.getText();
         String subjects = tfSubjects.getText();
         String notes = tfNotes.getText();
         
@@ -56,8 +67,11 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
                 .fname(fname)
                 .lname(lname)
                 .patronymic(patronymic)
-                .subjects(subjects)
+                .bday(bday)
+                .address(address)
+                .phone(phone)
                 .notes(notes)
+                .subjects(subjects)
                 .build();
         
     }

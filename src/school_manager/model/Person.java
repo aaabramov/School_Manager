@@ -28,6 +28,54 @@ public abstract class Person implements Notable {
         this.notes = notes;
         this.phone = phone;
     }
+    
+    /**
+    *
+    * @author bepa
+    */
+        public static class Builder {
+            private String firstName;
+            private String lastName;
+            private String patronymic;
+            private String address;
+            private String bday;
+            private String phone;
+            private String notes;
+            
+            public Builder(){}
+            public Builder firstName(String fname){
+                this.firstName = fname;
+                return this;
+            }
+            
+            public Builder lastName(String lname){
+                this.lastName = lname;
+                return  this;
+            }
+            
+            public Builder patronymic(String patr){
+                this.patronymic = patr;
+                return this;
+            }
+            
+            public Builder address(String addr){
+                this.address = addr;
+                return this;
+            }
+            
+            public Builder bday(String BDay){
+                this.bday = BDay;
+                return this;
+            }
+            
+            public Builder notes(String note){
+                this.notes = note;
+                return this;
+            }
+            
+        }
+        
+    
 
     public Person() {
     }

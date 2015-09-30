@@ -22,7 +22,7 @@ public class Student extends Person {
         this.id_group = id_group;
     }
 
-    public static class Builder {
+    /*public static class Builder {
 
         private String firstName;
         private String lastName;
@@ -61,7 +61,9 @@ public class Student extends Person {
             return new Student(this);
         }
 
-    }
+    }*/
+    
+    public 
 
     public Student(String firstName, String lastName, String patronymic, String address, String phone, String birthday, String specialNotes, int id_group) {
         super(firstName, lastName, patronymic, address, phone, birthday, specialNotes);
