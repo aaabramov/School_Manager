@@ -5,6 +5,7 @@
  */
 package school_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import school_manager.helpers.DatabaseManager;
 
 /**
@@ -12,7 +13,6 @@ import school_manager.helpers.DatabaseManager;
  * @author abrasha
  */
 public class User {
-
     private AccType accType;
     private int login;
     private int id;
