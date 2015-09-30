@@ -14,14 +14,13 @@ import school_manager.model.User;
 import school_manager.view.LoginFragmentController;
 import school_manager.view.ParentMenuFragmentController;
 import school_manager.view.RootLayoutController;
+import school_manager.view.TeacherMenuFragmentController;
 
 public class MainApp extends Application {
 
-    
-    
     public static void main(String[] args) {
         launch(args);
-        
+
     }
 
     private RootLayoutController rootController;
@@ -29,24 +28,23 @@ public class MainApp extends Application {
     private VBox menuPane;
     private Label statusLabel;
     private User accountInfo;
-    
-    
+
     @Override
     public void start(Stage stage) throws Exception {
 
         Scene scene = initRootLayout();
         initLogin();
-        
+
         stage.setScene(scene);
         stage.show();
-       
+
     }
 
     @Override
     public void stop() throws Exception {
         super.stop();
         DatabaseManager.close();
-        
+
     }
 
     private Scene initRootLayout() {
@@ -120,19 +118,38 @@ public class MainApp extends Application {
         }
     }
 
-    public void setAccountInfo(User accountInfo){
-        
-        if (accountInfo != null){
-            
+    public void setAccountInfo(User accountInfo) {
+
+        if (accountInfo != null) {
+
+            FXMLLoader loader = new FXMLLoader();
+
             this.accountInfo = accountInfo;
-            switch (accountInfo.getAccType()){
-                
+            switch (accountInfo.getAccType()) {
+
                 case STUDENT:
-                    
+
                     break;
                 case TEACHER:
+                    VBox teacherMenuPane;
+
+                    try {
+                        loader.setLocation(getClass().getResource("view/TeacherMenuFragment.fxml"));
+                        teacherMenuPane = (VBox) loader.load();
+
+                        TeacherMenuFragmentController teacherMenuController = loader.getController();
+                        teacherMenuController.setMainApp(this);
+
+                        setMenu(teacherMenuPane);
+                        setStatus("Teacher menu set.");
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                        setStatus("Error setting teacher menu...");
+                    }
+
+                    break;
+                case PARENT:
                     VBox parentMenuPane;
-                    FXMLLoader loader = new FXMLLoader();
 
                     try {
 
@@ -150,20 +167,17 @@ public class MainApp extends Application {
                         setStatus("Error setting parent menu.");
                     }
                     break;
-                case PARENT:
-                    
-                    break;
                 case ADMIN:
-                    
+
                     break;
                 default:
 
                     break;
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
 }

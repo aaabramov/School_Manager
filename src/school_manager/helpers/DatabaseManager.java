@@ -98,8 +98,8 @@ public final class DatabaseManager {
                     + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
-            preStatement.setString(2, added.getFirstName());
-            preStatement.setString(3, added.getLastName());
+            preStatement.setString(2, added.getFName());
+            preStatement.setString(3, added.getLName());
             preStatement.setString(4, added.getPatronymic());
             preStatement.setInt(5, added.getId_group());
             preStatement.setString(6, added.getBirthday());
@@ -262,8 +262,8 @@ public final class DatabaseManager {
                     + "VALUES (?, ?, ?, ?, ?, ?)";
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
-            preStatement.setString(2, added.getFirstName());
-            preStatement.setString(3, added.getLastName());
+            preStatement.setString(2, added.getFName());
+            preStatement.setString(3, added.getLName());
             preStatement.setString(4, added.getPatronymic());
             preStatement.setString(5, added.getSubjects());
             preStatement.setString(6, added.getNotes());
