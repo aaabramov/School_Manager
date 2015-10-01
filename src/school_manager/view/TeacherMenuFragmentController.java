@@ -49,7 +49,7 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        buttomMyProfileClicked();
+        //buttomMyProfileClicked();
     }    
 
     @Override
@@ -84,7 +84,7 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
     }
     
     @FXML
-    public void buttomMyProfileClicked(){
+    public void buttonMyProfileClicked(){
         FXMLLoader loader = new FXMLLoader();
         
         try{

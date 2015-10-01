@@ -11,7 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
+import school_manager.helpers.MainReferenced;
 import school_manager.model.Teacher;
 
 /**
@@ -19,8 +21,9 @@ import school_manager.model.Teacher;
  *
  * @author bepa
  */
-public class AdminTeacherInsertionFragmentController implements Initializable {
+public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {
 
+    MainApp mainApp;
     
     @FXML
     private TextField tfFname;
@@ -85,5 +88,12 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
         DBmanager.insertTeacher(added);
         
     }
+
+    @Override
+    public void setMainApp(MainApp ma) {
+        this.mainApp = ma;
+    }
+    
+    
     
 }

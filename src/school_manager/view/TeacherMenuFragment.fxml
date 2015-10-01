@@ -9,7 +9,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.TeacherMenuFragmentController">
    <children>
-      <Button fx:id="buttonProfile" mnemonicParsing="false" onAction="#buttomMyProfileClicked" prefHeight="25.0" prefWidth="172.0" text="Профіль" />
+      <Button fx:id="buttonProfile" mnemonicParsing="false" onAction="#buttonMyProfileClicked" prefHeight="25.0" prefWidth="172.0" text="Профіль" />
       <Button fx:id="buttonMyLesson" defaultButton="true" mnemonicParsing="false" onAction="#buttonMyLessonClicked" prefHeight="25.0" prefWidth="172.0" text="Мій урок" />
       <Button fx:id="buttonSchedule" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Розклад" />
       <Button fx:id="buttonClasses" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Журнал (класи)" />
