@@ -5,49 +5,70 @@
  */
 package school_manager.model;
 
-import java.util.ArrayList;
-
 
 
 public class Group {
 
     private int idGroup;
-    private String code;
-    private ArrayList<Student> list;
     private int idCurator;
-    private String specialNotes;
+    private String notes;
+    private Student[] list;
+    private String code;
 
-    public Group(int idGroup, String code, ArrayList<Student> list, int idCurator, String specialNotes) {
-        this.idGroup = idGroup;
-        this.code = code;
-        this.list = list;
-        this.idCurator = idCurator;
-        this.specialNotes = specialNotes;
+    public static class Builder {
+    
+        int idGroup;
+        String code;
+        Student[] list;
+        int idCurator;
+        String notes;
+        
+        public Group.Builder idGroup(int idGroup){
+            this.idGroup = idGroup; return this;
+        }
+        public Group.Builder code(String code){
+            this.code = code; return this;
+        }
+        public Group.Builder list(Student[] list){
+            this.list = list; return this;
+        }
+        public Group.Builder notes(String notes){
+            this.notes = notes; return this;
+        }
+        public Group.Builder idCurator(int idCurator){
+            this.idCurator = idCurator; return this;
+        }
+        public Group build(){
+            return (new Group(this));
+        }
+        
     }
-
-    public Group(String code, ArrayList<Student> list, int idGroup) {
-        this.code = code;
-        this.list = list;
-        this.idGroup = idGroup;
+    
+    public Group(Group.Builder builder) {
+        this.idGroup = builder.idGroup;
+        this.code = builder.code;
+        this.list = builder.list;
+        this.idCurator = builder.idCurator;
+        this.notes = builder.notes;
     }
 
     public void addNote(String note){
-        specialNotes += "; " + note;
+        notes += "; " + note;
     }
 
     public String getNote(){
-        return specialNotes;
+        return notes;
     }
 
     public void removeNotes(){
-        specialNotes = "";
+        notes = "";
     }
 
     public int getTeacher(){
         return idCurator;
     }
 
-    public ArrayList<Student> getList(){
+    public Student[] getList(){
         return list;
     }
 
