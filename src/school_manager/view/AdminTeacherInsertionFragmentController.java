@@ -9,7 +9,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import school_manager.helpers.DatabaseManager;
 import school_manager.model.Teacher;
 
 /**
@@ -44,6 +46,11 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
     @FXML
     private TextField tfSubjects;
     
+    @FXML
+    private Button buttonConfirm;
+    
+    DatabaseManager DBmanager;
+    
     /**
      * Initializes the controller class.
      */
@@ -54,6 +61,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
     
     @FXML
     public void btnConfirmClicked(){
+        
         String fname = tfFname.getText();
         String lname = tfLname.getText();
         String patronymic = tfPatronymic.getText();
@@ -73,6 +81,8 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
                 .notes(notes)
                 .subjects(subjects)
                 .build();
+        
+        DBmanager.insertTeacher(added);
         
     }
     

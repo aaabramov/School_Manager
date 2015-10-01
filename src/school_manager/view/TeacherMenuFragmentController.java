@@ -15,6 +15,7 @@ import school_manager.model.Teacher;
 import javafx.scene.control.Button;
 import java.io.IOException;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import school_manager.helpers.MainReferenced;
 
 
@@ -48,7 +49,7 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        buttomMyProfileClicked();
     }    
 
     @Override
@@ -65,7 +66,7 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
         
         FXMLLoader loader = new FXMLLoader();
         
-        try{
+        try{   
             
             loader.setLocation(getClass().getResource("TeacherLessonFragment.fxml"));
             AnchorPane pane = (AnchorPane)loader.load();
@@ -79,6 +80,27 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
         }catch(IOException e){
             System.out.println(e.getMessage());
             mainApp.setStatus("Error loading lesson...");
+        }
+    }
+    
+    @FXML
+    public void buttomMyProfileClicked(){
+        FXMLLoader loader = new FXMLLoader();
+        
+        try{
+            
+            loader.setLocation(getClass().getResource("TeacherProfileFragment.fxml"));
+            BorderPane pane = (BorderPane) loader.load();
+            
+            TeacherProfileFragmentController teacherProfileController = loader.getController();
+            teacherProfileController.setMainApp(mainApp);
+            
+            mainApp.setContent(pane);
+            mainApp.setStatus("Teacher profile has been set.");
+            
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+            mainApp.setStatus("Error loading teacher profile.");
         }
     }
     

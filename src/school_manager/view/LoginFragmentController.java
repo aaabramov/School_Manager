@@ -49,6 +49,7 @@ public class LoginFragmentController implements Initializable, MainReferenced {
             
             
             
+            
             if (result != null){
                 
                 mainApp.setAccountInfo(result);

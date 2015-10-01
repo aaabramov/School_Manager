@@ -5,7 +5,7 @@
  */
 package school_manager.model;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+//import com.fasterxml.jackson.annotation.JsonValue;
 import school_manager.helpers.DatabaseManager;
 
 /**
