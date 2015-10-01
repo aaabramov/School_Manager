@@ -5,33 +5,36 @@
  */
 package school_manager.model;
 
+import java.util.Arrays;
+
 /**
  *
  * @author abrasha
  */
 public class Teacher extends Person {
 
-    private String subjects;
+    private Subject[] subjects;
     
-    public String getSubjects() {
+    public Subject[] getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(String subjects) {
+    public void setSubjects(Subject[] subjects) {
         this.subjects = subjects;
     }
 
     public static class Builder extends Person.Builder<Teacher.Builder>{
         
-        private String subjects;
+        private Subject[] subjects;
 
         public Builder() {}
         
-        public Builder subjects(String subjects){
+        public Builder subjects(Subject[] subjects){
             this.subjects = subjects;
             return this;
         }
 
+        @Override
         public Teacher build() {
             return new Teacher(this);
         }
@@ -44,6 +47,14 @@ public class Teacher extends Person {
         this.subjects = builder.subjects;
     }
 
+    public String getSubjectsAsId(){
+        String result = "";
+        for (Subject s : subjects){
+            result += s.getId() + " ";
+        }
+        return  result;
+    }
+    
     @Override
     public String toString(){
         
@@ -54,7 +65,7 @@ public class Teacher extends Person {
                 + "\nAddress: " + getAddress()
                 + "\nPhone:" + getPhone()
                 + "\nBirthday: " + getBirthday()
-                + "\nSubjects: " + subjects;
+                + "\nSubjects: " + Arrays.toString(subjects);
         
         return result;
     }

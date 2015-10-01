@@ -71,7 +71,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable {
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                .subjects(subjects)
+                // TODO .subjects(subjects)
                 .build();
         
     }

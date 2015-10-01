@@ -5,28 +5,33 @@
  */
 package school_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author abrasha
  */
 public class Subject {
     
-    private int id_subject;
+    @JsonProperty("id")
+    private int id;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("description")
     private String description;
     
-    public Subject(int id_subject, String name, String description){
-        this.id_subject = id_subject;
+    public Subject(int id, String name, String description){
+        this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public int getId_subject() {
-        return id_subject;
+    public int getId() {
+        return id;
     }
 
-    public void setId_subject(int id_subject) {
-        this.id_subject = id_subject;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

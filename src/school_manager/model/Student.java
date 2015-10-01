@@ -5,29 +5,34 @@
  */
 package school_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author abrasha
  */
 public class Student extends Person {
 
-    private int id_group;
+    @JsonProperty("id")
+    private int groupId;
 
-    public int getId_group(){ return id_group; }
+    public int getGroupId() {
+        return groupId;
+    }
 
-    public void setId_group(int id_group) {
-        this.id_group = id_group;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public static class Builder extends Person.Builder<Student.Builder> {
 
-        private int id_group;
+        private int groupId;
 
         public Builder() {
         }
 
-        public Builder id_group(int id_group) {
-            this.id_group = id_group; return this;
+        public Builder id_group(int groupId) {
+            this.groupId = groupId; return this;
         }
 
         @Override
@@ -39,7 +44,7 @@ public class Student extends Person {
 
     public Student(Student.Builder builder) {
         super(builder);
-        this.id_group = builder.id_group;
+        this.groupId = builder.groupId;
     }
 
     @Override
@@ -49,7 +54,7 @@ public class Student extends Person {
                 + "\nFirst name: " + getFName()
                 + "\nLast name: " + getLName()
                 + "\nPatronymic: " + getPatronymic()
-                + "\nClass: " + id_group
+                + "\nClass: " + groupId
                 + "\nAddress: " + getAddress()
                 + "\nPhone:" + getPhone()
                 + "\nBirthday: " + getBirthday();
