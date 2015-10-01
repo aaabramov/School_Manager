@@ -29,8 +29,8 @@ public class Client {
     }
 
     public void connect() throws UnknownHostException, IOException{
-        System.out.println("Attempting to connect to "+hostname+":"+port);
-        socketClient = new Socket(hostname,port);
+        System.out.println("Attempting to connect to " + hostname + ":" + port);
+        socketClient = new Socket(hostname, port);
         System.out.println("Connection Established");
     }
 
@@ -43,13 +43,6 @@ public class Client {
            System.out.println(userInput);
        }
     }
-    
-    public void askForTime() throws IOException{
-    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
-       writer.write("get_student");
-       writer.newLine();
-       writer.flush();
-    }
 
     public static void main(String arg[]){
         //Creating a SocketClient object
@@ -57,7 +50,6 @@ public class Client {
         try {
             //trying to establish connection to the server
             client.connect();
-            client.askForTime();
             client.readResponse();
             
         } catch (UnknownHostException e) {

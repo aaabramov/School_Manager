@@ -5,7 +5,7 @@
  */
 package school_manager.model;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import school_manager.helpers.DatabaseManager;
 
 /**
@@ -13,8 +13,12 @@ import school_manager.helpers.DatabaseManager;
  * @author abrasha
  */
 public class User {
+    
+    @JsonProperty("accType")
     private AccType accType;
+    @JsonProperty("login")
     private int login;
+    @JsonProperty("id")
     private int id;
 
     public User(int id, int login, AccType accType){
@@ -49,7 +53,6 @@ public class User {
                 break;
             
         }
-        
 
     }
 
