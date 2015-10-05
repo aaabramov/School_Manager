@@ -273,5 +273,101 @@ public final class DatabaseManager {
         }
         
     }
+    public static String MyGroupCodeByStudent(int id)
+    {
+        String result="";
+        try {
+            preStatement = connection.prepareStatement ("SELECT code FROM groups WHERE id_group=(SELECT id_group FROM students WHERE id_student =?);");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            result=rs.getString("code");
+            }
+        catch (SQLException e){
+            System.out.println("Error select group code " + e.getMessage());
+            }
+        return result;
+    }
+        
+    /**
+     *
+     * @author Shlimazl
+     *
+     * returns code of curator's group
+     */
+    public static String MyGroupCodeByCurator(int id)
+    {
+        String result="";
+        try {
+            preStatement = connection.prepareStatement ("SELECT code FROM groups WHERE id_curator =?;");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            result=rs.getString("code");
+            }
+        catch (SQLException e){
+            System.out.println("Error select group code " + e.getMessage());
+            }
+        return result;
+    }
+    /**
+     *
+     * @author Shlimazl
+     *
+     * returns curator's firstname,lastname and patroymic
+     */
+    public static String MyCuratorByStudent(int id)
+    {
+        String result = "";
+        String res1="";
+        String res2="";
+        String res3="";
+        try  {
+        preStatement = connection.prepareStatement ("SELECT lastname,fname,patronymic FROM teachers WHERE id_teachers = (SELECT id_curator FROM groups WHERE id_group = (SELECT id_group FROM students WHERE id_student=?));");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            {
+                res1=rs.getString("lastname");
+                res2=rs.getString("fname");
+                res3=rs.getString("patronymic");
+                result=res1 + " " + res2 + " " + res3;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Error select curator " + e.getMessage());
+            }
+        return result;
+    }
+    
+    /**
+     *
+     * @author Shlimazl
+     *
+     * returns student's own firstname,lastname and patroymic
+     */
+    public static String MyInfoByStudent(int id)
+    {
+        String result = "";
+        String res1="";
+        String res2="";
+        String res3="";
+        try  {
+        preStatement = connection.prepareStatement ("SELECT lastname,fname,patronymic FROM students WHERE id_student = ?;");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            {
+                res1=rs.getString("lastname");
+                res2=rs.getString("fname");
+                res3=rs.getString("patronymic");
+                result=res1 + " " + res2 + " " + res3;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Error select curator " + e.getMessage());
+            }
+        return result;
+    }
     
 }
