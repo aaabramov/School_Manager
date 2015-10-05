@@ -369,5 +369,172 @@ public final class DatabaseManager {
             }
         return result;
     }
+     /**
+     *
+     * @author Shlimazl
+     *
+     * returns name of subject by id
+     */
     
+     private static String GetSubject(int id)
+   {
+       String result="";
+       try{
+        preStatement = connection.prepareStatement ("SELECT name from subjects WHERE id_subject=?;");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            {
+                result=rs.getString("name");
+                result+="\n";
+            }
+            }
+       catch (SQLException e){
+            System.out.println("Error select subject " + e.getMessage());
+            }
+        return result;
+   }
+     
+     /**
+     *
+     * @author Shlimazl
+     *
+     * returns day means by id
+     */
+     private static String Whatday(int day)
+     {
+       String str1="";
+       if(day==1)
+                {str1="понеділок\t";}
+                else if(day==2)
+                {str1="вівторок\t";}
+                else if(day==3)
+                {str1="середа\t\t";}
+                else if(day==4)
+                {str1="четвер\t\t";}
+                else if(day==5)
+                {str1="п'ятниця\t";}
+       return str1;
+     }
+      /**
+     *
+     * @author Shlimazl
+     *
+     * returns student's group's schedule
+     */
+     public static String ScheduleByStudent(int id)
+    {
+        String result="";
+        String str1="";
+        String str2="";
+        int numb=0;
+        int tmp=0;
+        int day=0;
+        int current_day=1;
+        try{
+            preStatement = connection.prepareStatement ("SELECT id_day,number,id_subject FROM schedule WHERE id_group = (select id_group FROM students WHERE id_student =?);");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            while(rs.next())
+            {
+                day=rs.getInt("id_day");
+                numb=rs.getInt("number");
+                tmp=rs.getInt("id_subject");
+                
+                str2=GetSubject(tmp);
+                
+                str1=Whatday(day);
+                
+                if(day>current_day)
+                {
+                 current_day++;
+                 result+="\n";
+                }
+                result+=str1+numb+"\t"+str2;
+                
+                }
+                day=0;numb=0;tmp=0;
+                str1="";str2="";
+            }
+            
+        catch (SQLException e){
+            System.out.println("Error select schedule " + e.getMessage());
+            }
+        return result;
+     }
+     
+      /**
+     *
+     * @author Shlimazl
+     *
+     * returns code of group by id
+     */
+     private static String GetGroup(int id)
+   {
+       String result="";
+       try{
+        preStatement = connection.prepareStatement ("SELECT code from groups WHERE id_group=?;");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            {
+                result=rs.getString("code");
+                result+="\t";
+            }
+            }
+       catch (SQLException e){
+            System.out.println("Error select group " + e.getMessage());
+            }
+        return result;
+   }
+     
+     /**
+     *
+     * @author Shlimazl
+     *
+     * returns teacher's schedule
+     */
+    public static String ScheduleByTeacher(int id)
+    {
+        String result="";
+        String str1="";
+        String str2="";
+        String str3="";
+        int numb=0;
+        int tmp=0;
+        int day=0;
+        int tmp1;
+        int current_day=1;
+        try{
+            preStatement = connection.prepareStatement ("SELECT id_day,number,id_subject,id_group FROM schedule WHERE id_teacher = ?;");
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            while(rs.next())
+            {
+                day=rs.getInt("id_day");
+                numb=rs.getInt("number");
+                tmp=rs.getInt("id_subject");
+                tmp1=rs.getInt("id_group");
+               
+                str1=Whatday(day); 
+                str2=GetSubject(tmp);
+                str3=GetGroup(tmp1);
+                
+                if(day>current_day)
+                {
+                 current_day++;
+                 result+="\n";
+                }
+                result+=str1+numb+"\t"+str3+"\t"+str2+"\n";
+                
+                }
+                day=0;numb=0;tmp=0;tmp1=0;
+                str1="";str2="";str3="";
+            }
+            
+        catch (SQLException e){
+            System.out.println("Error select schedule " + e.getMessage());
+            }
+        return result;
+   }
 }
