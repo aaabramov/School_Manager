@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import school_manager.model.Student;
 import school_manager.model.Subject;
+import school_manager.model.Teacher;
 
 /**
  *
@@ -97,10 +98,10 @@ public final class DatabaseManager {
                     + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
-            preStatement.setString(2, added.getFirstName());
-            preStatement.setString(3, added.getLastName());
+            preStatement.setString(2, added.getFName());
+            preStatement.setString(3, added.getLName());
             preStatement.setString(4, added.getPatronymic());
-            preStatement.setInt(5, added.getId_group());
+            preStatement.setInt(5, added.getGroupId());
             preStatement.setString(6, added.getBirthday());
             preStatement.setString(7, added.getAddress());
             preStatement.setString(8, added.getPhone());
@@ -238,6 +239,38 @@ public final class DatabaseManager {
         }
         
         return result;
+        
+    }
+    
+    /**
+ *
+ * @author bepa
+ * 
+ * inserts new teacher to database
+ */
+    
+    public static void insertTeacher(Teacher added) {
+        try{
+            
+            int insertedId = getLastIdFromUsers() + 1;
+            int login = insertedId + LOGIN_START;
+            
+            insertUser(new User(insertedId, login, User.AccType.TEACHER));
+            
+            String sqlStatement = "INSERT INTO teachers" 
+                    + "(id_teachers, fname, lname, patronymic, subjects, notes)"
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, insertedId);
+            preStatement.setString(2, added.getFName());
+            preStatement.setString(3, added.getLName());
+            preStatement.setString(4, added.getPatronymic());
+            preStatement.setString(5, added.getSubjectsAsId());
+            preStatement.setString(6, added.getNotes());
+            preStatement.executeUpdate();
+        }catch(SQLException e){
+            System.out.println("Error adding teacher: " + e.getMessage());
+        }
         
     }
     

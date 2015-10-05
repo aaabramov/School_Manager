@@ -5,82 +5,56 @@
  */
 package school_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author abrasha
  */
-
 public class Student extends Person {
 
-    int id_group;
+    @JsonProperty("id")
+    private int groupId;
 
-    public int getId_group() {
-        return id_group;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setId_group(int id_group) {
-        this.id_group = id_group;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
-    public static class Builder {
+    public static class Builder extends Person.Builder<Student.Builder> {
 
-        private String firstName;
-        private String lastName;
-        private String patronymic;
-        private String address;
-        private String phone;
-        private String bday;
-        private String notes;
-        private int id_group;
-        public Builder(){}
-        public Builder fname(String fname){
-            this.firstName = fname; return this;
+        private int groupId;
+
+        public Builder() {
         }
-        public Builder lname(String lname){
-            this.lastName = lname; return this;
+
+        public Builder id_group(int groupId) {
+            this.groupId = groupId; return this;
         }
-        public Builder patronymic(String patronymic){
-            this.patronymic = patronymic; return this;
-        }
-        public Builder id_group(int id_group){
-            this.id_group = id_group; return this;
-        }
-        public Builder bday(String bday){
-            this.bday = bday; return this;
-        }
-        public Builder address(String address){
-            this.address = address; return this;
-        }
-        public Builder phone(String phone){
-            this.phone = phone; return this;
-        }
-        public Builder notes(String notes){
-            this.notes = notes; return this;
-        }
-        public Student build(){
-            return new Student(this);
+
+        @Override
+        public Student build() {
+            return (new Student(this));
         }
 
     }
 
-    public Student(String firstName, String lastName, String patronymic, String address, String phone, String birthday, String specialNotes, int id_group) {
-        super(firstName, lastName, patronymic, address, phone, birthday, specialNotes);
-        this.id_group = id_group;
-    }
-
-    public Student(Student.Builder builder){
-        super(builder.firstName, builder.lastName, builder.patronymic, builder.address, builder.phone, builder.bday, builder.notes);
-        this.id_group = builder.id_group;
+    public Student(Student.Builder builder) {
+        super(builder);
+        this.groupId = builder.groupId;
     }
 
     @Override
     public String toString() {
 
         String result = "Student profile:"
-                + "\nFirst name: " + getFirstName()
-                + "\nLast name: " + getLastName()
+                + "\nFirst name: " + getFName()
+                + "\nLast name: " + getLName()
                 + "\nPatronymic: " + getPatronymic()
-                + "\nClass: " + id_group
+                + "\nClass: " + groupId
                 + "\nAddress: " + getAddress()
                 + "\nPhone:" + getPhone()
                 + "\nBirthday: " + getBirthday();

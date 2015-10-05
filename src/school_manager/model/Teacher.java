@@ -5,86 +5,69 @@
  */
 package school_manager.model;
 
+import java.util.Arrays;
+
 /**
  *
  * @author abrasha
  */
 public class Teacher extends Person {
 
-    private String subjects;
+    private Subject[] subjects;
+    
+    public Subject[] getSubjects() {
+        return subjects;
+    }
 
-    public static class Builder {
+    public void setSubjects(Subject[] subjects) {
+        this.subjects = subjects;
+    }
 
-        private String firstName;
-        private String lastName;
-        private String patronymic;
-        private String address;
-        private String phone;
-        private String bday;
-        private String notes;
-        private String subjects;
+    public static class Builder extends Person.Builder<Teacher.Builder>{
+        
+        private Subject[] subjects;
 
-        public Builder() {
-        }
-
-        public Builder fname(String fname) {
-            this.firstName = fname;
-            return this;
-        }
-
-        public Builder lname(String lname) {
-            this.lastName = lname;
-            return this;
-        }
-
-        public Builder patronymic(String patronymic) {
-            this.patronymic = patronymic;
-            return this;
-        }
-
-        public Builder bday(String bday) {
-            this.bday = bday;
-            return this;
-        }
-
-        public Builder address(String address) {
-            this.address = address;
-            return this;
-        }
-
-        public Builder phone(String phone) {
-            this.phone = phone;
-            return this;
-        }
-
-        public Builder notes(String notes) {
-            this.notes = notes;
-            return this;
-        }
-
-        public Builder subjects(String subjects) {
+        public Builder() {}
+        
+        public Builder subjects(Subject[] subjects){
             this.subjects = subjects;
             return this;
         }
 
+        @Override
         public Teacher build() {
             return new Teacher(this);
         }
 
     }
 
-    public Teacher(Builder builder) {
+    public Teacher(Teacher.Builder builder) {
 
-        super(builder.firstName, builder.lastName, builder.patronymic, builder.address, builder.phone, builder.bday, builder.notes);
+        super(builder);
         this.subjects = builder.subjects;
     }
 
-    public String getSubjects() {
-        return subjects;
+    public String getSubjectsAsId(){
+        String result = "";
+        for (Subject s : subjects){
+            result += s.getId() + " ";
+        }
+        return  result;
     }
-
-    public void setSubjects(String subjects) {
-        this.subjects = subjects;
+    
+    @Override
+    public String toString(){
+        
+        String result = "Teacher profile:"
+                + "\nFirst name: " + getFName()
+                + "\nLast name: " + getLName()
+                + "\nPatronymic: " + getPatronymic()
+                + "\nAddress: " + getAddress()
+                + "\nPhone:" + getPhone()
+                + "\nBirthday: " + getBirthday()
+                + "\nSubjects: " + Arrays.toString(subjects);
+        
+        return result;
     }
 
 }

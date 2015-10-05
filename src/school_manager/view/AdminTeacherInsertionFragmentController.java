@@ -7,35 +7,42 @@ package school_manager.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import school_manager.helpers.DatabaseManager;
-import school_manager.model.Student;
+import school_manager.model.Teacher;
 
 /**
  * FXML Controller class
  *
- * @author abrasha
+ * @author bepa
  */
-public class AdminStudentInsertionFragmentController implements Initializable {
+public class AdminTeacherInsertionFragmentController implements Initializable {
 
+    
     @FXML
-    private TextField tfFName;
+    private TextField tfFname;
+    
     @FXML
-    private TextField tfLName;
+    private TextField tfLname;
+    
     @FXML
     private TextField tfPatronymic;
-    @FXML
-    private TextField tfIdGroup;
+    
     @FXML
     private TextField tfBDay;
+    
     @FXML
-    private TextField tfAddress;
+    private TextField tfAdress;
+    
     @FXML
     private TextField tfPhone;
+    
     @FXML
     private TextField tfNotes;
+    
+    @FXML
+    private TextField tfSubjects;
     
     /**
      * Initializes the controller class.
@@ -43,21 +50,20 @@ public class AdminStudentInsertionFragmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }
+    }    
     
-    @FXML 
+    @FXML
     public void btnConfirmClicked(){
-        
-        String fname = tfFName.getText();
-        String lname = tfLName.getText();
+        String fname = tfFname.getText();
+        String lname = tfLname.getText();
         String patronymic = tfPatronymic.getText();
-        int groupId = Integer.valueOf(tfIdGroup.getText());
-        String bday = tfBDay.getText();
-        String address = tfAddress.getText();
+        String bday =tfBDay.getText();
+        String address = tfAdress.getText();
         String phone = tfPhone.getText();
+        String subjects = tfSubjects.getText();
         String notes = tfNotes.getText();
         
-        Student added = new Student.Builder()
+        Teacher added = new Teacher.Builder()
                 .fName(fname)
                 .lName(lname)
                 .patronymic(patronymic)
@@ -65,20 +71,9 @@ public class AdminStudentInsertionFragmentController implements Initializable {
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                .id_group(groupId)
+                // TODO .subjects(subjects)
                 .build();
         
-        DatabaseManager.insertStudent(added);
-        
     }
-    
-    @FXML
-    public void btnCancelClicked(){
-        
-        
-        
-    }
-    
-    
     
 }

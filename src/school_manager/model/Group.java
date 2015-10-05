@@ -5,61 +5,77 @@
  */
 package school_manager.model;
 
-import java.util.ArrayList;
 
-/**
- *
- * @author abrasha
- */
-public class Group implements Notable {
-    
-    private int id;
+
+public class Group {
+
+    private int idGroup;
+    private int idCurator;
+    private String notes;
+    private Student[] list;
     private String code;
-    private ArrayList<Student> list;
-    private Teacher curator;
-    private String specialNotes;
 
-    public Group(int id, String code, ArrayList<Student> list, Teacher teacher, String specialNotes) {
-        this.id = id;
-        this.code = code;
-        this.list = list;
-        this.curator = teacher;
-        this.specialNotes = specialNotes;
-    }
-
-    public Group(String code, ArrayList<Student> list, Teacher curator) {
-        this.code = code;
-        this.list = list;
-        this.curator = curator;
+    public static class Builder {
+    
+        int idGroup;
+        String code;
+        Student[] list;
+        int idCurator;
+        String notes;
+        
+        public Group.Builder idGroup(int idGroup){
+            this.idGroup = idGroup; return this;
+        }
+        public Group.Builder code(String code){
+            this.code = code; return this;
+        }
+        public Group.Builder list(Student[] list){
+            this.list = list; return this;
+        }
+        public Group.Builder notes(String notes){
+            this.notes = notes; return this;
+        }
+        public Group.Builder idCurator(int idCurator){
+            this.idCurator = idCurator; return this;
+        }
+        public Group build(){
+            return (new Group(this));
+        }
+        
     }
     
-    @Override
+    public Group(Group.Builder builder) {
+        this.idGroup = builder.idGroup;
+        this.code = builder.code;
+        this.list = builder.list;
+        this.idCurator = builder.idCurator;
+        this.notes = builder.notes;
+    }
+
     public void addNote(String note){
-        specialNotes += "; " + note;
+        notes += "; " + note;
     }
 
-    @Override
     public String getNote(){
-        return specialNotes;
+        return notes;
     }
 
-    @Override
     public void removeNotes(){
-        specialNotes = "";
+        notes = "";
     }
-    
-    public Teacher getTeacher(){
-        return curator;
+
+    public int getTeacher(){
+        return idCurator;
     }
-    
-    public ArrayList<Student> getList(){
+
+    public Student[] getList(){
         return list;
     }
-    
+
     public String getCode(){
         return code;
     }
 
-    
-    
+
+
 }
