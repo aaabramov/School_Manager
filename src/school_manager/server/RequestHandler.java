@@ -52,7 +52,7 @@ public class RequestHandler implements Runnable {
     private String readRequest() {
 
         String result = null;
-        BufferedReader stdIn = null;
+        BufferedReader stdIn;
         try{
             stdIn = new BufferedReader(new InputStreamReader(client.getInputStream()));
             result = stdIn.readLine();
