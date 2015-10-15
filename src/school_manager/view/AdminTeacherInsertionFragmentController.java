@@ -82,7 +82,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                .subjects(subjects)
+                // TODO .subjects(subjects)
                 .build();
         
         DBmanager.insertTeacher(added);

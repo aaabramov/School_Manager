@@ -101,7 +101,7 @@ public final class DatabaseManager {
             preStatement.setString(2, added.getFName());
             preStatement.setString(3, added.getLName());
             preStatement.setString(4, added.getPatronymic());
-            preStatement.setInt(5, added.getId_group());
+            preStatement.setInt(5, added.getGroupId());
             preStatement.setString(6, added.getBirthday());
             preStatement.setString(7, added.getAddress());
             preStatement.setString(8, added.getPhone());
@@ -265,7 +265,7 @@ public final class DatabaseManager {
             preStatement.setString(2, added.getFName());
             preStatement.setString(3, added.getLName());
             preStatement.setString(4, added.getPatronymic());
-            preStatement.setString(5, added.getSubjects());
+            preStatement.setString(5, added.getSubjectsAsId());
             preStatement.setString(6, added.getNotes());
             preStatement.executeUpdate();
         }catch(SQLException e){
