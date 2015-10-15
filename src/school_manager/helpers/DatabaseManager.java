@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import school_manager.model.Student;
 import school_manager.model.Subject;
 import school_manager.model.Teacher;
@@ -18,6 +20,7 @@ import school_manager.model.Teacher;
  */
 public final class DatabaseManager {
 
+    private static final Logger logger;
     private static Connection connection = null;
     private static Statement statement = null;
     private static PreparedStatement preStatement = null;
@@ -40,6 +43,8 @@ public final class DatabaseManager {
      */
     static {
 
+        logger = Logger.getLogger(DatabaseManager.class.getCanonicalName());
+
         try {
 
             String dbUrl = "jdbc:mysql://" + DBAddress + ":" + DBPort + "/" + DBName;
@@ -47,13 +52,13 @@ public final class DatabaseManager {
             connection = DriverManager.getConnection(dbUrl, DBLogin, DBPassword);
 
             if (connection == null) {
-                System.err.println("Error in creating connection(null)");
+                logger.log(Level.WARNING, "Cannot establish connection with " + DBPort + ":" + DBName);
             } else {
                 statement = connection.createStatement();
             }
 
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Error connectiong to db: " + e.getMessage());
+            logger.log(Level.WARNING, "Cannot establish connection with " + DBPort + ":" + DBName, e);
         }
 
     }
@@ -68,14 +73,16 @@ public final class DatabaseManager {
 
         try {
             if (connection != null) {
+                logger.log(Level.SEVERE, "Connection closed.");
                 connection.close();
             }
             if (statement != null) {
+                logger.log(Level.SEVERE, "statement closed.");
                 statement.close();
             }
 
         } catch (Exception e) {
-            System.out.println("Error in closing db: " + e.getMessage());
+            logger.log(Level.WARNING, "Exception in closing db", e);
         }
     }
 
@@ -108,7 +115,7 @@ public final class DatabaseManager {
             preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error adding student: " + e.getMessage());
+            logger.log(Level.WARNING, "Error inserting student", e);
         }
 
     }
@@ -128,7 +135,7 @@ public final class DatabaseManager {
             preStatement.setInt(3, user.getAccTypeCode());
             preStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("insertUser failed: " + e.getMessage());
+            logger.log(Level.WARNING, "Error inserting user", e);
         }
 
     }
@@ -151,7 +158,7 @@ public final class DatabaseManager {
             }
             result = rs.getInt("max_id");
         } catch (SQLException e) {
-            System.out.println("getLastIdFromUsers failed: " + e.getMessage());
+            logger.log(Level.WARNING, "Error getting last id from users", e);
         }
 
         return result;
@@ -180,7 +187,7 @@ public final class DatabaseManager {
             }
 
         } catch (SQLException e) {
-            System.out.println("authorize fail: " + e.getMessage());
+            logger.log(Level.WARNING, "Error authorizing", e);
         }
 
         return result;
@@ -193,71 +200,70 @@ public final class DatabaseManager {
      *
      * @return full list of subjects
      */
-    public static ArrayList<Subject> getSubjects(){
+    public static ArrayList<Subject> getSubjects() {
         ArrayList<Subject> result = new ArrayList<>();
-        
+
         try {
-            
+
             ResultSet rs = statement.executeQuery("SELECT * FROM subjects;");
-            
-            while (rs.next()){
-                
+
+            while (rs.next()) {
+
                 result.add(new Subject(rs.getInt("id_subject"), rs.getString("name"), rs.getString("description")));
-                
+
             }
-            
-        } catch (SQLException e){
-            System.out.println("getSubjects() failed: " + e.getMessage());
+
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error getting subjects", e);
         }
-        
+
         return result;
-        
+
     }
-    
+
     /**
      *
      * @author abrasha
      *
      * @return Subject with concrete id
      */
-    public static  Subject getSubjectById(int id_subject){
-        
+    public static Subject getSubjectById(int id_subject) {
+
         Subject result = null;
-        
+
         try {
-            
+
             ResultSet rs = statement.executeQuery("SELECT * FROM subjects WHERE id_subject = " + id_subject + ";");
-            
-            if (rs.next()){
-                
+
+            if (rs.next()) {
+
                 result = new Subject(rs.getInt("id_subject"), rs.getString("name"), rs.getString("description"));
-                
+
             }
-            
-        } catch (SQLException e){
-            System.out.println("getSubjects(int) failed: " + e.getMessage());            
+
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error getting subject by id", e);
         }
-        
+
         return result;
-        
+
     }
-    
+
     /**
- *
- * @author bepa
- * 
- * inserts new teacher to database
- */
-    
+     *
+     * @author bepa
+     *
+     * inserts new teacher to database
+     */
     public static void insertTeacher(Teacher added) {
-        try{
-            
+        try {
+
             int insertedId = getLastIdFromUsers() + 1;
             int login = insertedId + LOGIN_START;
-            
+
             insertUser(new User(insertedId, login, User.AccType.TEACHER));
-            
-            String sqlStatement = "INSERT INTO teachers" 
+
+            String sqlStatement = "INSERT INTO teachers"
                     + "(id_teachers, fname, lname, patronymic, subjects, notes)"
                     + "VALUES (?, ?, ?, ?, ?, ?)";
             preStatement = connection.prepareStatement(sqlStatement);
@@ -268,273 +274,278 @@ public final class DatabaseManager {
             preStatement.setString(5, added.getSubjectsAsId());
             preStatement.setString(6, added.getNotes());
             preStatement.executeUpdate();
-        }catch(SQLException e){
-            System.out.println("Error adding teacher: " + e.getMessage());
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error inserting teacher", e);
         }
-        
+
     }
-    public static String MyGroupCodeByStudent(int id)
-    {
-        String result="";
+
+    public static String MyGroupCodeByStudent(int id) {
+        String result = "";
         try {
-            preStatement = connection.prepareStatement ("SELECT code FROM groups WHERE id_group=(SELECT id_group FROM students WHERE id_student =?);");
+            preStatement = connection.prepareStatement("SELECT code FROM groups WHERE id_group=(SELECT id_group FROM students WHERE id_student =?);");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            result=rs.getString("code");
+            if (rs.next()) {
+                result = rs.getString("code");
             }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error select group code " + e.getMessage());
-            }
+        }
         return result;
     }
-        
+
     /**
      *
      * @author Shlimazl
      *
      * returns code of curator's group
      */
-    public static String MyGroupCodeByCurator(int id)
-    {
-        String result="";
+    public static String MyGroupCodeByCurator(int id) {
+        String result = "";
         try {
-            preStatement = connection.prepareStatement ("SELECT code FROM groups WHERE id_curator =?;");
+            preStatement = connection.prepareStatement("SELECT code FROM groups WHERE id_curator =?;");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            result=rs.getString("code");
+            if (rs.next()) {
+                result = rs.getString("code");
             }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error select group code " + e.getMessage());
-            }
+        }
         return result;
     }
+
     /**
      *
      * @author Shlimazl
      *
      * returns curator's firstname,lastname and patroymic
      */
-    public static String MyCuratorByStudent(int id)
-    {
+    /**
+     * TODO refactoring. abrasha.
+     */
+    public static String MyCuratorByStudent(int id) {
         String result = "";
-        String res1="";
-        String res2="";
-        String res3="";
-        try  {
-        preStatement = connection.prepareStatement ("SELECT lastname,fname,patronymic FROM teachers WHERE id_teachers = (SELECT id_curator FROM groups WHERE id_group = (SELECT id_group FROM students WHERE id_student=?));");
+        String res1 = "";
+        String res2 = "";
+        String res3 = "";
+        try {
+            preStatement = connection.prepareStatement("SELECT lastname,fname,patronymic FROM teachers WHERE id_teachers = (SELECT id_curator FROM groups WHERE id_group = (SELECT id_group FROM students WHERE id_student=?));");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            {
-                res1=rs.getString("lastname");
-                res2=rs.getString("fname");
-                res3=rs.getString("patronymic");
-                result=res1 + " " + res2 + " " + res3;
+            if (rs.next()) {
+                res1 = rs.getString("lastname");
+                res2 = rs.getString("fname");
+                res3 = rs.getString("patronymic");
+                result = res1 + " " + res2 + " " + res3;
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error select curator " + e.getMessage());
-            }
+        }
         return result;
     }
-    
+
     /**
      *
      * @author Shlimazl
      *
      * returns student's own firstname,lastname and patroymic
      */
-    public static String MyInfoByStudent(int id)
-    {
+    /**
+     * TODO refactoring. abrasha.
+     */
+    public static String MyInfoByStudent(int id) {
         String result = "";
-        String res1="";
-        String res2="";
-        String res3="";
-        try  {
-        preStatement = connection.prepareStatement ("SELECT lastname,fname,patronymic FROM students WHERE id_student = ?;");
+        String res1 = "";
+        String res2 = "";
+        String res3 = "";
+        try {
+            preStatement = connection.prepareStatement("SELECT lastname,fname,patronymic FROM students WHERE id_student = ?;");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            {
-                res1=rs.getString("lastname");
-                res2=rs.getString("fname");
-                res3=rs.getString("patronymic");
-                result=res1 + " " + res2 + " " + res3;
+            if (rs.next()) {
+                res1 = rs.getString("lastname");
+                res2 = rs.getString("fname");
+                res3 = rs.getString("patronymic");
+                result = res1 + " " + res2 + " " + res3;
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error select curator " + e.getMessage());
-            }
+        }
         return result;
     }
-     /**
+
+    /**
      *
      * @author Shlimazl
      *
      * returns name of subject by id
      */
-    
-     private static String GetSubject(int id)
-   {
-       String result="";
-       try{
-        preStatement = connection.prepareStatement ("SELECT name from subjects WHERE id_subject=?;");
+    /**
+     * TODO refactoring. abrasha.
+     */
+    private static String GetSubject(int id) {
+        String result = "";
+        try {
+            preStatement = connection.prepareStatement("SELECT name from subjects WHERE id_subject=?;");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            {
-                result=rs.getString("name");
-                result+="\n";
+            if (rs.next()) {
+                result = rs.getString("name");
+                result += "\n";
             }
-            }
-       catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error select subject " + e.getMessage());
-            }
+        }
         return result;
-   }
-     
-     /**
+    }
+
+    /**
      *
      * @author Shlimazl
      *
      * returns day means by id
      */
-     private static String Whatday(int day)
-     {
-       String str1="";
-       if(day==1)
-                {str1="понеділок\t";}
-                else if(day==2)
-                {str1="вівторок\t";}
-                else if(day==3)
-                {str1="середа\t\t";}
-                else if(day==4)
-                {str1="четвер\t\t";}
-                else if(day==5)
-                {str1="п'ятниця\t";}
-       return str1;
-     }
-      /**
+    /**
+     * TODO refactoring. Is is really needed? abrasha.
+     */
+    private static String Whatday(int day) {
+        String str1 = "";
+        if (day == 1) {
+            str1 = "понеділок\t";
+        } else if (day == 2) {
+            str1 = "вівторок\t";
+        } else if (day == 3) {
+            str1 = "середа\t\t";
+        } else if (day == 4) {
+            str1 = "четвер\t\t";
+        } else if (day == 5) {
+            str1 = "п'ятниця\t";
+        }
+        return str1;
+    }
+
+    /**
      *
      * @author Shlimazl
      *
      * returns student's group's schedule
      */
-     public static String ScheduleByStudent(int id)
-    {
-        String result="";
-        String str1="";
-        String str2="";
-        int numb=0;
-        int tmp=0;
-        int day=0;
-        int current_day=1;
-        try{
-            preStatement = connection.prepareStatement ("SELECT id_day,number,id_subject FROM schedule WHERE id_group = (select id_group FROM students WHERE id_student =?);");
+    /**
+     * TODO refactoring. abrasha.
+     */
+    public static String ScheduleByStudent(int id) {
+        String result = "";
+        String str1 = "";
+        String str2 = "";
+        int numb = 0;
+        int tmp = 0;
+        int day = 0;
+        int current_day = 1;
+        try {
+            preStatement = connection.prepareStatement("SELECT id_day,number,id_subject FROM schedule WHERE id_group = (select id_group FROM students WHERE id_student =?);");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            while(rs.next())
-            {
-                day=rs.getInt("id_day");
-                numb=rs.getInt("number");
-                tmp=rs.getInt("id_subject");
-                
-                str2=GetSubject(tmp);
-                
-                str1=Whatday(day);
-                
-                if(day>current_day)
-                {
-                 current_day++;
-                 result+="\n";
+            while (rs.next()) {
+                day = rs.getInt("id_day");
+                numb = rs.getInt("number");
+                tmp = rs.getInt("id_subject");
+
+                str2 = GetSubject(tmp);
+
+                str1 = Whatday(day);
+
+                if (day > current_day) {
+                    current_day++;
+                    result += "\n";
                 }
-                result+=str1+numb+"\t"+str2;
-                
-                }
-                day=0;numb=0;tmp=0;
-                str1="";str2="";
+                result += str1 + numb + "\t" + str2;
+
             }
-            
-        catch (SQLException e){
+            day = 0;
+            numb = 0;
+            tmp = 0;
+            str1 = "";
+            str2 = "";
+        } catch (SQLException e) {
             System.out.println("Error select schedule " + e.getMessage());
-            }
+        }
         return result;
-     }
-     
-      /**
+    }
+
+    /**
      *
      * @author Shlimazl
      *
      * returns code of group by id
      */
-     private static String GetGroup(int id)
-   {
-       String result="";
-       try{
-        preStatement = connection.prepareStatement ("SELECT code from groups WHERE id_group=?;");
+    private static String GetGroup(int id) {
+        String result = "";
+        try {
+            preStatement = connection.prepareStatement("SELECT code from groups WHERE id_group=?;");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            {
-                result=rs.getString("code");
-                result+="\t";
+            if (rs.next()) {
+                result = rs.getString("code");
+                result += "\t";
             }
-            }
-       catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error select group " + e.getMessage());
-            }
+        }
         return result;
-   }
-     
-     /**
+    }
+
+    /**
      *
      * @author Shlimazl
      *
      * returns teacher's schedule
      */
-    public static String ScheduleByTeacher(int id)
-    {
-        String result="";
-        String str1="";
-        String str2="";
-        String str3="";
-        int numb=0;
-        int tmp=0;
-        int day=0;
+    /**
+     * TODO refactoring. abrasha.
+     */
+    public static String ScheduleByTeacher(int id) {
+        String result = "";
+        String str1 = "";
+        String str2 = "";
+        String str3 = "";
+        int numb = 0;
+        int tmp = 0;
+        int day = 0;
         int tmp1;
-        int current_day=1;
-        try{
-            preStatement = connection.prepareStatement ("SELECT id_day,number,id_subject,id_group FROM schedule WHERE id_teacher = ?;");
+        int current_day = 1;
+        try {
+            preStatement = connection.prepareStatement("SELECT id_day,number,id_subject,id_group FROM schedule WHERE id_teacher = ?;");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
-            while(rs.next())
-            {
-                day=rs.getInt("id_day");
-                numb=rs.getInt("number");
-                tmp=rs.getInt("id_subject");
-                tmp1=rs.getInt("id_group");
-               
-                str1=Whatday(day); 
-                str2=GetSubject(tmp);
-                str3=GetGroup(tmp1);
-                
-                if(day>current_day)
-                {
-                 current_day++;
-                 result+="\n";
+            while (rs.next()) {
+                day = rs.getInt("id_day");
+                numb = rs.getInt("number");
+                tmp = rs.getInt("id_subject");
+                tmp1 = rs.getInt("id_group");
+
+                str1 = Whatday(day);
+                str2 = GetSubject(tmp);
+                str3 = GetGroup(tmp1);
+
+                if (day > current_day) {
+                    current_day++;
+                    result += "\n";
                 }
-                result+=str1+numb+"\t"+str3+"\t"+str2+"\n";
-                
-                }
-                day=0;numb=0;tmp=0;tmp1=0;
-                str1="";str2="";str3="";
+                result += str1 + numb + "\t" + str3 + "\t" + str2 + "\n";
+
             }
-            
-        catch (SQLException e){
+            day = 0; //W
+            numb = 0; //T
+            tmp = 0; //F
+            tmp1 = 0; //IS 
+            str1 = ""; //T
+            str2 = ""; //HI
+            str3 = ""; //S
+        } catch (SQLException e) {
             System.out.println("Error select schedule " + e.getMessage());
-            }
+        }
         return result;
-   }
+    }
 }

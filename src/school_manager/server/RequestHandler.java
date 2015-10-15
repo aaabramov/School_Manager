@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +22,6 @@ public class RequestHandler implements Runnable {
     private String URL = null;
     public static final String INVALID_REQUEST = "error:invalid_request";
     public static final String CLIENT_NULL = "error:client_null";
-    public static final String SERVER_NULL = "error:server_null";
 
     public RequestHandler(Socket client) {
 
@@ -32,11 +33,9 @@ public class RequestHandler implements Runnable {
     public void run() {
 
         URL = readRequest();
-        
-        
+
         if (isValid(URL)) {
-            
-            
+
             request = new Request(URL);
             System.out.println("Parsed request:\n" + request);
             sendResponse(request.toString());
@@ -53,11 +52,11 @@ public class RequestHandler implements Runnable {
 
         String result = null;
         BufferedReader stdIn;
-        try{
+        try {
             stdIn = new BufferedReader(new InputStreamReader(client.getInputStream()));
             result = stdIn.readLine();
-        } catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, e);
         }
 
         return result;
@@ -65,21 +64,22 @@ public class RequestHandler implements Runnable {
     }
 
     private void sendResponse(String response) {
-        try{
+        try {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             writer.write(response);
             writer.flush();
             writer.close();
-        } catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
     private boolean isValid(String request) {
 
-        if (request == null)
+        if (request == null) {
             return false;
-        
+        }
+
         Pattern p = Pattern.compile("(user|student|parent|admin|teacher|group|schedule):"
                 + "(get|update|remove|add)\\?.+");
 
