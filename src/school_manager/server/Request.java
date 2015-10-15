@@ -6,6 +6,13 @@ package school_manager.server;
  */
 public class Request {
 
+    String getResponse() {
+
+        //TODO
+        return "response";
+
+    }
+
     public enum Category {
 
         STUDENT, TEACHER, PARENT, USER, GROUP, SCHEDULE, UNKNOWN
@@ -25,13 +32,6 @@ public class Request {
 
         this.request = request;
         parse(request);
-
-    }
-
-    public static void main(String[] args) {
-
-        Request r = new Request("user:get?name=Andrew&group=22");
-        System.out.println(r);
 
     }
 
@@ -106,19 +106,19 @@ public class Request {
 
     }
 
-    private void parseGetParams(){
-        
-    }
-
-    private void parseAddParams(){
+    private void parseGetParams() {
 
     }
 
-    private void parseUpdateParams(){
+    private void parseAddParams() {
 
     }
 
-    private void parseRemoveParams(){
+    private void parseUpdateParams() {
+
+    }
+
+    private void parseRemoveParams() {
 
     }
 
