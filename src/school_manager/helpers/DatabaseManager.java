@@ -116,6 +116,7 @@ public final class DatabaseManager {
             preStatement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error inserting student", e);
+
         }
 
     }
@@ -279,12 +280,13 @@ public final class DatabaseManager {
         }
 
     }
-        /**
-         *
-         * @author Shlimazl
-         *
-         * returns code of student's group
-         */
+
+    /**
+     *
+     * @author Shlimazl
+     *
+     * returns code of student's group
+     */
     public static String getGroupCodeByStudent(int id) {
         String result = "";
         try {
@@ -295,7 +297,7 @@ public final class DatabaseManager {
                 result = rs.getString("code");
             }
         } catch (SQLException e) {
-            System.out.println("Error select group code " + e.getMessage());
+            logger.log(Level.WARNING, "Error selecting group code by student id", e);
         }
         return result;
     }
@@ -304,7 +306,7 @@ public final class DatabaseManager {
      *
      * @author Shlimazl
      *
-     * returns code of curator's group
+     * returns code of curators group
      */
     public static String getGroupCodeByCurator(int id) {
         String result = "";
@@ -505,12 +507,6 @@ public final class DatabaseManager {
                 result += day + " " + order + "\t" + group + "\t" + subject + "\n";
 
             }
-            day = 0;
-            order = 0;
-            subject_id = 0;
-            group_id = 0;
-            group = "";
-            subject = "";
         } catch (SQLException e) {
             System.out.println("Error select schedule " + e.getMessage());
         }
