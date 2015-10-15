@@ -52,7 +52,7 @@ public class Teacher extends Person {
         for (Subject s : subjects){
             result += s.getId() + " ";
         }
-        return  result;
+        return result;
     }
     
     @Override

@@ -142,6 +142,7 @@ public class MainApp extends Application {
 
                         setMenu(teacherMenuPane);
                         setStatus("Teacher menu set.");
+                        //TODO teacherMenuController.setTeacher(null);
                     } catch (IOException e) {
                         System.out.println(e.getMessage());
                         setStatus("Error setting teacher menu...");
