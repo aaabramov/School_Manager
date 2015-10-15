@@ -58,7 +58,7 @@
                            <GridPane.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </GridPane.margin></Label>
-                        <Button fx:id="buttonLogout" mnemonicParsing="false" prefHeight="25.0" prefWidth="214.0" text="Log out" textAlignment="CENTER" GridPane.columnIndex="1" />
+                        <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="25.0" prefWidth="214.0" text="Log out" textAlignment="CENTER" GridPane.columnIndex="1" />
                         <TextField promptText="Search.." GridPane.rowIndex="1" />
                         <Button fx:id="buttonSearch" mnemonicParsing="false" prefHeight="25.0" prefWidth="199.0" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>

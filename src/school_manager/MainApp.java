@@ -20,7 +20,6 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     private RootLayoutController rootController;
@@ -117,6 +116,14 @@ public class MainApp extends Application {
             setStatus("Error setting menu: null node");
         }
     }
+    
+    public void logOut(){
+        if (accountInfo != null){
+            setAccountInfo(null);
+            menuPane.getChildren().clear();
+            initLogin();
+        }
+    }
 
     public void setAccountInfo(User accountInfo) {
 
@@ -177,6 +184,8 @@ public class MainApp extends Application {
 
             }
 
+        } else {
+            
         }
 
     }

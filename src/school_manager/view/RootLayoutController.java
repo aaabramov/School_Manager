@@ -62,6 +62,12 @@ public class RootLayoutController implements Initializable, MainReferenced {
 
     @FXML
     public void menuLoginClicked() {
+        
+    }
+    
+    @FXML
+    public void btnLogoutClicked(){
+        mainApp.logOut();
     }
 
     @Override
