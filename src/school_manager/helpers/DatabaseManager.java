@@ -279,8 +279,13 @@ public final class DatabaseManager {
         }
 
     }
-
-    public static String MyGroupCodeByStudent(int id) {
+        /**
+         *
+         * @author Shlimazl
+         *
+         * returns code of student's group
+         */
+    public static String getGroupCodeByStudent(int id) {
         String result = "";
         try {
             preStatement = connection.prepareStatement("SELECT code FROM groups WHERE id_group=(SELECT id_group FROM students WHERE id_student =?);");
@@ -301,7 +306,7 @@ public final class DatabaseManager {
      *
      * returns code of curator's group
      */
-    public static String MyGroupCodeByCurator(int id) {
+    public static String getGroupCodeByCurator(int id) {
         String result = "";
         try {
             preStatement = connection.prepareStatement("SELECT code FROM groups WHERE id_curator =?;");
@@ -325,20 +330,20 @@ public final class DatabaseManager {
     /**
      * TODO refactoring. abrasha.
      */
-    public static String MyCuratorByStudent(int id) {
+    public static String getCuratorByStudent(int id) {
         String result = "";
-        String res1 = "";
-        String res2 = "";
-        String res3 = "";
+        String lastname = "";
+        String fname = "";
+        String patronymic = "";
         try {
             preStatement = connection.prepareStatement("SELECT lastname,fname,patronymic FROM teachers WHERE id_teachers = (SELECT id_curator FROM groups WHERE id_group = (SELECT id_group FROM students WHERE id_student=?));");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                res1 = rs.getString("lastname");
-                res2 = rs.getString("fname");
-                res3 = rs.getString("patronymic");
-                result = res1 + " " + res2 + " " + res3;
+                lastname = rs.getString("lastname");
+                fname = rs.getString("fname");
+                patronymic = rs.getString("patronymic");
+                result = lastname + " " + fname + " " + patronymic;
             }
         } catch (SQLException e) {
             System.out.println("Error select curator " + e.getMessage());
@@ -355,20 +360,20 @@ public final class DatabaseManager {
     /**
      * TODO refactoring. abrasha.
      */
-    public static String MyInfoByStudent(int id) {
+    public static String getStudentById(int id) {
         String result = "";
-        String res1 = "";
-        String res2 = "";
-        String res3 = "";
+        String lastname = "";
+        String fname = "";
+        String patronymic = "";
         try {
             preStatement = connection.prepareStatement("SELECT lastname,fname,patronymic FROM students WHERE id_student = ?;");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                res1 = rs.getString("lastname");
-                res2 = rs.getString("fname");
-                res3 = rs.getString("patronymic");
-                result = res1 + " " + res2 + " " + res3;
+                lastname = rs.getString("lastname");
+                fname = rs.getString("fname");
+                patronymic = rs.getString("patronymic");
+                result = lastname + " " + fname + " " + patronymic;
             }
         } catch (SQLException e) {
             System.out.println("Error select curator " + e.getMessage());
@@ -385,7 +390,7 @@ public final class DatabaseManager {
     /**
      * TODO refactoring. abrasha.
      */
-    private static String GetSubject(int id) {
+    private static String GetSubjectById(int id) {
         String result = "";
         try {
             preStatement = connection.prepareStatement("SELECT name from subjects WHERE id_subject=?;");
@@ -393,7 +398,6 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
                 result = rs.getString("name");
-                result += "\n";
             }
         } catch (SQLException e) {
             System.out.println("Error select subject " + e.getMessage());
@@ -405,69 +409,39 @@ public final class DatabaseManager {
      *
      * @author Shlimazl
      *
-     * returns day means by id
-     */
-    /**
-     * TODO refactoring. Is is really needed? abrasha.
-     */
-    private static String Whatday(int day) {
-        String str1 = "";
-        if (day == 1) {
-            str1 = "понеділок\t";
-        } else if (day == 2) {
-            str1 = "вівторок\t";
-        } else if (day == 3) {
-            str1 = "середа\t\t";
-        } else if (day == 4) {
-            str1 = "четвер\t\t";
-        } else if (day == 5) {
-            str1 = "п'ятниця\t";
-        }
-        return str1;
-    }
-
-    /**
-     *
-     * @author Shlimazl
-     *
      * returns student's group's schedule
      */
     /**
      * TODO refactoring. abrasha.
      */
-    public static String ScheduleByStudent(int id) {
+    public static String getScheduleByStudent(int id) {
         String result = "";
-        String str1 = "";
-        String str2 = "";
-        int numb = 0;
-        int tmp = 0;
-        int day = 0;
+        String subject = "";
+        int order = 0;
+        int subject_id = 0;
+        int day_id = 0;
         int current_day = 1;
         try {
             preStatement = connection.prepareStatement("SELECT id_day,number,id_subject FROM schedule WHERE id_group = (select id_group FROM students WHERE id_student =?);");
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                day = rs.getInt("id_day");
-                numb = rs.getInt("number");
-                tmp = rs.getInt("id_subject");
+                day_id = rs.getInt("id_day");
+                order = rs.getInt("number");
+                subject_id = rs.getInt("id_subject");
+                subject = GetSubjectById(subject_id);
 
-                str2 = GetSubject(tmp);
-
-                str1 = Whatday(day);
-
-                if (day > current_day) {
+                if (day_id > current_day) {
                     current_day++;
                     result += "\n";
                 }
-                result += str1 + numb + "\t" + str2;
+                result += day_id + " " + order + "\t" + subject + "\n";
 
             }
-            day = 0;
-            numb = 0;
-            tmp = 0;
-            str1 = "";
-            str2 = "";
+            day_id = 0;
+            order = 0;
+            subject_id = 0;
+            subject = "";
         } catch (SQLException e) {
             System.out.println("Error select schedule " + e.getMessage());
         }
@@ -480,7 +454,7 @@ public final class DatabaseManager {
      *
      * returns code of group by id
      */
-    private static String GetGroup(int id) {
+    public static String getGroupById(int id) {
         String result = "";
         try {
             preStatement = connection.prepareStatement("SELECT code from groups WHERE id_group=?;");
@@ -502,18 +476,14 @@ public final class DatabaseManager {
      *
      * returns teacher's schedule
      */
-    /**
-     * TODO refactoring. abrasha.
-     */
-    public static String ScheduleByTeacher(int id) {
+    public static String getScheduleByTeacher(int id) {
         String result = "";
-        String str1 = "";
-        String str2 = "";
-        String str3 = "";
-        int numb = 0;
-        int tmp = 0;
+        String subject = "";
+        String group = "";
+        int order = 0;
+        int subject_id = 0;
         int day = 0;
-        int tmp1;
+        int group_id;
         int current_day = 1;
         try {
             preStatement = connection.prepareStatement("SELECT id_day,number,id_subject,id_group FROM schedule WHERE id_teacher = ?;");
@@ -521,28 +491,26 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
                 day = rs.getInt("id_day");
-                numb = rs.getInt("number");
-                tmp = rs.getInt("id_subject");
-                tmp1 = rs.getInt("id_group");
+                order = rs.getInt("number");
+                subject_id = rs.getInt("id_subject");
+                group_id = rs.getInt("id_group");
 
-                str1 = Whatday(day);
-                str2 = GetSubject(tmp);
-                str3 = GetGroup(tmp1);
+                subject = GetSubjectById(subject_id);
+                group = getGroupById(group_id);
 
                 if (day > current_day) {
                     current_day++;
                     result += "\n";
                 }
-                result += str1 + numb + "\t" + str3 + "\t" + str2 + "\n";
+                result += day + " " + order + "\t" + group + "\t" + subject + "\n";
 
             }
-            day = 0; //W
-            numb = 0; //T
-            tmp = 0; //F
-            tmp1 = 0; //IS 
-            str1 = ""; //T
-            str2 = ""; //HI
-            str3 = ""; //S
+            day = 0;
+            order = 0;
+            subject_id = 0;
+            group_id = 0;
+            group = "";
+            subject = "";
         } catch (SQLException e) {
             System.out.println("Error select schedule " + e.getMessage());
         }
