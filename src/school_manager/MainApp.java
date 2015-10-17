@@ -35,7 +35,8 @@ public class MainApp extends Application {
 
         Scene scene = initRootLayout();
         initLogin();
-
+        //TODO
+        //stage.getIcons().add(new Image(new File("appicon.png").toURI().toString()));
         stage.setScene(scene);
         stage.show();
 
@@ -45,7 +46,6 @@ public class MainApp extends Application {
     public void stop() throws Exception {
         super.stop();
         DatabaseManager.close();
-
     }
 
     private Scene initRootLayout() {
@@ -67,7 +67,7 @@ public class MainApp extends Application {
             setStatus("RootLoaded");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }   
 
         return (new Scene(root));
     }
