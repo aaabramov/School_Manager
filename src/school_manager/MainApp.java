@@ -5,12 +5,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import school_manager.helpers.DatabaseManager;
 import school_manager.model.User;
+import school_manager.view.AdminMenuFragmentController;
 import school_manager.view.LoginFragmentController;
 import school_manager.view.ParentMenuFragmentController;
 import school_manager.view.RootLayoutController;
@@ -33,7 +35,8 @@ public class MainApp extends Application {
 
         Scene scene = initRootLayout();
         initLogin();
-
+        //TODO
+        //stage.getIcons().add(new Image(new File("appicon.png").toURI().toString()));
         stage.setScene(scene);
         stage.show();
 
@@ -43,7 +46,6 @@ public class MainApp extends Application {
     public void stop() throws Exception {
         super.stop();
         DatabaseManager.close();
-
     }
 
     private Scene initRootLayout() {
@@ -65,7 +67,7 @@ public class MainApp extends Application {
             setStatus("RootLoaded");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }   
 
         return (new Scene(root));
     }
@@ -78,8 +80,10 @@ public class MainApp extends Application {
 
             loader.setLocation(getClass().getResource("view/LoginFragment.fxml"));
             pane = (BorderPane) loader.load();
+            
             loginController = loader.getController();
             loginController.setMainApp(this);
+            
             setContent(pane);
 
         } catch (IOException e) {
@@ -176,6 +180,22 @@ public class MainApp extends Application {
                     }
                     break;
                 case ADMIN:
+                    Accordion adminMenuPane;
+                    
+                    try{
+                        
+                        loader.setLocation(getClass().getResource("view/AdminMenuFragment.fxml"));
+                        adminMenuPane = (Accordion) loader.load();
+                        
+                        AdminMenuFragmentController adminMenuController = loader.getController();
+                        adminMenuController.setMainApp(this);
+                        
+                        setMenu(adminMenuPane);
+                        setStatus("Admin menu set.");
+                    }catch(IOException e){
+                        System.out.println(e.getMessage());
+                        setStatus("Error settong admin menu");
+                    }
 
                     break;
                 default:
