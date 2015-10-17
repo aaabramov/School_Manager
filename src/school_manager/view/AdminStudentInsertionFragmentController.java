@@ -74,7 +74,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                .id_group(groupId)
+                .idGroup(groupId)
                 .build();
         
         DatabaseManager.insertStudent(added);

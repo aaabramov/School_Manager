@@ -1,6 +1,8 @@
 package school_manager;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import school_manager.helpers.DatabaseManager;
+import school_manager.model.Teacher;
 import school_manager.model.User;
 import school_manager.view.AdminMenuFragmentController;
 import school_manager.view.LoginFragmentController;
@@ -67,7 +70,7 @@ public class MainApp extends Application {
             setStatus("RootLoaded");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }   
+        }
 
         return (new Scene(root));
     }
@@ -80,10 +83,10 @@ public class MainApp extends Application {
 
             loader.setLocation(getClass().getResource("view/LoginFragment.fxml"));
             pane = (BorderPane) loader.load();
-            
+
             loginController = loader.getController();
             loginController.setMainApp(this);
-            
+
             setContent(pane);
 
         } catch (IOException e) {
@@ -120,9 +123,9 @@ public class MainApp extends Application {
             setStatus("Error setting menu: null node");
         }
     }
-    
-    public void logOut(){
-        if (accountInfo != null){
+
+    public void logOut() {
+        if (accountInfo != null) {
             setAccountInfo(null);
             menuPane.getChildren().clear();
             initLogin();
@@ -181,18 +184,18 @@ public class MainApp extends Application {
                     break;
                 case ADMIN:
                     Accordion adminMenuPane;
-                    
-                    try{
-                        
+
+                    try {
+
                         loader.setLocation(getClass().getResource("view/AdminMenuFragment.fxml"));
                         adminMenuPane = (Accordion) loader.load();
-                        
+
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
-                        
+
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
-                    }catch(IOException e){
+                    } catch (IOException e) {
                         System.out.println(e.getMessage());
                         setStatus("Error settong admin menu");
                     }
@@ -205,7 +208,7 @@ public class MainApp extends Application {
             }
 
         } else {
-            
+
         }
 
     }

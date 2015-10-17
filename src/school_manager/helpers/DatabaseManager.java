@@ -29,7 +29,7 @@ public final class DatabaseManager {
     private static final String DBName = "aabrasha_smdb";
     private static final String DBLogin = "aabrasha_andrew";
     private static final String DBPassword = "123234q";
-    public static final int LOGIN_START = 10001;
+    private static final int LOGIN_START = 10001;
     public static final int STUDENT_TYPE = 0;
     public static final int TEACHER_TYPE = 1;
     public static final int PARENT_TYPE = 2;
@@ -114,6 +114,7 @@ public final class DatabaseManager {
             preStatement.setString(8, added.getPhone());
             preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
+            logger.log(Level.SEVERE, "Student inserted.");
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error inserting student", e);
 
@@ -135,6 +136,7 @@ public final class DatabaseManager {
             preStatement.setString(2, PasswordGenerator.generate());
             preStatement.setInt(3, user.getAccTypeCode());
             preStatement.executeUpdate();
+            logger.log(Level.SEVERE, "User inserted.");
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error inserting user", e);
         }
@@ -186,6 +188,7 @@ public final class DatabaseManager {
                     result = new User(rs.getInt("id_user"), login, rs.getInt("acc_type"));
                 }
             }
+            logger.log(Level.SEVERE, "Authjrization successful.");
 
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error authorizing", e);
@@ -265,16 +268,20 @@ public final class DatabaseManager {
             insertUser(new User(insertedId, login, User.AccType.TEACHER));
 
             String sqlStatement = "INSERT INTO teachers"
-                    + "(id_teachers, fname, lname, patronymic, subjects, notes)"
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+                    + "(id_teachers, fname, lname, patronymic, subjects, bday, phone, address, notes)"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
             preStatement.setString(2, added.getFName());
             preStatement.setString(3, added.getLName());
             preStatement.setString(4, added.getPatronymic());
-            preStatement.setString(5, added.getSubjectsAsId());
-            preStatement.setString(6, added.getNotes());
+            preStatement.setString(5, added.getSubjects());
+            preStatement.setString(6, added.getBday());
+            preStatement.setString(7, added.getPhone());
+            preStatement.setString(8, added.getAddress());
+            preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
+            logger.log(Level.SEVERE, "Teacher added");
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error inserting teacher", e);
         }

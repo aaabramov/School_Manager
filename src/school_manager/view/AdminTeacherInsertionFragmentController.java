@@ -24,56 +24,54 @@ import school_manager.model.Teacher;
 public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
-    
+
     @FXML
     private TextField tfFname;
-    
+
     @FXML
     private TextField tfLname;
-    
+
     @FXML
     private TextField tfPatronymic;
-    
+
     @FXML
     private TextField tfBDay;
-    
+
     @FXML
     private TextField tfAdress;
-    
+
     @FXML
     private TextField tfPhone;
-    
+
     @FXML
     private TextField tfNotes;
-    
+
     @FXML
     private TextField tfSubjects;
-    
+
     @FXML
     private Button buttonConfirm;
-    
-    DatabaseManager DBmanager;
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
     @FXML
-    public void btnConfirmClicked(){
-        
+    public void btnConfirmClicked() {
+
         String fname = tfFname.getText();
         String lname = tfLname.getText();
         String patronymic = tfPatronymic.getText();
-        String bday =tfBDay.getText();
+        String bday = tfBDay.getText();
         String address = tfAdress.getText();
         String phone = tfPhone.getText();
         String subjects = tfSubjects.getText();
         String notes = tfNotes.getText();
-        
+
         Teacher added = new Teacher.Builder()
                 .fName(fname)
                 .lName(lname)
@@ -82,18 +80,16 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                // TODO .subjects(subjects)
+                .subjects(subjects)
                 .build();
-        
-        DBmanager.insertTeacher(added);
-        
+
+        DatabaseManager.insertTeacher(added);
+
     }
 
     @Override
     public void setMainApp(MainApp ma) {
         this.mainApp = ma;
     }
-    
-    
-    
+
 }
