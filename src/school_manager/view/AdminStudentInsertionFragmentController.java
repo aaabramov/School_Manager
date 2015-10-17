@@ -10,7 +10,9 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
+import school_manager.helpers.MainReferenced;
 import school_manager.model.Student;
 
 /**
@@ -18,8 +20,10 @@ import school_manager.model.Student;
  *
  * @author abrasha
  */
-public class AdminStudentInsertionFragmentController implements Initializable {
+public class AdminStudentInsertionFragmentController implements Initializable, MainReferenced {
 
+    MainApp mainApp;
+    
     @FXML
     private TextField tfFName;
     @FXML
@@ -43,6 +47,11 @@ public class AdminStudentInsertionFragmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+    
+    @Override
+    public void setMainApp(MainApp mainApp){
+        this.mainApp = mainApp;
     }
     
     @FXML 

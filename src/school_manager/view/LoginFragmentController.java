@@ -42,12 +42,9 @@ public class LoginFragmentController implements Initializable, MainReferenced {
         int login = Integer.valueOf(tfLogin.getText());
         String password = tfPassword.getText();
         
-        
         if (!password.isEmpty()){
             
             User result = DatabaseManager.authorize(login, password);
-            
-            
             
             if (result != null){
                 
@@ -59,11 +56,8 @@ public class LoginFragmentController implements Initializable, MainReferenced {
                 infoField.setText("Wrong login or password");
                 mainApp.setStatus("Authorization failed.");
                 
-            }
-            
+            }      
         }
-        
-
     }
 
     @FXML
@@ -77,6 +71,13 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+    
+    @FXML
+    public void ForOfflineWork(){
+        
+        User test = new User(10004, 5, User.AccType.ADMIN);
+        mainApp.setAccountInfo(test);
     }
 
 }

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.TeacherLessonFragmentController">
    <children>
       <TableView editable="true" layoutX="14.0" layoutY="47.0" prefHeight="301.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0">
         <columns>
@@ -56,9 +56,9 @@
             <Font name="System Italic" size="13.0" />
          </font>
       </Label>
-      <TextArea prefHeight="75.0" prefWidth="200.0" promptText="Д/з на наступний урок ..." AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="225.0" />
-      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="249.0" text="Надіслати Д/з" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="305.0" />
-      <Button mnemonicParsing="false" text="Переглянути весь журнал" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0" />
+      <TextArea prefHeight="75.0" prefWidth="200.0" promptText="Д/з на наступний урок ..." wrapText="true" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="225.0" />
+      <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="249.0" text="Надіслати Д/з" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="305.0" />
+      <Button disable="true" mnemonicParsing="false" text="Переглянути весь журнал" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0" />
       <Label disable="true" text="Дата урока ..." AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font name="System Italic" size="13.0" />
