@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Admin;
 
 /**
  * FXML Controller class
@@ -24,6 +25,7 @@ import school_manager.helpers.MainReferenced;
 public class AdminMenuFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Admin admin;
     
     /**
      * Initializes the controller class.
@@ -36,6 +38,10 @@ public class AdminMenuFragmentController implements Initializable, MainReference
     @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
+    }
+    
+    public void setAdmin(Admin admin){
+        this.admin = admin;
     }
     
     

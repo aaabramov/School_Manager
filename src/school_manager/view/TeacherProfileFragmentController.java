@@ -35,4 +35,8 @@ public class TeacherProfileFragmentController implements Initializable, MainRefe
         this.mainApp = mainApp;
     }
     
+    public void setTeacher(Teacher teacher){
+        this.teacher = teacher;
+    }
+    
 }

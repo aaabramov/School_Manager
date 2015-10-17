@@ -54,7 +54,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="15.0" prefWidth="353.0" text="Name Surname">
+                        <Label fx:id="nameLabel" alignment="CENTER_RIGHT" prefHeight="15.0" prefWidth="353.0" text="Name Surname">
                            <GridPane.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </GridPane.margin></Label>

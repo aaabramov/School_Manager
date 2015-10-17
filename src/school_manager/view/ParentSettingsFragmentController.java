@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ToggleGroup;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Parent;
 
 /**
  * FXML Controller class
@@ -21,6 +22,7 @@ import school_manager.helpers.MainReferenced;
 public class ParentSettingsFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Parent parent;
     
     
     /**
@@ -34,6 +36,10 @@ public class ParentSettingsFragmentController implements Initializable, MainRefe
     @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+    
+    public  void setParent(Parent parent){
+        this.parent = parent;
     }
     
 }

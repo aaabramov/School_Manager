@@ -268,10 +268,38 @@ public final class DatabaseManager {
             preStatement.setString(5, added.getSubjectsAsId());
             preStatement.setString(6, added.getNotes());
             preStatement.executeUpdate();
+            
         }catch(SQLException e){
             System.out.println("Error adding teacher: " + e.getMessage());
         }
         
+    }
+    
+ /**
+ *
+ * @author bepa
+ * 
+ * gets teacher from database
+ */
+    
+    public static Teacher getTeacherById(int id) {
+        
+        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
+        
+        //String sqlStatement = "";
+        
+        Teacher current = new Teacher.Builder()
+                .fName("Andriy")
+                .lName("Abramov")
+                .patronymic("Volodymyrovych")
+                .bday("08.12.96")
+                .address("")
+                .phone("+380---------")
+                .notes("lalalal")
+//                .subjects(subjects)
+                .build();
+        
+        return current;
     }
     
 }

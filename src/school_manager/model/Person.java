@@ -171,5 +171,9 @@ public abstract class Person {
     public void setLName(String lName) {
         this.lName = lName;
     }
+    
+    public String getInitials(){
+        return getLName() + " " + getFName();
+    }
 
 }

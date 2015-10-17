@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import school_manager.helpers.DatabaseManager;
+import school_manager.model.Teacher;
 import school_manager.model.User;
 import school_manager.view.AdminMenuFragmentController;
 import school_manager.view.LoginFragmentController;
@@ -143,7 +144,10 @@ public class MainApp extends Application {
 
                         TeacherMenuFragmentController teacherMenuController = loader.getController();
                         teacherMenuController.setMainApp(this);
-
+                        teacherMenuController.setRootLayout(rootController);
+                        teacherMenuController.setTeacher(accountInfo.getId());
+                        
+                        
                         setMenu(teacherMenuPane);
                         setStatus("Teacher menu set.");
                     } catch (IOException e) {

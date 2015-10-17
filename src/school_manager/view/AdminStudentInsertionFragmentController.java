@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Admin;
 import school_manager.model.Student;
 
 /**
@@ -23,6 +24,7 @@ import school_manager.model.Student;
 public class AdminStudentInsertionFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Admin admin;
     
     @FXML
     private TextField tfFName;
@@ -52,6 +54,10 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
+    }
+    
+    public void  setAdmin(Admin admin){
+        this.admin = admin;
     }
     
     @FXML 
