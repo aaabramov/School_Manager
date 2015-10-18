@@ -31,7 +31,7 @@ public class Student extends Person {
         public Builder() {
         }
 
-        public Builder id_group(int groupId) {
+        public Builder idGroup(int groupId) {
             this.groupId = groupId; return this;
         }
 

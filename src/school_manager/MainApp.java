@@ -1,6 +1,8 @@
 package school_manager;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,7 +25,6 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     private RootLayoutController rootController;
@@ -37,7 +38,8 @@ public class MainApp extends Application {
 
         Scene scene = initRootLayout();
         initLogin();
-
+        //TODO
+        //stage.getIcons().add(new Image(new File("appicon.png").toURI().toString()));
         stage.setScene(scene);
         stage.show();
 
@@ -47,7 +49,6 @@ public class MainApp extends Application {
     public void stop() throws Exception {
         super.stop();
         DatabaseManager.close();
-
     }
 
     private Scene initRootLayout() {
@@ -82,10 +83,10 @@ public class MainApp extends Application {
 
             loader.setLocation(getClass().getResource("view/LoginFragment.fxml"));
             pane = (BorderPane) loader.load();
-            
+
             loginController = loader.getController();
             loginController.setMainApp(this);
-            
+
             setContent(pane);
 
         } catch (IOException e) {
@@ -123,6 +124,14 @@ public class MainApp extends Application {
         }
     }
 
+    public void logOut() {
+        if (accountInfo != null) {
+            setAccountInfo(null);
+            menuPane.getChildren().clear();
+            initLogin();
+        }
+    }
+
     public void setAccountInfo(User accountInfo) {
 
         if (accountInfo != null) {
@@ -147,7 +156,6 @@ public class MainApp extends Application {
                         teacherMenuController.setRootLayout(rootController);
                         teacherMenuController.setTeacher(accountInfo.getId());
                         
-                        
                         setMenu(teacherMenuPane);
                         setStatus("Teacher menu set.");
                     } catch (IOException e) {
@@ -166,7 +174,8 @@ public class MainApp extends Application {
 
                         ParentMenuFragmentController parentMenuController = loader.getController();
                         parentMenuController.setMainApp(this);
-                        //TODO parentMenuController.setParent(null);
+                        parentMenuController.setRootLayout(rootController);
+                        parentMenuController.setParent(accountInfo.getId());
 
                         setMenu(parentMenuPane);
                         setStatus("Parent menu set.");
@@ -177,18 +186,18 @@ public class MainApp extends Application {
                     break;
                 case ADMIN:
                     Accordion adminMenuPane;
-                    
-                    try{
-                        
+
+                    try {
+
                         loader.setLocation(getClass().getResource("view/AdminMenuFragment.fxml"));
                         adminMenuPane = (Accordion) loader.load();
-                        
+
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
-                        
+
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
-                    }catch(IOException e){
+                    } catch (IOException e) {
                         System.out.println(e.getMessage());
                         setStatus("Error settong admin menu");
                     }
@@ -199,6 +208,8 @@ public class MainApp extends Application {
                     break;
 
             }
+
+        } else {
 
         }
 

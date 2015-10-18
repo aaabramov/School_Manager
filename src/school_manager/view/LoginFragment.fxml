@@ -48,7 +48,6 @@
    <bottom>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="84.0" prefWidth="490.0" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <Button mnemonicParsing="false" onAction="#ForOfflineWork" text="for offline work" />
             <Button fx:id="buttonOK" mnemonicParsing="false" onAction="#okClicked" text="OK" />
             <Button fx:id="buttonCancel" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelClicked" text="Cancel" />
          </children>

@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
@@ -26,6 +25,7 @@ public class AdminMenuFragmentController implements Initializable, MainReference
 
     MainApp mainApp;
     Admin admin;
+    RootLayoutController rootLayoutController;
     
     /**
      * Initializes the controller class.
@@ -40,7 +40,11 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         this.mainApp = mainApp;
     }
     
-    public void setAdmin(Admin admin){
+    public void setRootLayout(RootLayoutController rootContr){
+        this.rootLayoutController = rootContr;
+    }
+    
+    public void setAdmin(int adminId){
         this.admin = admin;
     }
     

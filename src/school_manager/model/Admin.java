@@ -7,7 +7,7 @@ package school_manager.model;
 
 /**
  *
- * @author abrasha
+ * @author bepa
  */
 public class Admin {
     

@@ -5,7 +5,7 @@
  */
 package school_manager.model;
 
-import java.util.Arrays;
+import school_manager.helpers.DatabaseManager;
 
 /**
  *
@@ -13,23 +13,23 @@ import java.util.Arrays;
  */
 public class Teacher extends Person {
 
-    private Subject[] subjects;
+    private String subjects; // Stores the enumeration of subject ids like "1,2,3,..."
     
-    public Subject[] getSubjects() {
+    public String getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(Subject[] subjects) {
+    public void setSubjects(String subjects) {
         this.subjects = subjects;
     }
 
     public static class Builder extends Person.Builder<Teacher.Builder>{
         
-        private Subject[] subjects;
+        private String subjects;
 
         public Builder() {}
         
-        public Builder subjects(Subject[] subjects){
+        public Builder subjects(String subjects){
             this.subjects = subjects;
             return this;
         }
@@ -47,12 +47,17 @@ public class Teacher extends Person {
         this.subjects = builder.subjects;
     }
 
-    public String getSubjectsAsId(){
+    public String getSubjectsAsList(){
         String result = "";
-        for (Subject s : subjects){
-            result += s.getId() + " ";
+        String[] subjectIds = subjects.split(",");
+        for (int i = 0; i < subjectIds.length; i++) {
+            if (i != subjectIds.length - 1)
+                result += DatabaseManager.getSubjectById(Integer.valueOf(subjectIds[i])).toString() + ", ";
+            else 
+                result += DatabaseManager.getSubjectById(Integer.valueOf(subjectIds[i])).toString();
         }
-        return  result;
+        
+        return result;
     }
     
     @Override
@@ -65,7 +70,7 @@ public class Teacher extends Person {
                 + "\nAddress: " + getAddress()
                 + "\nPhone:" + getPhone()
                 + "\nBirthday: " + getBirthday()
-                + "\nSubjects: " + Arrays.toString(subjects);
+                + "\nSubjects: " + getSubjectsAsList();
         
         return result;
     }

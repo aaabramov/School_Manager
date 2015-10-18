@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
+import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.Parent;
 
@@ -25,6 +26,8 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
 
     MainApp mainApp;
     Parent parent;
+    DatabaseManager DBmanager;
+    RootLayoutController rootLayoutController;
     
     @FXML
     private Button buttonMyProfile;
@@ -40,8 +43,13 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
         this.mainApp = mainApp;
     }
     
-    public void setParent(Parent parent){
-        this.parent = parent;
+    public void setRootLayout(RootLayoutController rootContr){
+        this.rootLayoutController = rootContr;
+    }
+    
+    public void setParent(int parentId){
+        this.parent = DBmanager.getParentById(parentId);
+        rootLayoutController.nameLabel.setText(this.parent.getInitials());
     }
     
     @FXML
@@ -56,6 +64,7 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
             
             ParentProfileFragmentController parentProfileController = loader.getController();
             parentProfileController.setMainApp(mainApp);
+            parentProfileController.setParent(parent);
             
             mainApp.setContent(pane);
             mainApp.setStatus("Parent profile loaded.");
@@ -78,6 +87,7 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
             
             ParentSettingsFragmentController parentSettingsController = loader.getController();
             parentSettingsController.setMainApp(mainApp);
+            parentSettingsController.setParent(parent);
             
             mainApp.setContent(pane);
             mainApp.setStatus("Parent settings loaded.");
