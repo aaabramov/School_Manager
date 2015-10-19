@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
@@ -19,12 +20,13 @@ import school_manager.model.Student;
 /**
  * FXML Controller class
  *
- * @author abrasha
+ * @author bepa
  */
 public class AdminStudentInsertionFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
     Admin admin;
+    DatabaseManager DBmanager;
     
     @FXML
     private TextField tfFName;
@@ -42,6 +44,8 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     private TextField tfPhone;
     @FXML
     private TextField tfNotes;
+    @FXML
+    private ComboBox cbGroup;
     
     /**
      * Initializes the controller class.
@@ -90,10 +94,10 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @FXML
     public void btnCancelClicked(){
         
-        
-        
     }
     
-    
+    public  void initGroups(){
+        cbGroup.setItems(DBmanager.getAvaliableGroups());
+    }
     
 }

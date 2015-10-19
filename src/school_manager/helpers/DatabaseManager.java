@@ -10,6 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import school_manager.model.Admin;
 import school_manager.model.Parent;
 import school_manager.model.Student;
@@ -437,7 +439,7 @@ public final class DatabaseManager {
     /**
      * TODO refactoring. abrasha.
      */
-    public static String getStudentById(int id) {
+    public static Student getStudentById(int id) {
         String result = "";
         String lastname = "";
         String fname = "";
@@ -455,7 +457,16 @@ public final class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("Error select curator " + e.getMessage());
         }
-        return result;
+        //bepa
+        Student current = new Student.Builder()
+                .lName(lastname)
+                .fName(fname)
+                .patronymic(patronymic)
+                .build();
+        
+        
+        
+        return current;
     }
 
     /**
@@ -586,5 +597,22 @@ public final class DatabaseManager {
             System.out.println("Error select schedule " + e.getMessage());
         }
         return result;
+    }
+    
+    /**
+     *
+     * TODO
+     * 
+     */
+    public static ObservableList<String> getAvaliableGroups(){
+        
+        //Запросы
+        
+        ObservableList<String> groups = FXCollections.observableArrayList(
+            "11-A", "11-Б", "11-В",
+            "10-A", "10-Б", "10-В",
+            "9-A", "9-Б", "9-В",
+            "8-A", "8-Б", "8-В", "...");
+        return groups;
     }
 }

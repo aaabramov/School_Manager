@@ -36,11 +36,15 @@
             <TextField fx:id="tfFName" GridPane.columnIndex="1" />
             <TextField fx:id="tfLName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="tfPatronymic" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="tfIdGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="tfBDay" promptText="dd.mm.yy" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="tfAddress" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="tfPhone" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="tfNotes" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <ComboBox fx:id="cbGroup" prefHeight="25.0" prefWidth="461.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ComboBox>
          </children>
       </GridPane>
    </top>
