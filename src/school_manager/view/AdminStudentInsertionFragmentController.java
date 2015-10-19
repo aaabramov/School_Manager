@@ -67,12 +67,10 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         
         //TODO checkGroupId
         
-        int hhh = cbGroup.getSelectionModel().getSelectedIndex();
-        
         String fname = tfFName.getText();
         String lname = tfLName.getText();
         String patronymic = tfPatronymic.getText();
-        int groupId = checkGroupId(cbGroup.getValue().toString());
+        int groupId = checkGroupId(cbGroup.getSelectionModel().getSelectedIndex());
         String bday = tfBDay.getText();
         String address = tfAddress.getText();
         String phone = tfPhone.getText();
@@ -109,7 +107,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         cbGroup.setItems(DBmanager.getAvaliableGroups());
     }
     
-    private int checkGroupId(String group){
+    private int checkGroupId(int groupId){
         return 0;
     }
 }

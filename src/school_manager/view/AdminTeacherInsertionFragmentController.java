@@ -7,11 +7,15 @@ package school_manager.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
@@ -44,6 +48,8 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     private TextField tfNotes;
     @FXML
     private ComboBox cbSubjects;
+    @FXML
+    private HBox hbSubjects;
 
     /**
      * Initializes the controller class.
@@ -88,5 +94,45 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         DatabaseManager.insertTeacher(added);
 
     }
+    
+    @FXML
+    public void btnClearClicked(){
+        tfFname.clear();
+        tfLname.clear();
+        tfPatronymic.clear();
+        tfBDay.clear();
+        tfAdress.clear();
+        tfPhone.clear();
+        tfNotes.clear();
+        cbSubjects.setValue(null);
+        hbSubjects.getChildren().clear();
+    }
 
+    @FXML
+    public void initSubjectsComboBox(){
+        ObservableList subjects = FXCollections.observableArrayList(
+            "Українська мова", "Українська література", new Separator(),
+                "Зарубіжна література", "Англійська мова", new Separator(), 
+                "Математика", "Алгебра", "Геометрія", "Інформатика", new Separator(), 
+                "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", new Separator(),
+                "Географія", "Біологія", "Фізика", "Хімія", new Separator(), 
+                "Музика", "Фізична культура"
+        );
+        
+        cbSubjects.setItems(subjects);
+    }
+    
+    @FXML
+    public void btnAddSubjectClicked(){
+        
+        String[] listSubjects = new String[]{"Українська мова", "Українська література", "",
+                "Зарубіжна література", "Англійська мова", "",
+                "Математика", "Алгебра", "Геометрія", "Інформатика", "",
+                "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", "",
+                "Географія", "Біологія", "Фізика", "Хімія", "",
+                "Музика", "Фізична культура"};
+        
+        hbSubjects.getChildren().add(new Label(
+                listSubjects[cbSubjects.getSelectionModel().getSelectedIndex()]));
+    }
 }
