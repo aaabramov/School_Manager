@@ -35,7 +35,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @FXML
     private TextField tfPatronymic;
     @FXML
-    private TextField tfIdGroup;
+    private ComboBox cbGroup;
     @FXML
     private TextField tfBDay;
     @FXML
@@ -44,8 +44,6 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     private TextField tfPhone;
     @FXML
     private TextField tfNotes;
-    @FXML
-    private ComboBox cbGroup;
     
     /**
      * Initializes the controller class.
@@ -67,10 +65,12 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @FXML 
     public void btnConfirmClicked(){
         
+        //TODO checkGroupId
+        
         String fname = tfFName.getText();
         String lname = tfLName.getText();
         String patronymic = tfPatronymic.getText();
-        int groupId = Integer.valueOf(tfIdGroup.getText());
+        int groupId = checkGroupId(cbGroup.getValue().toString());
         String bday = tfBDay.getText();
         String address = tfAddress.getText();
         String phone = tfPhone.getText();
@@ -92,12 +92,22 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     }
     
     @FXML
-    public void btnCancelClicked(){
-        
+    public void btnClearClicked(){
+        tfFName.clear();
+        tfLName.clear();
+        tfPatronymic.clear();
+        cbGroup.setValue(null);
+        tfBDay.clear();
+        tfAddress.clear();
+        tfPhone.clear();
+        tfNotes.clear();
     }
     
     public  void initGroups(){
         cbGroup.setItems(DBmanager.getAvaliableGroups());
     }
     
+    private int checkGroupId(String group){
+        return 0;
+    }
 }
