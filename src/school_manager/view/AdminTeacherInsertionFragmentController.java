@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
@@ -29,30 +30,20 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     
     @FXML
     private TextField tfFname;
-
     @FXML
     private TextField tfLname;
-
     @FXML
     private TextField tfPatronymic;
-
     @FXML
     private TextField tfBDay;
-
     @FXML
     private TextField tfAdress;
-
     @FXML
     private TextField tfPhone;
-
     @FXML
     private TextField tfNotes;
-
     @FXML
-    private TextField tfSubjects;
-
-    @FXML
-    private Button buttonConfirm;
+    private ComboBox cbSubjects;
 
     /**
      * Initializes the controller class.
@@ -80,7 +71,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         String bday = tfBDay.getText();
         String address = tfAdress.getText();
         String phone = tfPhone.getText();
-        String subjects = tfSubjects.getText();
+        //String subjects = tfSubjects.getText();
         String notes = tfNotes.getText();
 
         Teacher added = new Teacher.Builder()
@@ -91,7 +82,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                .subjects(subjects)
+                //.subjects(subjects)
                 .build();
 
         DatabaseManager.insertTeacher(added);

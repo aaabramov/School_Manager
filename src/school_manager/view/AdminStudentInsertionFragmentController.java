@@ -67,6 +67,8 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         
         //TODO checkGroupId
         
+        int hhh = cbGroup.getSelectionModel().getSelectedIndex();
+        
         String fname = tfFName.getText();
         String lname = tfLName.getText();
         String patronymic = tfPatronymic.getText();
