@@ -6,6 +6,7 @@
 package school_manager.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import school_manager.helpers.DatabaseIndexes;
 
 /**
  *
@@ -13,8 +14,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Student extends Person {
 
-    @JsonProperty("id")
+    @JsonProperty(DatabaseIndexes.Students.ID_GROUP)
     private int groupId;
+    
+    @JsonProperty(DatabaseIndexes.Students.ID_STUDENT)
+    private int studentId;
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
 
     public int getGroupId() {
         return groupId;
@@ -27,12 +39,16 @@ public class Student extends Person {
     public static class Builder extends Person.Builder<Student.Builder> {
 
         private int groupId;
+        private int studentId;
 
         public Builder() {
         }
 
         public Builder idGroup(int groupId) {
             this.groupId = groupId; return this;
+        }
+        public Builder idStudent(int studentId) {
+            this.studentId = studentId; return this;
         }
 
         @Override
@@ -45,6 +61,7 @@ public class Student extends Person {
     public Student(Student.Builder builder) {
         super(builder);
         this.groupId = builder.groupId;
+        this.studentId = builder.studentId;
     }
 
     @Override
@@ -54,6 +71,7 @@ public class Student extends Person {
                 + "\nFirst name: " + getFName()
                 + "\nLast name: " + getLName()
                 + "\nPatronymic: " + getPatronymic()
+                + "\nStudent id: " + studentId
                 + "\nClass: " + groupId
                 + "\nAddress: " + getAddress()
                 + "\nPhone:" + getPhone()

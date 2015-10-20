@@ -11,14 +11,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import school_manager.MainApp;
+import school_manager.helpers.MainReferenced;
 
 /**
  * FXML Controller class
  *
  * @author bepa
  */
-public class AdminParentInsertionFragmentController implements Initializable {
+public class AdminParentInsertionFragmentController implements Initializable, MainReferenced {
 
+    
+    private MainApp mainApp;
+    
     @FXML
     private TextField tfFname;
     @FXML
@@ -41,7 +46,12 @@ public class AdminParentInsertionFragmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }  
+    
+    @Override
+    public void setMainApp(MainApp mainApp){
+        this.mainApp = mainApp;
+    }
     
     @FXML
     private void btnClearClicked(){

@@ -73,6 +73,7 @@ public class DatabaseIndexes {
         public static final String TABLE = "groups";
         public static final String ID_GROUP = "id_group";
         public static final String ID_CURATOR = "id_curator";
+        public static final String CODE = "code";
         public static final String NOTE = "notes";
 
     }
@@ -101,9 +102,9 @@ public class DatabaseIndexes {
     public static class Users {
 
         public static final String TABLE = "users";
-        public static final String ID_DAY = "id_user";
-        public static final String ID_GROUP = "login";
-        public static final String ID_LESSON = "password";
+        public static final String ID_USER = "id_user";
+        public static final String LOGIN = "login";
+        public static final String PASSWORD = "password";
         public static final String ACC_TYPE = "acc_type";
     }
 

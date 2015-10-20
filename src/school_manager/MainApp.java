@@ -1,8 +1,6 @@
 package school_manager;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import school_manager.helpers.DatabaseManager;
-import school_manager.model.Teacher;
 import school_manager.model.User;
 import school_manager.view.AdminMenuFragmentController;
 import school_manager.view.LoginFragmentController;
@@ -155,9 +152,10 @@ public class MainApp extends Application {
                         teacherMenuController.setMainApp(this);
                         teacherMenuController.setRootLayout(rootController);
                         teacherMenuController.setTeacher(accountInfo.getId());
-                        
+
                         setMenu(teacherMenuPane);
                         setStatus("Teacher menu set.");
+                        //TODO teacherMenuController.setTeacher(null);
                     } catch (IOException e) {
                         System.out.println(e.getMessage());
                         setStatus("Error setting teacher menu...");
@@ -195,8 +193,6 @@ public class MainApp extends Application {
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
 
-                        rootController.nameLabel.setText("You're logged in like Admin");
-                        contentPane.getChildren().clear();
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
                     } catch (IOException e) {
