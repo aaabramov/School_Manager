@@ -217,6 +217,11 @@ public class MainApp extends Application {
 
     }
     
+    
+    /**
+     * 
+     * author bepa 
+    */
     public void LogoClicled(){
         if(accountInfo != null){
             switch(accountInfo.getAccType()){
