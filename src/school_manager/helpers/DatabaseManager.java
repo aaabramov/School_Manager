@@ -11,13 +11,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import school_manager.helpers.DatabaseIndexes.Groups;
-import school_manager.helpers.DatabaseIndexes.Parents;
 import school_manager.helpers.DatabaseIndexes.Students;
 import school_manager.helpers.DatabaseIndexes.Subjects;
 import school_manager.helpers.DatabaseIndexes.Teachers;
 import school_manager.helpers.DatabaseIndexes.Users;
 import school_manager.model.Admin;
-import school_manager.model.Parent;
+import school_manager.model.Group;
 import school_manager.model.Student;
 import school_manager.model.Subject;
 import school_manager.model.Teacher;
@@ -319,7 +318,7 @@ public final class DatabaseManager {
      * @author abrasha
      * @return overview list of students in concrete group
      */
-    public static Map<String, Integer> getGroupMembers(int groupId) {
+    public static Map<String, Integer> getGroupMembersById(int groupId) {
         Map<String, Integer> list = new HashMap<>();
 
         try {
@@ -409,86 +408,6 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author bepa gets teacher from database
-     */
-    public static Admin getAdminById(int id) {
-
-        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
-        Admin current = new Admin();
-
-        return current;
-    }
-
-    /**
-     * @author Shlimazl returns code of student's group
-     */
-    public static String getGroupCodeByStudent(int id) {
-        String result = "";
-        try {
-            preStatement = connection.prepareStatement("SELECT code FROM groups WHERE id_group=(SELECT id_group FROM students WHERE id_student =?);");
-            preStatement.setInt(1, id);
-            ResultSet rs = preStatement.executeQuery();
-            if (rs.next()) {
-                result = rs.getString("code");
-            }
-        } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error selecting group code by student id", e);
-        }
-        return result;
-    }
-
-    /**
-     *
-     * @author Shlimazl
-     *
-     * returns code of curators group
-     */
-    public static String getGroupByCurator(int curatorId) {
-        String result = null;
-        try {
-            String sql = "SELECT " + Groups.CODE
-                    + " FROM " + Groups.TABLE
-                    + " WHERE " + Groups.ID_CURATOR + " = ?;";
-            preStatement = connection.prepareStatement(sql);
-            preStatement.setInt(1, curatorId);
-            ResultSet rs = preStatement.executeQuery();
-            if (rs.next()) {
-                result = rs.getString(Groups.CODE);
-            }
-        } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error selecting group code by curator id", e);
-        }
-        return result;
-    }
-
-    /**
-     * TODO refactoring. abrasha.
-     */
-    public static String getCuratorByStudent(int id) {
-        String result = "";
-        String lastname = "";
-        String fname = "";
-        String patronymic = "";
-        try {
-            String sql = "SELECT *"
-                    + " FROM " + Teachers.TABLE + " WHERE " + Teachers.ID_TEACHER + " = "
-                    + "(SELECT " + Groups.ID_CURATOR
-                    + " FROM " + Groups.TABLE + " WHERE " + Groups.ID_GROUP + " = "
-                    + "(SELECT id_group "
-                    + "FROM students "
-                    + "WHERE id_student=?));";
-            preStatement = connection.prepareStatement(sql);
-            preStatement.setInt(1, id);
-            ResultSet rs = preStatement.executeQuery();
-            if (rs.next()) {
-            }
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error selecting curator by student id", e);
-        }
-        return result;
-    }
-
-    /**
      * @author abrasha
      */
     public static Student getStudentById(int id) {
@@ -521,25 +440,91 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl
-     *
-     * returns name of subject by id
-     *
-     * TODO . abrasha.
-     * @return Subject object
+     * @author bepa gets teacher from database
      */
-    private static String GetSubjectById(int id) {
+    public static Admin getAdminById(int id) {
+
+        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
+        Admin current = new Admin();
+
+        return current;
+    }
+
+    /**
+     * @author Shlimazl returns code of student's group
+     */
+    public static String getGroupCodeByStudent(int id) {
         String result = "";
+        String sql = "SELECT " + Groups.CODE
+                + " FROM " + Groups.TABLE
+                + " WHERE " + Groups.ID_GROUP + " = "
+                + " (SELECT " + Students.ID_GROUP
+                + " FROM " + Students.TABLE
+                + " WHERE " + Students.ID_STUDENT + " = ? );";
         try {
-            String sql = "SELECT name from subjects WHERE id_subject = ?;";
             preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                result = rs.getString("name");
+                result = rs.getString(Groups.CODE);
             }
         } catch (SQLException e) {
-            System.out.println("Error select subject " + e.getMessage());
+            logger.log(Level.WARNING, "Error selecting group code by student id", e);
+        }
+        return result;
+    }
+
+    /**
+     * @author Shlimazl
+     * returns code of curators group
+     */
+    public static Group getGroupByCuratorId(int curatorId) {
+        Group result = null;
+        try {
+            String sql = "SELECT * "
+                    + " FROM " + Groups.TABLE
+                    + " WHERE " + Groups.ID_CURATOR + " = ?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, curatorId);
+            ResultSet rs = preStatement.executeQuery();
+            if (rs.next()) {
+                result = new Group.Builder()
+                        .code(rs.getString(Groups.CODE))
+                        .idCurator(rs.getInt(Groups.ID_GROUP))
+                        .idGroup(rs.getInt(Groups.ID_GROUP))
+                        .list(getGroupMembersById(curatorId))
+                        .notes(rs.getString(Groups.NOTE))
+                        .build();
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error selecting group code by curator id", e);
+        }
+        return result;
+    }
+
+    /**
+     * TODO refactoring. abrasha.
+     */
+    public static String getCuratorByStudent(int id) {
+        String result = "";
+        String lastname = "";
+        String fname = "";
+        String patronymic = "";
+        try {
+            String sql = "SELECT *"
+                    + " FROM " + Teachers.TABLE + " WHERE " + Teachers.ID_TEACHER + " = "
+                    + "(SELECT " + Groups.ID_CURATOR
+                    + " FROM " + Groups.TABLE + " WHERE " + Groups.ID_GROUP + " = "
+                    + "(SELECT id_group "
+                    + "FROM students "
+                    + "WHERE id_student=?));";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if (rs.next()) {
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error selecting curator by student id", e);
         }
         return result;
     }
@@ -549,17 +534,25 @@ public final class DatabaseManager {
      * @author Shlimazl
      * @return Group Object returns code of group by id
      */
-    public static String getGroupById(int id) {
-        String result = "";
+    public static Group getGroupById(int id) {
+        Group result = null;
         try {
-            preStatement = connection.prepareStatement("SELECT code from groups WHERE id_group=?;");
+            String sql = "SELECT * FROM " + Groups.TABLE
+                    + " WHERE " + Groups.ID_GROUP + " = ? ;";
+            preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                result = rs.getString("code");
+                result = new Group.Builder()
+                        .code(rs.getString(Groups.CODE))
+                        .notes(rs.getString(Groups.NOTE))
+                        .idCurator(rs.getInt(Groups.ID_CURATOR))
+                        .idGroup(id)
+                        .list(getGroupMembersById(id))
+                        .build();
             }
         } catch (SQLException e) {
-            System.out.println("Error select group " + e.getMessage());
+            logger.log(Level.SEVERE, "Error gettinf group by id", e);
         }
         return result;
     }

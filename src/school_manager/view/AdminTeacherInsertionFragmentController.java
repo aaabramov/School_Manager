@@ -77,8 +77,8 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     }
 
     @Override
-    public void setMainApp(MainApp ma) {
-        this.mainApp = ma;
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
     }
 
     @FXML

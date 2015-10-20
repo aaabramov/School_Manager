@@ -5,44 +5,18 @@
  */
 package school_manager.model;
 
+import java.util.Map;
+
 
 
 public class Group {
 
-    private int idGroup;
-    private int idCurator;
+    private final int idGroup;
+    private final int idCurator;
     private String notes;
-    private Student[] list; // TODO make by Map <Integer, String> -> (id_student, "name surname")
-    private String code;
+    private Map<String, Integer> list;
+    private final String code;
     
-    public static class Builder {
-    
-        int idGroup;
-        String code;
-        Student[] list;
-        int idCurator;
-        String notes;
-        
-        public Group.Builder idGroup(int idGroup){
-            this.idGroup = idGroup; return this;
-        }
-        public Group.Builder code(String code){
-            this.code = code; return this;
-        }
-        public Group.Builder list(Student[] list){
-            this.list = list; return this;
-        }
-        public Group.Builder notes(String notes){
-            this.notes = notes; return this;
-        }
-        public Group.Builder idCurator(int idCurator){
-            this.idCurator = idCurator; return this;
-        }
-        public Group build(){
-            return (new Group(this));
-        }
-        
-    }
     
     public Group(Group.Builder builder) {
         this.idGroup = builder.idGroup;
@@ -68,12 +42,45 @@ public class Group {
         return idCurator;
     }
 
-    public Student[] getList(){
+    public Map<String, Integer> getList(){
         return list;
     }
 
     public String getCode(){
         return code;
+    }
+
+    public static class Builder {
+
+        int idGroup;
+        String code;
+        private Map<String, Integer> list;
+        int idCurator;
+        String notes;
+
+        public Group.Builder idGroup(int idGroup){
+            this.idGroup = idGroup; return this;
+        }
+
+        public Group.Builder code(String code){
+            this.code = code; return this;
+        }
+
+        public Group.Builder list(Map<String, Integer> list){
+            this.list = list; return this;
+        }
+
+        public Group.Builder notes(String notes){
+            this.notes = notes; return this;
+        }
+
+        public Group.Builder idCurator(int idCurator){
+            this.idCurator = idCurator; return this;
+        }
+
+        public Group build(){
+            return (new Group(this));
+        }
     }
 
 
