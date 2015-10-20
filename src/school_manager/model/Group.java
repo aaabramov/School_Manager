@@ -12,9 +12,9 @@ public class Group {
     private int idGroup;
     private int idCurator;
     private String notes;
-    private Student[] list;
+    private Student[] list; // TODO make by Map <Integer, String> -> (id_student, "name surname")
     private String code;
-
+    
     public static class Builder {
     
         int idGroup;
