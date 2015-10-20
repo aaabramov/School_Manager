@@ -192,7 +192,7 @@ public class MainApp extends Application {
 
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
-                        
+
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
                     } catch (IOException e) {

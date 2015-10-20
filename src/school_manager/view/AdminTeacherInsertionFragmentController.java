@@ -23,8 +23,6 @@ import school_manager.model.Admin;
 import school_manager.model.Teacher;
 
 /**
- * FXML Controller class
- *
  * @author bepa
  */
 public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {

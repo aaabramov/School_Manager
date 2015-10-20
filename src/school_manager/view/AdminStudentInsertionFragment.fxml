@@ -54,7 +54,7 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="580.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button disable="true" mnemonicParsing="false" onAction="#btnConfirmClicked" text="Confirm" />
+            <Button mnemonicParsing="false" onAction="#btnConfirmClicked" text="Confirm" />
             <Button mnemonicParsing="false" onAction="#btnClearClicked" text="Clear" />
          </children>
          <padding>

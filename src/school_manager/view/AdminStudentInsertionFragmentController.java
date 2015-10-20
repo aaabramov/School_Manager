@@ -6,7 +6,10 @@
 package school_manager.view;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -24,9 +27,9 @@ import school_manager.model.Student;
  */
 public class AdminStudentInsertionFragmentController implements Initializable, MainReferenced {
 
-    MainApp mainApp;
-    Admin admin;
-    DatabaseManager DBmanager;
+    private MainApp mainApp;
+    private Admin admin;
+    private Map<String, Integer> groupOverview;
     
     @FXML
     private TextField tfFName;
@@ -45,12 +48,9 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @FXML
     private TextField tfNotes;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        initGroups();
     }
     
     @Override
@@ -64,13 +64,11 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     
     @FXML 
     public void btnConfirmClicked(){
-        
-        //TODO checkGroupId
-        
+                
         String fname = tfFName.getText();
         String lname = tfLName.getText();
         String patronymic = tfPatronymic.getText();
-        int groupId = checkGroupId(cbGroup.getSelectionModel().getSelectedIndex());
+        int groupId = groupOverview.get((String)cbGroup.getValue());
         String bday = tfBDay.getText();
         String address = tfAddress.getText();
         String phone = tfPhone.getText();
@@ -104,10 +102,8 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     }
     
     public  void initGroups(){
-        cbGroup.setItems(DBmanager.getAvaliableGroups());
-    }
-    
-    private int checkGroupId(int groupId){
-        return 0;
+        groupOverview = DatabaseManager.getGroupsList();
+        ObservableList<String> groupList = FXCollections.observableArrayList(groupOverview.keySet());
+        cbGroup.setItems(groupList);
     }
 }
