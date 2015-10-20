@@ -27,9 +27,10 @@ public abstract class Person {
     private String bday;
     @JsonProperty("notes")
     private String notes;
+    @JsonProperty("id")
+    private int id;
     
     /**
-    *
     * @author bepa
     */
         public static abstract class Builder <T extends Person.Builder>{
@@ -40,8 +41,13 @@ public abstract class Person {
             private String bday;
             private String phone;
             private String notes;
+            private int id;
             
             public Builder(){}
+            
+            public T id(int id){
+                this.id = id; return (T)this;
+            }
             
             public T fName(String fname){
                 this.fName = fname; return (T)this;
