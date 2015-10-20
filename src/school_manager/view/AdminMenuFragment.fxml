@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="166.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.AdminMenuFragmentController">
+<Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="166.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.AdminMenuFragmentController">
   <panes>
     <TitledPane animated="false" text="Add ...">
          <content>
@@ -16,6 +16,7 @@
                   <Button mnemonicParsing="false" onAction="#buttonAddStudentClicked" prefHeight="25.0" prefWidth="172.0" text="Student" />
                   <Button mnemonicParsing="false" onAction="#buttonAddParentClicked" prefHeight="25.0" prefWidth="172.0" text="Parent" />
                   <Button mnemonicParsing="false" onAction="#buttonAddTeacherClicked" prefHeight="25.0" prefWidth="172.0" text="Teacher" />
+                  <Button mnemonicParsing="false" onAction="#buttonAddGroupClicked" prefHeight="25.0" prefWidth="172.0" text="Group" />
                   <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Administrator" />
                </children>
                <padding>

@@ -118,6 +118,8 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         tfNotes.clear();
         cbSubjects.setValue(null);
         hbSubjects.getChildren().clear();
+        cbGroup.setValue(null);
+        cBox.selectedProperty().set(false);
     }
 
     @FXML
