@@ -192,7 +192,7 @@ public class MainApp extends Application {
 
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
-
+                        
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
                     } catch (IOException e) {
@@ -211,6 +211,34 @@ public class MainApp extends Application {
 
         }
 
+    }
+    
+    
+    /**
+     * 
+     * author bepa 
+    */
+    public void LogoClicled(){
+        if(accountInfo != null){
+            switch(accountInfo.getAccType()){
+                case STUDENT:
+                    
+                    break;
+                case TEACHER:
+                    
+                    break;
+                case PARENT:
+                    
+                    break;
+                case ADMIN:
+                    
+                    break;
+                default:
+                    setContent(null);
+                    break;
+                        
+            }
+        }
     }
 
 }

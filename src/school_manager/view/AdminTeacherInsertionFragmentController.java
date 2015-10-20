@@ -7,10 +7,13 @@ package school_manager.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -48,13 +51,25 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     private ComboBox cbSubjects;
     @FXML
     private HBox hbSubjects;
-
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private CheckBox cBox;
+    @FXML
+    private ComboBox cbClasses;
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        initSubjectsComboBox();
+        
+        cBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        public void changed(ObservableValue<? extends Boolean> ov,
+            Boolean old_val, Boolean new_val) {
+                if(new_val != null && new_val == true)
+                    cbClasses.setVisible(true);
+                else if(new_val != null && new_val == false)
+                    cbClasses.setVisible(false);
+        }
+    });
     }
 
     @Override
@@ -107,7 +122,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     }
 
     @FXML
-    public void initSubjectsComboBox() {
+    private void initSubjectsComboBox() {
         ObservableList subjects = FXCollections.observableArrayList(
                 "Українська мова", "Українська література", new Separator(),
                 "Зарубіжна література", "Англійська мова", new Separator(),

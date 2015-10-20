@@ -34,6 +34,9 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         infoField.setTextFill(Color.RED);
+        
+        tfLogin.setText("10004");
+        tfPassword.setText("admin");
     }
 
     @FXML
@@ -72,5 +75,5 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
-
+    
 }

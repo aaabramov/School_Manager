@@ -71,6 +71,11 @@ public class RootLayoutController implements Initializable, MainReferenced {
     public void btnLogoutClicked(){
         mainApp.logOut();
     }
+    
+    @FXML
+    public void imgLogoClicked(){
+        mainApp.LogoClicled();
+    }
 
     @Override
     public void setMainApp(MainApp mainApp) {

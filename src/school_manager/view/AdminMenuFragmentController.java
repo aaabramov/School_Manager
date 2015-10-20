@@ -65,7 +65,6 @@ public class AdminMenuFragmentController implements Initializable, MainReference
             AdminStudentInsertionFragmentController studentInsertionController = loader.getController();
             studentInsertionController.setMainApp(mainApp);
             studentInsertionController.setAdmin(admin);
-            studentInsertionController.initGroups();
             
             mainApp.setContent(pane);
             mainApp.setStatus("Setting student insertion form is set");
@@ -73,6 +72,28 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         }catch(IOException e){
             System.out.println(e.getMessage());
             mainApp.setStatus("Error setting student insertion form.");
+        }
+    }
+    
+    @FXML
+    public void buttonAddParentClicked(){
+        
+        FXMLLoader loader = new FXMLLoader();
+        
+        try{
+            
+            loader.setLocation(getClass().getResource("AdminParentInsertionFragment.fxml"));
+            BorderPane pane = (BorderPane) loader.load();
+            
+            AdminParentInsertionFragmentController adminParentInsertionFragmentController = loader.getController();
+            adminParentInsertionFragmentController.setMainApp(mainApp);
+            
+            mainApp.setContent(pane);
+            mainApp.setStatus("Parent insertion form is set");
+            
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+            mainApp.setStatus("Error setting parent insertion form.");
         }
     }
     
@@ -89,7 +110,6 @@ public class AdminMenuFragmentController implements Initializable, MainReference
             AdminTeacherInsertionFragmentController teacherInsertionController = loader.getController();
             teacherInsertionController.setMainApp(mainApp);
             teacherInsertionController.setAdmin(admin);
-            teacherInsertionController.initSubjectsComboBox();
             
             mainApp.setContent(pane);
             mainApp.setStatus("Teacher insertion form is set");
