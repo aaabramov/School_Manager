@@ -85,8 +85,8 @@ public class AdminMenuFragmentController implements Initializable, MainReference
             loader.setLocation(getClass().getResource("AdminParentInsertionFragment.fxml"));
             BorderPane pane = (BorderPane) loader.load();
             
-            AdminParentInsertionFragmentController adminParentInsertionFragmentController = loader.getController();
-            adminParentInsertionFragmentController.setMainApp(mainApp);
+            AdminParentInsertionFragmentController parentInsertionController = loader.getController();
+            parentInsertionController.setMainApp(mainApp);
             
             mainApp.setContent(pane);
             mainApp.setStatus("Parent insertion form is set");
@@ -116,6 +116,28 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         }catch(IOException e){
             System.out.println(e.getMessage());
             mainApp.setStatus("Error setting teacher insertion form.");
+        }
+    }
+    
+    @FXML
+    public void buttonAddGroupClicked(){
+        
+        FXMLLoader loader = new FXMLLoader();
+        
+        try{
+            
+            loader.setLocation(getClass().getResource("AdminGroupInsertionFragment.fxml"));
+            BorderPane pane = (BorderPane) loader.load();
+            
+            AdminGroupInsertionFragmentController groupInsertionController = loader.load();
+            groupInsertionController.setMainApp(mainApp);
+            
+            mainApp.setContent(pane);
+            mainApp.setStatus("Teacher insertion form is set");
+            
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+            mainApp.setStatus("Error setting group insertion form");
         }
     }
 }
