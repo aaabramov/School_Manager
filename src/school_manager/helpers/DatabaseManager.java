@@ -6,14 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import school_manager.helpers.DatabaseIndexes.Groups;
+import school_manager.helpers.DatabaseIndexes.Parents;
 import school_manager.helpers.DatabaseIndexes.Students;
 import school_manager.helpers.DatabaseIndexes.Subjects;
 import school_manager.helpers.DatabaseIndexes.Teachers;
@@ -25,10 +23,6 @@ import school_manager.model.Subject;
 import school_manager.model.Teacher;
 import school_manager.model.User;
 
-/**
- *
- * @author abrasha
- */
 public final class DatabaseManager {
 
     private static final Logger logger;
@@ -94,6 +88,31 @@ public final class DatabaseManager {
     }
 
     /**
+     * @author abrasha inserts new user to database
+     */
+    private static void insertUser(User user) {
+        try {
+            String sqlStatement = ("INSERT INTO " + Users.TABLE
+                    + " (%1, %2, %3)"
+                    + " VALUES (?, ?, ?);");
+
+            sqlStatement = sqlStatement.replace("%1", Users.LOGIN);
+            sqlStatement = sqlStatement.replace("%2", Users.PASSWORD);
+            sqlStatement = sqlStatement.replace("%3", Users.ACC_TYPE);
+
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, user.getLogin());
+            preStatement.setString(2, PasswordGenerator.generate());
+            preStatement.setInt(3, user.getAccTypeCode());
+            preStatement.executeUpdate();
+            logger.log(Level.INFO, "User inserted.");
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error inserting user", e);
+        }
+
+    }
+
+    /**
      * @author abrasha inserts new student to database
      */
     public static void insertStudent(Student added) {
@@ -139,28 +158,45 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha inserts new user to database
+     * @author a inserts new teacher to database
      */
-    private static void insertUser(User user) {
+    public static void insertTeacher(Teacher added) {
         try {
-            String sqlStatement = ("INSERT INTO " + Users.TABLE
-                    + " (%1, %2, %3)"
-                    + " VALUES (?, ?, ?);");
 
-            sqlStatement = sqlStatement.replace("%1", Users.LOGIN);
-            sqlStatement = sqlStatement.replace("%2", Users.PASSWORD);
-            sqlStatement = sqlStatement.replace("%3", Users.ACC_TYPE);
+            int insertedId = getLastIdFromUsers() + 1;
+            int login = insertedId + LOGIN_START;
 
+            insertUser(new User(insertedId, login, User.AccType.TEACHER));
+
+            String sqlStatement = "INSERT INTO " + Teachers.TABLE
+                    + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            sqlStatement = sqlStatement.replace("%1", Teachers.ID_TEACHER);
+            sqlStatement = sqlStatement.replace("%2", Teachers.FIRST_NAME);
+            sqlStatement = sqlStatement.replace("%3", Teachers.LAST_NAME);
+            sqlStatement = sqlStatement.replace("%4", Teachers.PATRONYMIC);
+            sqlStatement = sqlStatement.replace("%5", Teachers.SUBJECTS);
+            sqlStatement = sqlStatement.replace("%6", Teachers.BDAY);
+            sqlStatement = sqlStatement.replace("%7", Teachers.PHONE);
+            sqlStatement = sqlStatement.replace("%8", Teachers.ADDRESS);
+            sqlStatement = sqlStatement.replace("%9", Teachers.NOTES);
             preStatement = connection.prepareStatement(sqlStatement);
-            preStatement.setInt(1, user.getLogin());
-            preStatement.setString(2, PasswordGenerator.generate());
-            preStatement.setInt(3, user.getAccTypeCode());
+            preStatement.setInt(1, insertedId);
+            preStatement.setString(2, added.getFName());
+            preStatement.setString(3, added.getLName());
+            preStatement.setString(4, added.getPatronymic());
+            preStatement.setString(5, added.getSubjects());
+            preStatement.setString(6, added.getBday());
+            preStatement.setString(7, added.getPhone());
+            preStatement.setString(8, added.getAddress());
+            preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
-            logger.log(Level.INFO, "User inserted.");
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error inserting user", e);
-        }
 
+            logger.log(Level.INFO, "Teacher inserted");
+        } catch (SQLException e) {
+            System.out.println("Error adding teacher: " + e.getMessage());
+
+        }
     }
 
     /**
@@ -230,36 +266,35 @@ public final class DatabaseManager {
 
     /**
      * @author abrasha
-     * @return full list of subjects
+     * @return overview full list of subjects
      */
-    // TODO make it like Map<String, Integer>
-    public static ArrayList<Subject> getSubjects() {
-        ArrayList<Subject> result = new ArrayList<>();
+    public static Map<String, Integer> getSubjectsList() {
+
+        Map<String, Integer> list = new HashMap<>();
 
         try {
+            String sql = "SELECT %1, %2"
+                    + " FROM " + Groups.TABLE;
 
-            ResultSet rs = statement.executeQuery("SELECT * FROM "
-                    + Subjects.TABLE + ";");
+            sql = sql.replace("%1", Subjects.ID_SUBJECT);
+            sql = sql.replace("%2", Subjects.NAME);
+            preStatement = connection.prepareStatement(sql);
+            ResultSet rs = preStatement.executeQuery();
 
             while (rs.next()) {
-
-                result.add(new Subject(rs.getInt(Subjects.ID_SUBJECT),
-                        rs.getString(Subjects.NAME),
-                        rs.getString(Subjects.DESCRIPTION)));
-
+                list.put(rs.getString(Subjects.NAME), rs.getInt(Subjects.ID_SUBJECT));
             }
 
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error getting subjects", e);
+            logger.log(Level.SEVERE, "Error getting subject list", e);
         }
 
-        return result;
-
+        return list;
     }
 
     /**
      * @author abrasha
-     * @return full list of subjects
+     * @return overview full list of groups
      */
     public static Map<String, Integer> getGroupsList() {
         Map<String, Integer> list = new HashMap<>();
@@ -279,6 +314,37 @@ public final class DatabaseManager {
 
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error getting group list", e);
+        }
+
+        return list;
+    }
+
+    /**
+     * @author abrasha
+     * @return overview list of students in concrete group
+     */
+    public static Map<String, Integer> getGroupMembers(int groupId) {
+        Map<String, Integer> list = new HashMap<>();
+
+        try {
+            String sql = "SELECT %1, %2, %3"
+                    + " FROM " + Students.TABLE
+                    + " WHERE " + Students.ID_GROUP + " = " + groupId + ";";
+
+            sql = sql.replace("%1", Students.ID_STUDENT);
+            sql = sql.replace("%2", Students.FIRST_NAME);
+            sql = sql.replace("%3", Students.LAST_NAME);
+            
+            preStatement = connection.prepareStatement(sql);
+            ResultSet rs = preStatement.executeQuery();
+            while (rs.next()) {
+                String studentInitials = rs.getString(Students.LAST_NAME) + " " + 
+                        rs.getString(Students.FIRST_NAME);
+                list.put(studentInitials, rs.getInt(Students.ID_STUDENT));
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting group list", e);
         }
 
         return list;
@@ -315,76 +381,67 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author bepa inserts new teacher to database
-     */
-    public static void insertTeacher(Teacher added) {
-        try {
-
-            int insertedId = getLastIdFromUsers() + 1;
-            int login = insertedId + LOGIN_START;
-
-            insertUser(new User(insertedId, login, User.AccType.TEACHER));
-
-            String sqlStatement = "INSERT INTO " + Teachers.TABLE
-                    + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            sqlStatement = sqlStatement.replace("%1", Teachers.ID_TEACHER);
-            sqlStatement = sqlStatement.replace("%2", Teachers.FIRST_NAME);
-            sqlStatement = sqlStatement.replace("%3", Teachers.LAST_NAME);
-            sqlStatement = sqlStatement.replace("%4", Teachers.PATRONYMIC);
-            sqlStatement = sqlStatement.replace("%5", Teachers.SUBJECTS);
-            sqlStatement = sqlStatement.replace("%6", Teachers.BDAY);
-            sqlStatement = sqlStatement.replace("%7", Teachers.PHONE);
-            sqlStatement = sqlStatement.replace("%8", Teachers.ADDRESS);
-            sqlStatement = sqlStatement.replace("%9", Teachers.NOTES);
-            preStatement = connection.prepareStatement(sqlStatement);
-            preStatement.setInt(1, insertedId);
-            preStatement.setString(2, added.getFName());
-            preStatement.setString(3, added.getLName());
-            preStatement.setString(4, added.getPatronymic());
-            preStatement.setString(5, added.getSubjects());
-            preStatement.setString(6, added.getBday());
-            preStatement.setString(7, added.getPhone());
-            preStatement.setString(8, added.getAddress());
-            preStatement.setString(9, added.getNotes());
-            preStatement.executeUpdate();
-
-            logger.log(Level.INFO, "Teacher inserted");
-        } catch (SQLException e) {
-            System.out.println("Error adding teacher: " + e.getMessage());
-
-        }
-    }
-
-    /**
-     * @author bepa gets teacher from database
+     * @author abrasha
      */
     public static Teacher getTeacherById(int id) {
 
         Teacher result = null;
+        try {
+            String sql = "SELECT * FROM " + Teachers.TABLE
+                    + " WHERE " + Teachers.ID_TEACHER + " = ?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if (rs.next()) {
+                result = new Teacher.Builder()
+                        .id(id)
+                        .fName(rs.getString(Teachers.FIRST_NAME))
+                        .lName(rs.getString(Teachers.LAST_NAME))
+                        .patronymic(rs.getString(Teachers.PATRONYMIC))
+                        .subjects(rs.getString(Teachers.SUBJECTS))
+                        .bday(rs.getString(Teachers.BDAY))
+                        .address(rs.getString(Teachers.ADDRESS))
+                        .phone(rs.getString(Teachers.PHONE))
+                        .notes(rs.getString(Teachers.NOTES))
+                        .build();
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting teacher by id", e);
+        }
 
         return result;
     }
 
     /**
-     * @author bepa gets teacher from database
+     * @author abrasha
      */
-    public static Parent getParentById(int id) {
-
-        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
-        Parent current = new Parent.Builder()
-                .fName("Grabar")
-                .lName("Mykola")
-                .patronymic("...")
-                .idChild(4)
-                .phone("")
-                .address("")
-                .bday("")
-                .notes("")
-                .build();
-
-        return current;
-    }
+//    public static Parent getParentById(int id) {
+//
+//        Parent result = null;
+//        try {
+//            String sql = "SELECT * FROM " + Parents.TABLE
+//                    + " WHERE " + Parents.ID_PARENT + " = ?;";
+//            preStatement = connection.prepareStatement(sql);
+//            preStatement.setInt(1, id);
+//            ResultSet rs = preStatement.executeQuery();
+//            if (rs.next()) {
+//                result = new Parent.Builder()
+//                        .id(id)
+//                        .fName(rs.getString(Parents.FIRST_NAME))
+//                        .lName(rs.getString(Parents.LAST_NAME))
+//                        .patronymic(rs.getString(Parents.PATRONYMIC))
+//                        .idChild(rs.getInt(Parents.))
+//                        .address(rs.getString(Parents.ADDRESS))
+//                        .phone(rs.getString(Parents.PHONE))
+//                        .notes(rs.getString(Parents.NOTES))
+//                        .build();
+//            }
+//        } catch (SQLException e) {
+//            logger.log(Level.SEVERE, "Error getting teacher by id", e);
+//        }
+//
+//        return result;
+//    }
 
     /**
      * @author bepa gets teacher from database
@@ -398,8 +455,7 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl
-     * returns code of student's group
+     * @author Shlimazl returns code of student's group
      */
     public static String getGroupCodeByStudent(int id) {
         String result = "";
@@ -440,12 +496,6 @@ public final class DatabaseManager {
         return result;
     }
 
-    /**
-     *
-     * @author Shlimazl
-     *
-     * returns curator's firstname,lastname and patroymic
-     */
     /**
      * TODO refactoring. abrasha.
      */
@@ -494,7 +544,7 @@ public final class DatabaseManager {
                         .fName(rs.getString(Students.FIRST_NAME))
                         .lName(rs.getString(Students.LAST_NAME))
                         .patronymic(rs.getString(Students.PATRONYMIC))
-                        .idStudent(rs.getInt(Students.ID_STUDENT))
+                        .id(rs.getInt(Students.ID_STUDENT))
                         .idGroup(rs.getInt(Students.ID_GROUP))
                         .bday(rs.getString(Students.BIRTHDAY))
                         .address(rs.getString(Students.ADDRESS))
