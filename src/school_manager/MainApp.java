@@ -195,6 +195,7 @@ public class MainApp extends Application {
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
 
+                        rootController.nameLabel.setText("You're logged in like Admin");
                         contentPane.getChildren().clear();
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
