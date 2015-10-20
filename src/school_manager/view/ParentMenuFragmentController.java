@@ -24,13 +24,9 @@ import school_manager.model.Parent;
  */
 public class ParentMenuFragmentController implements Initializable, MainReferenced {
 
-    MainApp mainApp;
-    Parent parent;
-    DatabaseManager DBmanager;
+    private MainApp mainApp;
+    private Parent parent;
     RootLayoutController rootLayoutController;
-    
-    @FXML
-    private Button buttonMyProfile;
     
     /**
      * Initializes the controller class.
@@ -48,7 +44,7 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
     }
     
     public void setParent(int parentId){
-        this.parent = DBmanager.getParentById(parentId);
+//        this.parent = DBmanager.getParentById(parentId);
         rootLayoutController.nameLabel.setText(this.parent.getInitials());
     }
     

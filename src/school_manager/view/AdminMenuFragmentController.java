@@ -109,7 +109,6 @@ public class AdminMenuFragmentController implements Initializable, MainReference
             
             AdminTeacherInsertionFragmentController teacherInsertionController = loader.getController();
             teacherInsertionController.setMainApp(mainApp);
-            teacherInsertionController.setAdmin(admin);
             
             mainApp.setContent(pane);
             mainApp.setStatus("Teacher insertion form is set");

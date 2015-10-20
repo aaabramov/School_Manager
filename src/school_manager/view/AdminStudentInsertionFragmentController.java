@@ -101,7 +101,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         tfNotes.clear();
     }
     
-    public  void initGroups(){
+    public void initGroups(){
         groupOverview = DatabaseManager.getGroupsList();
         ObservableList<String> groupList = FXCollections.observableArrayList(groupOverview.keySet());
         cbGroup.setItems(groupList);
