@@ -24,6 +24,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="First name" GridPane.rowIndex="1" />
@@ -42,7 +43,20 @@
             <Label text="Subjects" GridPane.rowIndex="8" />
             <TextField fx:id="tfPhone" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="tfNotes" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="tfSubjects" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <HBox fx:id="hbSubjects" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <children>
+                  <ComboBox fx:id="cbSubjects" prefHeight="25.0" prefWidth="424.0" />
+                  <Button mnemonicParsing="false" onAction="#btnAddSubjectClicked" text="Add" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -55,8 +69,8 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="buttonConfirm" mnemonicParsing="false" onAction="#btnConfirmClicked" text="Confirm" />
-            <Button mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="buttonConfirm" disable="true" mnemonicParsing="false" onAction="#btnConfirmClicked" text="Confirm" />
+            <Button mnemonicParsing="false" onAction="#btnClearClicked" text="Clear" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

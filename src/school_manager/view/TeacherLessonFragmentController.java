@@ -33,4 +33,8 @@ public class TeacherLessonFragmentController implements Initializable {
         this.mainApp = mainApp;
     }
     
+    public void setTeacher(Teacher teacher){
+        this.teacher = teacher;
+    }
+    
 }

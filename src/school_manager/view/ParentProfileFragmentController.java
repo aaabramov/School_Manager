@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Parent;
 
 /**
  * FXML Controller class
@@ -19,6 +20,7 @@ import school_manager.helpers.MainReferenced;
 public class ParentProfileFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Parent parent;
     
     /**
      * Initializes the controller class.
@@ -31,6 +33,10 @@ public class ParentProfileFragmentController implements Initializable, MainRefer
     @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+    
+    public  void setParent(Parent parent){
+        this.parent = parent;
     }
     
 }

@@ -7,13 +7,19 @@ package school_manager.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Admin;
 import school_manager.model.Teacher;
 
 /**
@@ -24,33 +30,26 @@ import school_manager.model.Teacher;
 public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Admin admin;
 
     @FXML
     private TextField tfFname;
-
     @FXML
     private TextField tfLname;
-
     @FXML
     private TextField tfPatronymic;
-
     @FXML
     private TextField tfBDay;
-
     @FXML
     private TextField tfAdress;
-
     @FXML
     private TextField tfPhone;
-
     @FXML
     private TextField tfNotes;
-
     @FXML
-    private TextField tfSubjects;
-
+    private ComboBox cbSubjects;
     @FXML
-    private Button buttonConfirm;
+    private HBox hbSubjects;
 
     /**
      * Initializes the controller class.
@@ -58,6 +57,15 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+
+    @Override
+    public void setMainApp(MainApp ma) {
+        this.mainApp = ma;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 
     @FXML
@@ -69,7 +77,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         String bday = tfBDay.getText();
         String address = tfAdress.getText();
         String phone = tfPhone.getText();
-        String subjects = tfSubjects.getText();
+        //String subjects = tfSubjects.getText();
         String notes = tfNotes.getText();
 
         Teacher added = new Teacher.Builder()
@@ -80,16 +88,51 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                .subjects(subjects)
+                //.subjects(subjects)
                 .build();
 
         DatabaseManager.insertTeacher(added);
 
     }
 
-    @Override
-    public void setMainApp(MainApp ma) {
-        this.mainApp = ma;
+    @FXML
+    public void btnClearClicked() {
+        tfFname.clear();
+        tfLname.clear();
+        tfPatronymic.clear();
+        tfBDay.clear();
+        tfAdress.clear();
+        tfPhone.clear();
+        tfNotes.clear();
+        cbSubjects.setValue(null);
+        hbSubjects.getChildren().clear();
     }
 
+    @FXML
+    public void initSubjectsComboBox() {
+        ObservableList subjects = FXCollections.observableArrayList(
+                "Українська мова", "Українська література", new Separator(),
+                "Зарубіжна література", "Англійська мова", new Separator(),
+                "Математика", "Алгебра", "Геометрія", "Інформатика", new Separator(),
+                "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", new Separator(),
+                "Географія", "Біологія", "Фізика", "Хімія", new Separator(),
+                "Музика", "Фізична культура"
+        );
+
+        cbSubjects.setItems(subjects);
+    }
+
+    @FXML
+    public void btnAddSubjectClicked() {
+
+        String[] listSubjects = new String[]{"Українська мова", "Українська література", "",
+            "Зарубіжна література", "Англійська мова", "",
+            "Математика", "Алгебра", "Геометрія", "Інформатика", "",
+            "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", "",
+            "Географія", "Біологія", "Фізика", "Хімія", "",
+            "Музика", "Фізична культура"};
+
+        hbSubjects.getChildren().add(new Label(
+                listSubjects[cbSubjects.getSelectionModel().getSelectedIndex()]));
+    }
 }

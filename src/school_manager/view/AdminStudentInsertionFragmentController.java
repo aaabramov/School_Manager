@@ -9,20 +9,24 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Admin;
 import school_manager.model.Student;
 
 /**
  * FXML Controller class
  *
- * @author abrasha
+ * @author bepa
  */
 public class AdminStudentInsertionFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Admin admin;
+    DatabaseManager DBmanager;
     
     @FXML
     private TextField tfFName;
@@ -31,7 +35,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @FXML
     private TextField tfPatronymic;
     @FXML
-    private TextField tfIdGroup;
+    private ComboBox cbGroup;
     @FXML
     private TextField tfBDay;
     @FXML
@@ -54,13 +58,19 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         this.mainApp = mainApp;
     }
     
+    public void  setAdmin(Admin admin){
+        this.admin = admin;
+    }
+    
     @FXML 
     public void btnConfirmClicked(){
+        
+        //TODO checkGroupId
         
         String fname = tfFName.getText();
         String lname = tfLName.getText();
         String patronymic = tfPatronymic.getText();
-        int groupId = Integer.valueOf(tfIdGroup.getText());
+        int groupId = checkGroupId(cbGroup.getSelectionModel().getSelectedIndex());
         String bday = tfBDay.getText();
         String address = tfAddress.getText();
         String phone = tfPhone.getText();
@@ -82,12 +92,22 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     }
     
     @FXML
-    public void btnCancelClicked(){
-        
-        
-        
+    public void btnClearClicked(){
+        tfFName.clear();
+        tfLName.clear();
+        tfPatronymic.clear();
+        cbGroup.setValue(null);
+        tfBDay.clear();
+        tfAddress.clear();
+        tfPhone.clear();
+        tfNotes.clear();
     }
     
+    public  void initGroups(){
+        cbGroup.setItems(DBmanager.getAvaliableGroups());
+    }
     
-    
+    private int checkGroupId(int groupId){
+        return 0;
+    }
 }

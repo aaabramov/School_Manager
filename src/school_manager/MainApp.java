@@ -1,8 +1,6 @@
 package school_manager;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import school_manager.helpers.DatabaseManager;
-import school_manager.model.Teacher;
 import school_manager.model.User;
 import school_manager.view.AdminMenuFragmentController;
 import school_manager.view.LoginFragmentController;
@@ -153,6 +150,8 @@ public class MainApp extends Application {
 
                         TeacherMenuFragmentController teacherMenuController = loader.getController();
                         teacherMenuController.setMainApp(this);
+                        teacherMenuController.setRootLayout(rootController);
+                        teacherMenuController.setTeacher(accountInfo.getId());
 
                         setMenu(teacherMenuPane);
                         setStatus("Teacher menu set.");
@@ -173,7 +172,8 @@ public class MainApp extends Application {
 
                         ParentMenuFragmentController parentMenuController = loader.getController();
                         parentMenuController.setMainApp(this);
-                        //TODO parentMenuController.setParent(null);
+                        parentMenuController.setRootLayout(rootController);
+                        parentMenuController.setParent(accountInfo.getId());
 
                         setMenu(parentMenuPane);
                         setStatus("Parent menu set.");
@@ -192,7 +192,7 @@ public class MainApp extends Application {
 
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
-
+                        
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
                     } catch (IOException e) {

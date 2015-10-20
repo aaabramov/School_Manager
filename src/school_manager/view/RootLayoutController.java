@@ -39,6 +39,8 @@ public class RootLayoutController implements Initializable, MainReferenced {
     private Button buttonLogout;
     @FXML
     private SplitPane splitPane;
+    @FXML
+    public Label nameLabel;
 
     /**
      * Initializes the controller class.

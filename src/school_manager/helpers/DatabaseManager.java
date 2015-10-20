@@ -10,6 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import school_manager.model.Admin;
+import school_manager.model.Parent;
 import school_manager.model.Student;
 import school_manager.model.Subject;
 import school_manager.model.Teacher;
@@ -281,13 +285,77 @@ public final class DatabaseManager {
             preStatement.setString(8, added.getAddress());
             preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
+            
+        }catch(SQLException e){
+            System.out.println("Error adding teacher: " + e.getMessage());
+
             logger.log(Level.SEVERE, "Teacher added");
-        } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error inserting teacher", e);
         }
-
     }
-
+    
+    /**
+    *
+    * @author bepa
+    * 
+    * gets teacher from database
+    */
+    public static Teacher getTeacherById(int id) {
+        
+        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
+        
+        Teacher current = new Teacher.Builder()
+                .fName("Andriy")
+                .lName("Abramov")
+                .patronymic("Volodymyrovych")
+                .bday("08.12.96")
+                .address("")
+                .phone("+380---------")
+                .notes("lalalal")
+//                .subjects(subjects)
+                .build();
+        
+        return current;
+    }
+    
+    /**
+    *
+    * @author bepa
+    * 
+    * gets teacher from database
+    */
+    public static  Parent getParentById(int id){
+        
+        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
+        
+        Parent current = new Parent.Builder()
+                .fName("Grabar")
+                .lName("Mykola")
+                .patronymic("...")
+                .idChild(4)
+                .phone("")
+                .address("")
+                .bday("")
+                .notes("")
+                .build();
+        
+        return current;
+    }
+    
+    /**
+    *
+    * @author bepa
+    * 
+    * gets teacher from database
+    */
+    public static Admin getAdminById(int id){
+        
+        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
+        
+        Admin current = new Admin();
+        
+        return current;
+    }
+    
     /**
      *
      * @author Shlimazl
@@ -369,7 +437,7 @@ public final class DatabaseManager {
     /**
      * TODO refactoring. abrasha.
      */
-    public static String getStudentById(int id) {
+    public static Student getStudentById(int id) {
         String result = "";
         String lastname = "";
         String fname = "";
@@ -387,7 +455,16 @@ public final class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("Error select curator " + e.getMessage());
         }
-        return result;
+        //bepa
+        Student current = new Student.Builder()
+                .lName(lastname)
+                .fName(fname)
+                .patronymic(patronymic)
+                .build();
+        
+        
+        
+        return current;
     }
 
     /**
@@ -418,6 +495,7 @@ public final class DatabaseManager {
      *
      * @author Shlimazl
      *
+>>>>>>> 10007447d55680b8194105f3e0aee192a3487d04
      * returns student's group's schedule
      */
     /**
@@ -518,5 +596,22 @@ public final class DatabaseManager {
             System.out.println("Error select schedule " + e.getMessage());
         }
         return result;
+    }
+    
+    /**
+     *
+     * TODO !!!
+     * 
+     */
+    public static ObservableList<String> getAvaliableGroups(){
+        
+        //Запросы
+        
+        ObservableList<String> groups = FXCollections.observableArrayList(
+            "11-A", "11-Б", "11-В",
+            "10-A", "10-Б", "10-В",
+            "9-A", "9-Б", "9-В",
+            "8-A", "8-Б", "8-В", "...");
+        return groups;
     }
 }

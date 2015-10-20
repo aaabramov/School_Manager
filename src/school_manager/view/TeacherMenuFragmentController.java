@@ -16,7 +16,9 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.User;
 
 
 /**
@@ -28,6 +30,8 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
 
     MainApp mainApp;
     Teacher teacher;
+    RootLayoutController rootLayoutController;
+    DatabaseManager DBmanager;
     
     @FXML
     private Button buttonProfile;
@@ -57,8 +61,13 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
         this.mainApp = mainApp;
     }
     
-    public void setTeacher(Teacher teacher){
-        this.teacher = teacher;
+    public void setRootLayout(RootLayoutController rootContr){
+        this.rootLayoutController = rootContr;
+    }
+    
+    public void setTeacher(int userId){
+        this.teacher = DBmanager.getTeacherById(userId);
+        rootLayoutController.nameLabel.setText(this.teacher.getInitials());
     } 
     
     @FXML
@@ -73,6 +82,7 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
             
             TeacherLessonFragmentController teacherLessonController = loader.getController();
             teacherLessonController.setMainApp(mainApp);
+            teacherLessonController.setTeacher(teacher);
             
             mainApp.setContent(pane);
             mainApp.setStatus("Lesson loaded.");
@@ -94,6 +104,7 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
             
             TeacherProfileFragmentController teacherProfileController = loader.getController();
             teacherProfileController.setMainApp(mainApp);
+            teacherProfileController.setTeacher(teacher);
             
             mainApp.setContent(pane);
             mainApp.setStatus("Teacher profile has been set.");

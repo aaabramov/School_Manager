@@ -13,7 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
+import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.Admin;
 
 /**
  * FXML Controller class
@@ -23,6 +25,9 @@ import school_manager.helpers.MainReferenced;
 public class AdminMenuFragmentController implements Initializable, MainReferenced {
 
     MainApp mainApp;
+    Admin admin;
+    DatabaseManager DBmanager;
+    RootLayoutController rootLayoutController;
     
     /**
      * Initializes the controller class.
@@ -35,6 +40,15 @@ public class AdminMenuFragmentController implements Initializable, MainReference
     @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
+    }
+    
+    public void setRootLayout(RootLayoutController rootContr){
+        this.rootLayoutController = rootContr;
+    }
+    
+    public void setAdmin(int adminId){
+        this.admin = DBmanager.getAdminById(adminId);
+        this.rootLayoutController.nameLabel.setText("You're autorizated as Admin");
     }
     
     
@@ -50,6 +64,8 @@ public class AdminMenuFragmentController implements Initializable, MainReference
             
             AdminStudentInsertionFragmentController studentInsertionController = loader.getController();
             studentInsertionController.setMainApp(mainApp);
+            studentInsertionController.setAdmin(admin);
+            studentInsertionController.initGroups();
             
             mainApp.setContent(pane);
             mainApp.setStatus("Setting student insertion form is set");
@@ -72,9 +88,11 @@ public class AdminMenuFragmentController implements Initializable, MainReference
             
             AdminTeacherInsertionFragmentController teacherInsertionController = loader.getController();
             teacherInsertionController.setMainApp(mainApp);
+            teacherInsertionController.setAdmin(admin);
+            teacherInsertionController.initSubjectsComboBox();
             
             mainApp.setContent(pane);
-            mainApp.setStatus("Setting teacher insertion form is set");
+            mainApp.setStatus("Teacher insertion form is set");
             
         }catch(IOException e){
             System.out.println(e.getMessage());
