@@ -85,6 +85,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
                 .idGroup(groupId)
                 .build();
         
+        btnClearClicked();
         DatabaseManager.insertStudent(added);
         
     }

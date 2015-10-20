@@ -104,7 +104,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
                 .build();
 
         DatabaseManager.insertTeacher(added);
-
+        btnClearClicked();
     }
 
     @FXML

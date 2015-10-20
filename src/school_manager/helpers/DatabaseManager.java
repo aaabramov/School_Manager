@@ -50,7 +50,7 @@ public final class DatabaseManager {
 
         try {
 
-            String dbUrl = "jdbc:mysql://" + DBAddress + ":" + DBPort + "/" + DBName;
+            String dbUrl = "jdbc:mysql://" + DBAddress + ":" + DBPort + "/" + DBName + "?characterEncoding=UTF-8";
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(dbUrl, DBLogin, DBPassword);
 
@@ -116,27 +116,25 @@ public final class DatabaseManager {
      * @author abrasha inserts new student to database
      */
     public static void insertStudent(Student added) {
+
+        int insertedId = getLastIdFromUsers() + 1;
+        int login = insertedId + LOGIN_START;
+
+        String sqlStatement = "INSERT INTO " + Students.TABLE
+                + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
+                + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        sqlStatement = sqlStatement.replace("%1", Students.ID_STUDENT);
+        sqlStatement = sqlStatement.replace("%2", Students.FIRST_NAME);
+        sqlStatement = sqlStatement.replace("%3", Students.LAST_NAME);
+        sqlStatement = sqlStatement.replace("%4", Students.PATRONYMIC);
+        sqlStatement = sqlStatement.replace("%5", Students.ID_GROUP);
+        sqlStatement = sqlStatement.replace("%6", Students.BIRTHDAY);
+        sqlStatement = sqlStatement.replace("%7", Students.ADDRESS);
+        sqlStatement = sqlStatement.replace("%8", Students.PHONE);
+        sqlStatement = sqlStatement.replace("%9", Students.NOTES);
+
         try {
-
-            int insertedId = getLastIdFromUsers() + 1;
-            int login = insertedId + LOGIN_START;
-
-            insertUser(new User(insertedId, login, User.AccType.STUDENT));
-
-            String sqlStatement = "INSERT INTO " + Students.TABLE
-                    + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
-                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            sqlStatement = sqlStatement.replace("%1", Students.ID_STUDENT);
-            sqlStatement = sqlStatement.replace("%2", Students.FIRST_NAME);
-            sqlStatement = sqlStatement.replace("%3", Students.LAST_NAME);
-            sqlStatement = sqlStatement.replace("%4", Students.PATRONYMIC);
-            sqlStatement = sqlStatement.replace("%5", Students.ID_GROUP);
-            sqlStatement = sqlStatement.replace("%6", Students.BIRTHDAY);
-            sqlStatement = sqlStatement.replace("%7", Students.ADDRESS);
-            sqlStatement = sqlStatement.replace("%8", Students.PHONE);
-            sqlStatement = sqlStatement.replace("%9", Students.NOTES);
-
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
             preStatement.setString(2, added.getFName());
@@ -154,6 +152,7 @@ public final class DatabaseManager {
             logger.log(Level.SEVERE, "Error inserting student", e);
 
         }
+        insertUser(new User(insertedId, login, User.AccType.STUDENT));
 
     }
 
@@ -161,25 +160,23 @@ public final class DatabaseManager {
      * @author a inserts new teacher to database
      */
     public static void insertTeacher(Teacher added) {
+        int insertedId = getLastIdFromUsers() + 1;
+        int login = insertedId + LOGIN_START;
+
+        String sqlStatement = "INSERT INTO " + Teachers.TABLE
+                + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        sqlStatement = sqlStatement.replace("%1", Teachers.ID_TEACHER);
+        sqlStatement = sqlStatement.replace("%2", Teachers.FIRST_NAME);
+        sqlStatement = sqlStatement.replace("%3", Teachers.LAST_NAME);
+        sqlStatement = sqlStatement.replace("%4", Teachers.PATRONYMIC);
+        sqlStatement = sqlStatement.replace("%5", Teachers.SUBJECTS);
+        sqlStatement = sqlStatement.replace("%6", Teachers.BDAY);
+        sqlStatement = sqlStatement.replace("%7", Teachers.PHONE);
+        sqlStatement = sqlStatement.replace("%8", Teachers.ADDRESS);
+        sqlStatement = sqlStatement.replace("%9", Teachers.NOTES);
         try {
 
-            int insertedId = getLastIdFromUsers() + 1;
-            int login = insertedId + LOGIN_START;
-
-            insertUser(new User(insertedId, login, User.AccType.TEACHER));
-
-            String sqlStatement = "INSERT INTO " + Teachers.TABLE
-                    + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            sqlStatement = sqlStatement.replace("%1", Teachers.ID_TEACHER);
-            sqlStatement = sqlStatement.replace("%2", Teachers.FIRST_NAME);
-            sqlStatement = sqlStatement.replace("%3", Teachers.LAST_NAME);
-            sqlStatement = sqlStatement.replace("%4", Teachers.PATRONYMIC);
-            sqlStatement = sqlStatement.replace("%5", Teachers.SUBJECTS);
-            sqlStatement = sqlStatement.replace("%6", Teachers.BDAY);
-            sqlStatement = sqlStatement.replace("%7", Teachers.PHONE);
-            sqlStatement = sqlStatement.replace("%8", Teachers.ADDRESS);
-            sqlStatement = sqlStatement.replace("%9", Teachers.NOTES);
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
             preStatement.setString(2, added.getFName());
@@ -197,6 +194,8 @@ public final class DatabaseManager {
             System.out.println("Error adding teacher: " + e.getMessage());
 
         }
+
+        insertUser(new User(insertedId, login, User.AccType.TEACHER));
     }
 
     /**
@@ -238,11 +237,8 @@ public final class DatabaseManager {
                     + " WHERE " + Users.LOGIN + " = ?;";
 
             sql = sql.replace("%1", Users.ID_USER);
-            System.out.println(sql);
             sql = sql.replace("%2", Users.PASSWORD);
-            System.out.println(sql);
             sql = sql.replace("%3", Users.ACC_TYPE);
-            System.out.println(sql);
 
             preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, login);
@@ -334,12 +330,12 @@ public final class DatabaseManager {
             sql = sql.replace("%1", Students.ID_STUDENT);
             sql = sql.replace("%2", Students.FIRST_NAME);
             sql = sql.replace("%3", Students.LAST_NAME);
-            
+
             preStatement = connection.prepareStatement(sql);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                String studentInitials = rs.getString(Students.LAST_NAME) + " " + 
-                        rs.getString(Students.FIRST_NAME);
+                String studentInitials = rs.getString(Students.LAST_NAME) + " "
+                        + rs.getString(Students.FIRST_NAME);
                 list.put(studentInitials, rs.getInt(Students.ID_STUDENT));
             }
 
@@ -386,9 +382,9 @@ public final class DatabaseManager {
     public static Teacher getTeacherById(int id) {
 
         Teacher result = null;
+        String sql = "SELECT * FROM " + Teachers.TABLE
+                + " WHERE " + Teachers.ID_TEACHER + " = ?;";
         try {
-            String sql = "SELECT * FROM " + Teachers.TABLE
-                    + " WHERE " + Teachers.ID_TEACHER + " = ?;";
             preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
@@ -411,37 +407,6 @@ public final class DatabaseManager {
 
         return result;
     }
-
-    /**
-     * @author abrasha
-     */
-//    public static Parent getParentById(int id) {
-//
-//        Parent result = null;
-//        try {
-//            String sql = "SELECT * FROM " + Parents.TABLE
-//                    + " WHERE " + Parents.ID_PARENT + " = ?;";
-//            preStatement = connection.prepareStatement(sql);
-//            preStatement.setInt(1, id);
-//            ResultSet rs = preStatement.executeQuery();
-//            if (rs.next()) {
-//                result = new Parent.Builder()
-//                        .id(id)
-//                        .fName(rs.getString(Parents.FIRST_NAME))
-//                        .lName(rs.getString(Parents.LAST_NAME))
-//                        .patronymic(rs.getString(Parents.PATRONYMIC))
-//                        .idChild(rs.getInt(Parents.))
-//                        .address(rs.getString(Parents.ADDRESS))
-//                        .phone(rs.getString(Parents.PHONE))
-//                        .notes(rs.getString(Parents.NOTES))
-//                        .build();
-//            }
-//        } catch (SQLException e) {
-//            logger.log(Level.SEVERE, "Error getting teacher by id", e);
-//        }
-//
-//        return result;
-//    }
 
     /**
      * @author bepa gets teacher from database
@@ -524,10 +489,6 @@ public final class DatabaseManager {
     }
 
     /**
-     *
-     * @author Shlimazl
-     *
-     * TODO refactoring. abrasha. remade by
      * @author abrasha
      */
     public static Student getStudentById(int id) {
@@ -541,10 +502,10 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
                 result = new Student.Builder()
+                        .id(rs.getInt(Students.ID_STUDENT))
                         .fName(rs.getString(Students.FIRST_NAME))
                         .lName(rs.getString(Students.LAST_NAME))
                         .patronymic(rs.getString(Students.PATRONYMIC))
-                        .id(rs.getInt(Students.ID_STUDENT))
                         .idGroup(rs.getInt(Students.ID_GROUP))
                         .bday(rs.getString(Students.BIRTHDAY))
                         .address(rs.getString(Students.ADDRESS))
@@ -560,14 +521,11 @@ public final class DatabaseManager {
     }
 
     /**
-     *
      * @author Shlimazl
      *
      * returns name of subject by id
-     */
-    /**
-     * TODO . abrasha.
      *
+     * TODO . abrasha.
      * @return Subject object
      */
     private static String GetSubjectById(int id) {
@@ -606,4 +564,6 @@ public final class DatabaseManager {
         return result;
     }
 
+    // запрос на учителей которые не являются кураторами
+    // SELECT * FROM teachers WHERE teachers.id_teacher NOT IN (SELECT groups.id_curator FROM groups)
 }

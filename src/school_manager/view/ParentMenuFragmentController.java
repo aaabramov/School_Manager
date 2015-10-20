@@ -5,16 +5,13 @@
  */
 package school_manager.view;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
-import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.Parent;
 
@@ -44,7 +41,7 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
     }
     
     public void setParent(int parentId){
-//        this.parent = DBmanager.getParentById(parentId);
+        //this.parent = DatabaseManager.getParentById(parentId);
         rootLayoutController.nameLabel.setText(this.parent.getInitials());
     }
     
