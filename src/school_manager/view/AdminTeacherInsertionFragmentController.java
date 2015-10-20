@@ -6,6 +6,7 @@
 package school_manager.view;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,7 +23,6 @@ import javafx.scene.layout.HBox;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
-import school_manager.model.Admin;
 import school_manager.model.Teacher;
 
 /**
@@ -30,9 +30,9 @@ import school_manager.model.Teacher;
  */
 public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {
 
-    MainApp mainApp;
-    Admin admin;
-
+    private MainApp mainApp;
+    private Map<String, Integer> groupOverview;
+    
     @FXML
     private TextField tfFname;
     @FXML
@@ -54,31 +54,30 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     @FXML
     private CheckBox cBox;
     @FXML
-    private ComboBox cbClasses;
+    private ComboBox cbGroup;
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initSubjectsComboBox();
+        initGroups();
         
         cBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
         public void changed(ObservableValue<? extends Boolean> ov,
             Boolean old_val, Boolean new_val) {
                 if(new_val != null && new_val == true)
-                    cbClasses.setVisible(true);
+                    cbGroup.setVisible(true);
                 else if(new_val != null && new_val == false)
-                    cbClasses.setVisible(false);
-        }
-    });
+                    cbGroup.setVisible(false);
+            }
+        });
+        
+        
     }
 
     @Override
     public void setMainApp(MainApp ma) {
         this.mainApp = ma;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
     }
 
     @FXML
@@ -147,5 +146,12 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
 
         hbSubjects.getChildren().add(new Label(
                 listSubjects[cbSubjects.getSelectionModel().getSelectedIndex()]));
+    }
+    
+    @FXML
+    private void initGroups(){
+        groupOverview = DatabaseManager.getGroupsList();
+        ObservableList<String> groupList = FXCollections.observableArrayList(groupOverview.keySet());
+        cbGroup.setItems(groupList);
     }
 }
