@@ -216,5 +216,28 @@ public class MainApp extends Application {
         }
 
     }
+    
+    public void LogoClicled(){
+        if(accountInfo != null){
+            switch(accountInfo.getAccType()){
+                case STUDENT:
+                    
+                    break;
+                case TEACHER:
+                    
+                    break;
+                case PARENT:
+                    
+                    break;
+                case ADMIN:
+                    
+                    break;
+                default:
+                    setContent(null);
+                    break;
+                        
+            }
+        }
+    }
 
 }
