@@ -129,7 +129,7 @@ public class AdminMenuFragmentController implements Initializable, MainReference
             loader.setLocation(getClass().getResource("AdminGroupInsertionFragment.fxml"));
             BorderPane pane = (BorderPane) loader.load();
             
-            AdminGroupInsertionFragmentController groupInsertionController = loader.load();
+            AdminGroupInsertionFragmentController groupInsertionController = loader.getController();
             groupInsertionController.setMainApp(mainApp);
             
             mainApp.setContent(pane);

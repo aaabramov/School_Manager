@@ -32,7 +32,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
 
     private MainApp mainApp;
     private Map<String, Integer> groupOverview;
-    
+
     @FXML
     private TextField tfFname;
     @FXML
@@ -55,24 +55,25 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     private CheckBox cBox;
     @FXML
     private ComboBox cbGroup;
-    
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initSubjectsComboBox();
         initGroups();
-        
+
         cBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-        public void changed(ObservableValue<? extends Boolean> ov,
-            Boolean old_val, Boolean new_val) {
-                if(new_val != null && new_val == true)
+
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov,
+                    Boolean old_val, Boolean new_val) {
+                if (new_val != null && new_val == true) {
                     cbGroup.setVisible(true);
-                else if(new_val != null && new_val == false)
+                } else if (new_val != null && new_val == false) {
                     cbGroup.setVisible(false);
+                }
             }
         });
-        
-        
+
     }
 
     @Override
@@ -149,9 +150,9 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         hbSubjects.getChildren().add(new Label(
                 listSubjects[cbSubjects.getSelectionModel().getSelectedIndex()]));
     }
-    
+
     @FXML
-    private void initGroups(){
+    private void initGroups() {
         groupOverview = DatabaseManager.getGroupsList();
         ObservableList<String> groupList = FXCollections.observableArrayList(groupOverview.keySet());
         cbGroup.setItems(groupList);

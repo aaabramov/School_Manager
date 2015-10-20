@@ -24,9 +24,9 @@
             <Label text="Анкета класу" GridPane.columnIndex="1" />
             <Label text="Код " GridPane.rowIndex="1" />
             <Label text="Класний керівник" GridPane.rowIndex="2" />
-            <TextArea fx:id="tfCode" prefHeight="200.0" prefWidth="200.0" promptText="11-A" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="cbCurator" prefHeight="25.0" prefWidth="485.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Нотатки" GridPane.rowIndex="3" />
+            <TextField fx:id="tfCode" promptText="11-A" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="tfNotes" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
          <padding>
