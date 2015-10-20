@@ -31,7 +31,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
 
     MainApp mainApp;
     Admin admin;
-    
+
     @FXML
     private TextField tfFname;
     @FXML
@@ -57,17 +57,17 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
     @Override
     public void setMainApp(MainApp ma) {
         this.mainApp = ma;
     }
-    
-    public  void setAdmin(Admin admin){
+
+    public void setAdmin(Admin admin) {
         this.admin = admin;
     }
-    
+
     @FXML
     public void btnConfirmClicked() {
 
@@ -94,9 +94,9 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         DatabaseManager.insertTeacher(added);
 
     }
-    
+
     @FXML
-    public void btnClearClicked(){
+    public void btnClearClicked() {
         tfFname.clear();
         tfLname.clear();
         tfPatronymic.clear();
@@ -109,29 +109,29 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     }
 
     @FXML
-    public void initSubjectsComboBox(){
+    public void initSubjectsComboBox() {
         ObservableList subjects = FXCollections.observableArrayList(
-            "Українська мова", "Українська література", new Separator(),
-                "Зарубіжна література", "Англійська мова", new Separator(), 
-                "Математика", "Алгебра", "Геометрія", "Інформатика", new Separator(), 
+                "Українська мова", "Українська література", new Separator(),
+                "Зарубіжна література", "Англійська мова", new Separator(),
+                "Математика", "Алгебра", "Геометрія", "Інформатика", new Separator(),
                 "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", new Separator(),
-                "Географія", "Біологія", "Фізика", "Хімія", new Separator(), 
+                "Географія", "Біологія", "Фізика", "Хімія", new Separator(),
                 "Музика", "Фізична культура"
         );
-        
+
         cbSubjects.setItems(subjects);
     }
-    
+
     @FXML
-    public void btnAddSubjectClicked(){
-        
+    public void btnAddSubjectClicked() {
+
         String[] listSubjects = new String[]{"Українська мова", "Українська література", "",
-                "Зарубіжна література", "Англійська мова", "",
-                "Математика", "Алгебра", "Геометрія", "Інформатика", "",
-                "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", "",
-                "Географія", "Біологія", "Фізика", "Хімія", "",
-                "Музика", "Фізична культура"};
-        
+            "Зарубіжна література", "Англійська мова", "",
+            "Математика", "Алгебра", "Геометрія", "Інформатика", "",
+            "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", "",
+            "Географія", "Біологія", "Фізика", "Хімія", "",
+            "Музика", "Фізична культура"};
+
         hbSubjects.getChildren().add(new Label(
                 listSubjects[cbSubjects.getSelectionModel().getSelectedIndex()]));
     }

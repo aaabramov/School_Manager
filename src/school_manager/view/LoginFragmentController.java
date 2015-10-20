@@ -72,10 +72,5 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
-    
-//    @FXML
-//    public void forOffline(){
-//        mainApp.setAccountInfo(new User(6, 10006, User.AccType.ADMIN));
-//    }
 
 }

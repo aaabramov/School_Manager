@@ -290,8 +290,6 @@ public final class DatabaseManager {
             System.out.println("Error adding teacher: " + e.getMessage());
 
             logger.log(Level.SEVERE, "Teacher added");
-//        } catch (SQLException e) {
-//            logger.log(Level.WARNING, "Error inserting teacher", e);
         }
     }
     
@@ -497,6 +495,7 @@ public final class DatabaseManager {
      *
      * @author Shlimazl
      *
+>>>>>>> 10007447d55680b8194105f3e0aee192a3487d04
      * returns student's group's schedule
      */
     /**
@@ -601,7 +600,7 @@ public final class DatabaseManager {
     
     /**
      *
-     * TODO
+     * TODO !!!
      * 
      */
     public static ObservableList<String> getAvaliableGroups(){
