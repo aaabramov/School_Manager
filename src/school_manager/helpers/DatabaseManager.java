@@ -1,6 +1,5 @@
 package school_manager.helpers;
 
-import school_manager.model.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,15 +7,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import school_manager.helpers.DatabaseIndexes.Groups;
+import school_manager.helpers.DatabaseIndexes.Students;
+import school_manager.helpers.DatabaseIndexes.Subjects;
+import school_manager.helpers.DatabaseIndexes.Teachers;
+import school_manager.helpers.DatabaseIndexes.Users;
 import school_manager.model.Admin;
 import school_manager.model.Parent;
 import school_manager.model.Student;
 import school_manager.model.Subject;
 import school_manager.model.Teacher;
+import school_manager.model.User;
 
 /**
  *
@@ -34,16 +41,14 @@ public final class DatabaseManager {
     private static final String DBLogin = "aabrasha_andrew";
     private static final String DBPassword = "123234q";
     private static final int LOGIN_START = 10001;
+
     public static final int STUDENT_TYPE = 0;
     public static final int TEACHER_TYPE = 1;
     public static final int PARENT_TYPE = 2;
     public static final int ADMIN_TYPE = 3;
 
     /**
-     *
-     * @author abrasha
-     *
-     * loading database connection
+     * @author abrasha loading database connection
      */
     static {
 
@@ -56,45 +61,40 @@ public final class DatabaseManager {
             connection = DriverManager.getConnection(dbUrl, DBLogin, DBPassword);
 
             if (connection == null) {
-                logger.log(Level.WARNING, "Cannot establish connection with " + DBPort + ":" + DBName);
+                logger.log(Level.SEVERE, "Cannot establish connection with " + DBPort + ":" + DBName);
             } else {
                 statement = connection.createStatement();
+                logger.log(Level.CONFIG, "COnnection established with " + DBPort + ":" + DBName);
             }
 
         } catch (ClassNotFoundException | SQLException e) {
-            logger.log(Level.WARNING, "Cannot establish connection with " + DBPort + ":" + DBName, e);
+            logger.log(Level.SEVERE, "Cannot establish connection with " + DBPort + ":" + DBName, e);
         }
 
     }
 
     /**
-     *
-     * @author abrasha
-     *
-     * closes databases connection
+     * @author abrasha closes databases connection
      */
     public static void close() {
 
         try {
             if (connection != null) {
-                logger.log(Level.SEVERE, "Connection closed.");
+                logger.log(Level.CONFIG, "Connection closed.");
                 connection.close();
             }
             if (statement != null) {
-                logger.log(Level.SEVERE, "statement closed.");
+                logger.log(Level.CONFIG, "statement closed.");
                 statement.close();
             }
 
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Exception in closing db", e);
+            logger.log(Level.SEVERE, "Exception in closing db", e);
         }
     }
 
     /**
-     *
-     * @author abrasha
-     *
-     * inserts new student to database
+     * @author abrasha inserts new student to database
      */
     public static void insertStudent(Student added) {
         try {
@@ -104,9 +104,20 @@ public final class DatabaseManager {
 
             insertUser(new User(insertedId, login, User.AccType.STUDENT));
 
-            String sqlStatement = "INSERT INTO students"
-                    + "(id_student, fname, lname, patronymic, id_group, bday, address, phone, notes) "
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sqlStatement = "INSERT INTO " + Students.TABLE
+                    + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
+                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            sqlStatement = sqlStatement.replace("%1", Students.ID_STUDENT);
+            sqlStatement = sqlStatement.replace("%2", Students.FIRST_NAME);
+            sqlStatement = sqlStatement.replace("%3", Students.LAST_NAME);
+            sqlStatement = sqlStatement.replace("%4", Students.PATRONYMIC);
+            sqlStatement = sqlStatement.replace("%5", Students.ID_GROUP);
+            sqlStatement = sqlStatement.replace("%6", Students.BIRTHDAY);
+            sqlStatement = sqlStatement.replace("%7", Students.ADDRESS);
+            sqlStatement = sqlStatement.replace("%8", Students.PHONE);
+            sqlStatement = sqlStatement.replace("%9", Students.NOTES);
+
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
             preStatement.setString(2, added.getFName());
@@ -118,84 +129,99 @@ public final class DatabaseManager {
             preStatement.setString(8, added.getPhone());
             preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
-            logger.log(Level.SEVERE, "Student inserted.");
+            logger.log(Level.INFO, "Student inserted.");
+
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error inserting student", e);
+            logger.log(Level.SEVERE, "Error inserting student", e);
 
         }
 
     }
 
     /**
-     *
-     * @author abrasha
-     *
-     * inserts new user to database
+     * @author abrasha inserts new user to database
      */
-    public static void insertUser(User user) {
+    private static void insertUser(User user) {
         try {
-            String sqlStatement = ("INSERT INTO users (login, password, acc_type) VALUES (?, ?, ?);");
+            String sqlStatement = ("INSERT INTO " + Users.TABLE
+                    + " (%1, %2, %3)"
+                    + " VALUES (?, ?, ?);");
+
+            sqlStatement = sqlStatement.replace("%1", Users.LOGIN);
+            sqlStatement = sqlStatement.replace("%2", Users.PASSWORD);
+            sqlStatement = sqlStatement.replace("%3", Users.ACC_TYPE);
+
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, user.getLogin());
             preStatement.setString(2, PasswordGenerator.generate());
             preStatement.setInt(3, user.getAccTypeCode());
             preStatement.executeUpdate();
-            logger.log(Level.SEVERE, "User inserted.");
+            logger.log(Level.INFO, "User inserted.");
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error inserting user", e);
+            logger.log(Level.SEVERE, "Error inserting user", e);
         }
 
     }
 
     /**
-     *
-     * @author abrasha
-     *
-     * returns the last inserted id from users table
+     * @author abrasha returns the last inserted id from users table
      */
     private static int getLastIdFromUsers() {
 
         int result = -1;
 
         try {
-
-            ResultSet rs = statement.executeQuery("SELECT MAX(id_user) max_id FROM users;");
+            String sql = "SELECT MAX("
+                    + Users.ID_USER + ") max_id"
+                    + " FROM " + Users.TABLE + ";";
+            ResultSet rs = statement.executeQuery(sql);
             if (rs.next()) {
-                System.out.println("Max id found");
+                result = rs.getInt("max_id");
             }
-            result = rs.getInt("max_id");
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error getting last id from users", e);
+            logger.log(Level.SEVERE, "Error getting last id from users", e);
+        }
+
+        if (result == -1) {
+            logger.log(Level.WARNING, "Error getting last id from users");
         }
 
         return result;
     }
 
     /**
-     *
-     * @author abrasha
-     *
-     * process of authorization into program
+     * @author abrasha process of authorization into program
      */
     public static User authorize(int login, String password) {
 
         User result = null;
 
         try {
-            preStatement = connection.prepareStatement("SELECT * FROM users WHERE login = ?;");
+            String sql = "SELECT %1, %2, %3"
+                    + " FROM " + Users.TABLE
+                    + " WHERE " + Users.LOGIN + " = ?;";
+
+            sql = sql.replace("%1", Users.ID_USER);
+            System.out.println(sql);
+            sql = sql.replace("%2", Users.PASSWORD);
+            System.out.println(sql);
+            sql = sql.replace("%3", Users.ACC_TYPE);
+            System.out.println(sql);
+
+            preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, login);
             ResultSet rs = preStatement.executeQuery();
 
             if (rs.next()) {
-                String dbpass = rs.getString("password");
+                String dbpass = rs.getString(Users.PASSWORD);
                 if (password.equals(dbpass)) {
-                    result = new User(rs.getInt("id_user"), login, rs.getInt("acc_type"));
+                    result = new User(rs.getInt(Users.ID_USER), login, rs.getInt(Users.ACC_TYPE));
                 }
             }
-            logger.log(Level.SEVERE, "Authjrization successful.");
+            logger.log(Level.INFO, "Authorization successful.");
 
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error authorizing", e);
+            logger.log(Level.SEVERE, "Error authorizing", e);
         }
 
         return result;
@@ -203,21 +229,23 @@ public final class DatabaseManager {
     }
 
     /**
-     *
      * @author abrasha
-     *
      * @return full list of subjects
      */
+    // TODO make it like Map<String, Integer>
     public static ArrayList<Subject> getSubjects() {
         ArrayList<Subject> result = new ArrayList<>();
 
         try {
 
-            ResultSet rs = statement.executeQuery("SELECT * FROM subjects;");
+            ResultSet rs = statement.executeQuery("SELECT * FROM "
+                    + Subjects.TABLE + ";");
 
             while (rs.next()) {
 
-                result.add(new Subject(rs.getInt("id_subject"), rs.getString("name"), rs.getString("description")));
+                result.add(new Subject(rs.getInt(Subjects.ID_SUBJECT),
+                        rs.getString(Subjects.NAME),
+                        rs.getString(Subjects.DESCRIPTION)));
 
             }
 
@@ -230,27 +258,56 @@ public final class DatabaseManager {
     }
 
     /**
-     *
      * @author abrasha
-     *
+     * @return full list of subjects
+     */
+    public static Map<String, Integer> getGroupsList() {
+        Map<String, Integer> list = new HashMap<>();
+
+        try {
+            String sql = "SELECT %1, %2"
+                    + " FROM " + Groups.TABLE;
+
+            sql = sql.replace("%1", Groups.CODE);
+            sql = sql.replace("%2", Groups.ID_GROUP);
+            preStatement = connection.prepareStatement(sql);
+            ResultSet rs = preStatement.executeQuery();
+
+            while (rs.next()) {
+                list.put(rs.getString(Groups.CODE), rs.getInt(Groups.ID_GROUP));
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error getting group list", e);
+        }
+
+        return list;
+    }
+
+    /**
+     * @author abrasha
      * @return Subject with concrete id
      */
-    public static Subject getSubjectById(int id_subject) {
+    public static Subject getSubjectById(int subjectId) {
 
         Subject result = null;
 
         try {
 
-            ResultSet rs = statement.executeQuery("SELECT * FROM subjects WHERE id_subject = " + id_subject + ";");
+            String sql = "SELECT * FROM " + Subjects.TABLE
+                    + " WHERE " + Subjects.ID_SUBJECT + " = " + subjectId + ";";
+            ResultSet rs = statement.executeQuery(sql);
 
             if (rs.next()) {
 
-                result = new Subject(rs.getInt("id_subject"), rs.getString("name"), rs.getString("description"));
+                result = new Subject(rs.getInt(Subjects.ID_SUBJECT),
+                        rs.getString(Subjects.NAME),
+                        rs.getString(Subjects.DESCRIPTION));
 
             }
 
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error getting subject by id", e);
+            logger.log(Level.SEVERE, "Error getting subject by id", e);
         }
 
         return result;
@@ -258,10 +315,7 @@ public final class DatabaseManager {
     }
 
     /**
-     *
-     * @author bepa
-     *
-     * inserts new teacher to database
+     * @author bepa inserts new teacher to database
      */
     public static void insertTeacher(Teacher added) {
         try {
@@ -271,9 +325,18 @@ public final class DatabaseManager {
 
             insertUser(new User(insertedId, login, User.AccType.TEACHER));
 
-            String sqlStatement = "INSERT INTO teachers"
-                    + "(id_teachers, fname, lname, patronymic, subjects, bday, phone, address, notes)"
+            String sqlStatement = "INSERT INTO " + Teachers.TABLE
+                    + "(%1, %2, %3, %4, %5, %6, %7, %8, %9) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            sqlStatement = sqlStatement.replace("%1", Teachers.ID_TEACHER);
+            sqlStatement = sqlStatement.replace("%2", Teachers.FIRST_NAME);
+            sqlStatement = sqlStatement.replace("%3", Teachers.LAST_NAME);
+            sqlStatement = sqlStatement.replace("%4", Teachers.PATRONYMIC);
+            sqlStatement = sqlStatement.replace("%5", Teachers.SUBJECTS);
+            sqlStatement = sqlStatement.replace("%6", Teachers.BDAY);
+            sqlStatement = sqlStatement.replace("%7", Teachers.PHONE);
+            sqlStatement = sqlStatement.replace("%8", Teachers.ADDRESS);
+            sqlStatement = sqlStatement.replace("%9", Teachers.NOTES);
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
             preStatement.setString(2, added.getFName());
@@ -285,48 +348,30 @@ public final class DatabaseManager {
             preStatement.setString(8, added.getAddress());
             preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
-            
-        }catch(SQLException e){
+
+            logger.log(Level.INFO, "Teacher inserted");
+        } catch (SQLException e) {
             System.out.println("Error adding teacher: " + e.getMessage());
 
-            logger.log(Level.SEVERE, "Teacher added");
         }
     }
-    
+
     /**
-    *
-    * @author bepa
-    * 
-    * gets teacher from database
-    */
+     * @author bepa gets teacher from database
+     */
     public static Teacher getTeacherById(int id) {
-        
-        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
-        
-        Teacher current = new Teacher.Builder()
-                .fName("Andriy")
-                .lName("Abramov")
-                .patronymic("Volodymyrovych")
-                .bday("08.12.96")
-                .address("")
-                .phone("+380---------")
-                .notes("lalalal")
-//                .subjects(subjects)
-                .build();
-        
-        return current;
+
+        Teacher result = null;
+
+        return result;
     }
-    
+
     /**
-    *
-    * @author bepa
-    * 
-    * gets teacher from database
-    */
-    public static  Parent getParentById(int id){
-        
+     * @author bepa gets teacher from database
+     */
+    public static Parent getParentById(int id) {
+
         //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
-        
         Parent current = new Parent.Builder()
                 .fName("Grabar")
                 .lName("Mykola")
@@ -337,29 +382,23 @@ public final class DatabaseManager {
                 .bday("")
                 .notes("")
                 .build();
-        
+
         return current;
     }
-    
+
     /**
-    *
-    * @author bepa
-    * 
-    * gets teacher from database
-    */
-    public static Admin getAdminById(int id){
-        
+     * @author bepa gets teacher from database
+     */
+    public static Admin getAdminById(int id) {
+
         //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
-        
         Admin current = new Admin();
-        
+
         return current;
     }
-    
+
     /**
-     *
      * @author Shlimazl
-     *
      * returns code of student's group
      */
     public static String getGroupCodeByStudent(int id) {
@@ -383,17 +422,20 @@ public final class DatabaseManager {
      *
      * returns code of curators group
      */
-    public static String getGroupCodeByCurator(int id) {
-        String result = "";
+    public static String getGroupByCurator(int curatorId) {
+        String result = null;
         try {
-            preStatement = connection.prepareStatement("SELECT code FROM groups WHERE id_curator =?;");
-            preStatement.setInt(1, id);
+            String sql = "SELECT " + Groups.CODE
+                    + " FROM " + Groups.TABLE
+                    + " WHERE " + Groups.ID_CURATOR + " = ?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, curatorId);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                result = rs.getString("code");
+                result = rs.getString(Groups.CODE);
             }
         } catch (SQLException e) {
-            System.out.println("Error select group code " + e.getMessage());
+            logger.log(Level.WARNING, "Error selecting group code by curator id", e);
         }
         return result;
     }
@@ -413,17 +455,20 @@ public final class DatabaseManager {
         String fname = "";
         String patronymic = "";
         try {
-            preStatement = connection.prepareStatement("SELECT lastname,fname,patronymic FROM teachers WHERE id_teachers = (SELECT id_curator FROM groups WHERE id_group = (SELECT id_group FROM students WHERE id_student=?));");
+            String sql = "SELECT *"
+                    + " FROM " + Teachers.TABLE + " WHERE " + Teachers.ID_TEACHER + " = "
+                    + "(SELECT " + Groups.ID_CURATOR
+                    + " FROM " + Groups.TABLE + " WHERE " + Groups.ID_GROUP + " = "
+                    + "(SELECT id_group "
+                    + "FROM students "
+                    + "WHERE id_student=?));";
+            preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                lastname = rs.getString("lastname");
-                fname = rs.getString("fname");
-                patronymic = rs.getString("patronymic");
-                result = lastname + " " + fname + " " + patronymic;
             }
         } catch (SQLException e) {
-            System.out.println("Error select curator " + e.getMessage());
+            logger.log(Level.SEVERE, "Error selecting curator by student id", e);
         }
         return result;
     }
@@ -432,39 +477,36 @@ public final class DatabaseManager {
      *
      * @author Shlimazl
      *
-     * returns student's own firstname,lastname and patroymic
-     */
-    /**
-     * TODO refactoring. abrasha.
+     * TODO refactoring. abrasha. remade by
+     * @author abrasha
      */
     public static Student getStudentById(int id) {
-        String result = "";
-        String lastname = "";
-        String fname = "";
-        String patronymic = "";
+
+        Student result = null;
         try {
-            preStatement = connection.prepareStatement("SELECT lastname,fname,patronymic FROM students WHERE id_student = ?;");
+            String sql = "SELECT * FROM " + Students.TABLE
+                    + " WHERE " + Students.ID_STUDENT + " = ?;";
+            preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                lastname = rs.getString("lastname");
-                fname = rs.getString("fname");
-                patronymic = rs.getString("patronymic");
-                result = lastname + " " + fname + " " + patronymic;
+                result = new Student.Builder()
+                        .fName(rs.getString(Students.FIRST_NAME))
+                        .lName(rs.getString(Students.LAST_NAME))
+                        .patronymic(rs.getString(Students.PATRONYMIC))
+                        .idStudent(rs.getInt(Students.ID_STUDENT))
+                        .idGroup(rs.getInt(Students.ID_GROUP))
+                        .bday(rs.getString(Students.BIRTHDAY))
+                        .address(rs.getString(Students.ADDRESS))
+                        .phone(rs.getString(Students.PHONE))
+                        .notes(rs.getString(Students.NOTES))
+                        .build();
             }
         } catch (SQLException e) {
-            System.out.println("Error select curator " + e.getMessage());
+            logger.log(Level.SEVERE, "Error getting student by id", e);
         }
-        //bepa
-        Student current = new Student.Builder()
-                .lName(lastname)
-                .fName(fname)
-                .patronymic(patronymic)
-                .build();
-        
-        
-        
-        return current;
+
+        return result;
     }
 
     /**
@@ -474,12 +516,15 @@ public final class DatabaseManager {
      * returns name of subject by id
      */
     /**
-     * TODO refactoring. abrasha.
+     * TODO . abrasha.
+     *
+     * @return Subject object
      */
     private static String GetSubjectById(int id) {
         String result = "";
         try {
-            preStatement = connection.prepareStatement("SELECT name from subjects WHERE id_subject=?;");
+            String sql = "SELECT name from subjects WHERE id_subject = ?;";
+            preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
@@ -494,52 +539,7 @@ public final class DatabaseManager {
     /**
      *
      * @author Shlimazl
-     *
->>>>>>> 10007447d55680b8194105f3e0aee192a3487d04
-     * returns student's group's schedule
-     */
-    /**
-     * TODO refactoring. abrasha.
-     */
-    public static String getScheduleByStudent(int id) {
-        String result = "";
-        String subject = "";
-        int order = 0;
-        int subject_id = 0;
-        int day_id = 0;
-        int current_day = 1;
-        try {
-            preStatement = connection.prepareStatement("SELECT id_day,number,id_subject FROM schedule WHERE id_group = (select id_group FROM students WHERE id_student =?);");
-            preStatement.setInt(1, id);
-            ResultSet rs = preStatement.executeQuery();
-            while (rs.next()) {
-                day_id = rs.getInt("id_day");
-                order = rs.getInt("number");
-                subject_id = rs.getInt("id_subject");
-                subject = GetSubjectById(subject_id);
-
-                if (day_id > current_day) {
-                    current_day++;
-                    result += "\n";
-                }
-                result += day_id + " " + order + "\t" + subject + "\n";
-
-            }
-            day_id = 0;
-            order = 0;
-            subject_id = 0;
-            subject = "";
-        } catch (SQLException e) {
-            System.out.println("Error select schedule " + e.getMessage());
-        }
-        return result;
-    }
-
-    /**
-     *
-     * @author Shlimazl
-     *
-     * returns code of group by id
+     * @return Group Object returns code of group by id
      */
     public static String getGroupById(int id) {
         String result = "";
@@ -549,7 +549,6 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
                 result = rs.getString("code");
-                result += "\t";
             }
         } catch (SQLException e) {
             System.out.println("Error select group " + e.getMessage());
@@ -557,61 +556,4 @@ public final class DatabaseManager {
         return result;
     }
 
-    /**
-     *
-     * @author Shlimazl
-     *
-     * returns teacher's schedule
-     */
-    public static String getScheduleByTeacher(int id) {
-        String result = "";
-        String subject = "";
-        String group = "";
-        int order = 0;
-        int subject_id = 0;
-        int day = 0;
-        int group_id;
-        int current_day = 1;
-        try {
-            preStatement = connection.prepareStatement("SELECT id_day,number,id_subject,id_group FROM schedule WHERE id_teacher = ?;");
-            preStatement.setInt(1, id);
-            ResultSet rs = preStatement.executeQuery();
-            while (rs.next()) {
-                day = rs.getInt("id_day");
-                order = rs.getInt("number");
-                subject_id = rs.getInt("id_subject");
-                group_id = rs.getInt("id_group");
-
-                subject = GetSubjectById(subject_id);
-                group = getGroupById(group_id);
-
-                if (day > current_day) {
-                    current_day++;
-                    result += "\n";
-                }
-                result += day + " " + order + "\t" + group + "\t" + subject + "\n";
-
-            }
-        } catch (SQLException e) {
-            System.out.println("Error select schedule " + e.getMessage());
-        }
-        return result;
-    }
-    
-    /**
-     *
-     * TODO !!!
-     * 
-     */
-    public static ObservableList<String> getAvaliableGroups(){
-        
-        //Запросы
-        
-        ObservableList<String> groups = FXCollections.observableArrayList(
-            "11-A", "11-Б", "11-В",
-            "10-A", "10-Б", "10-В",
-            "9-A", "9-Б", "9-В",
-            "8-A", "8-Б", "8-В", "...");
-        return groups;
-    }
 }
