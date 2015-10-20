@@ -60,6 +60,16 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initSubjectsComboBox();
+        
+        cBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        public void changed(ObservableValue<? extends Boolean> ov,
+            Boolean old_val, Boolean new_val) {
+                if(new_val != null && new_val == true)
+                    cbClasses.setVisible(true);
+                else if(new_val != null && new_val == false)
+                    cbClasses.setVisible(false);
+        }
+    });
     }
 
     @Override
