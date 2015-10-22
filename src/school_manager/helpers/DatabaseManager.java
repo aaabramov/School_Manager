@@ -10,17 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import school_manager.helpers.DatabaseIndexes.Groups;
-import school_manager.helpers.DatabaseIndexes.Students;
-import school_manager.helpers.DatabaseIndexes.Subjects;
-import school_manager.helpers.DatabaseIndexes.Teachers;
-import school_manager.helpers.DatabaseIndexes.Users;
-import school_manager.model.Admin;
-import school_manager.model.Group;
-import school_manager.model.Student;
-import school_manager.model.Subject;
-import school_manager.model.Teacher;
-import school_manager.model.User;
+import school_manager.helpers.DatabaseIndexes.*;
+import school_manager.model.*;
 
 public final class DatabaseManager {
 
@@ -269,7 +260,7 @@ public final class DatabaseManager {
 
         try {
             String sql = "SELECT %1, %2"
-                    + " FROM " + Groups.TABLE;
+                    + " FROM " + Subjects.TABLE + ";";
 
             sql = sql.replace("%1", Subjects.ID_SUBJECT);
             sql = sql.replace("%2", Subjects.NAME);
@@ -296,7 +287,7 @@ public final class DatabaseManager {
 
         try {
             String sql = "SELECT %1, %2"
-                    + " FROM " + Groups.TABLE;
+                    + " FROM " + Groups.TABLE + ";";
 
             sql = sql.replace("%1", Groups.CODE);
             sql = sql.replace("%2", Groups.ID_GROUP);
@@ -500,6 +491,7 @@ public final class DatabaseManager {
             logger.log(Level.SEVERE, "Error selecting group code by curator id", e);
         }
         return result;
+        
     }
 
     /**

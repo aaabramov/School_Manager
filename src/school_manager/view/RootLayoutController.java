@@ -7,7 +7,6 @@ package school_manager.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +16,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.User;
 
 /**
  * FXML Controller class
@@ -49,14 +49,10 @@ public class RootLayoutController implements Initializable, MainReferenced {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
-        splitPane.widthProperty().addListener(new ChangeListener<Number>(){
-
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                menuPane.setMaxWidth(newValue.doubleValue() * 0.2);
-                contentPane.setMaxWidth(newValue.doubleValue() * 0.8);
-            }
-            
+        splitPane.widthProperty().addListener(
+                (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            menuPane.setMaxWidth(newValue.doubleValue() * 0.2);
+            contentPane.setMaxWidth(newValue.doubleValue() * 0.8);
         });
         
 
@@ -75,6 +71,30 @@ public class RootLayoutController implements Initializable, MainReferenced {
     @FXML
     public void imgLogoClicked(){
         mainApp.LogoClicled();
+    }
+    
+    @FXML
+    public void menuLoginAsAdminClicked(){
+        mainApp.setAccountInfo(new User(0, 0, User.AccType.ADMIN));
+        mainApp.setStatus("Forward login as admin");
+    }
+    
+    @FXML
+    public void menuLoginAsStudentClicked(){
+        mainApp.setAccountInfo(new User(0, 0, User.AccType.STUDENT));
+        mainApp.setStatus("Forward login as student");
+    }
+    
+    @FXML
+    public void menuLoginAsTeacherClicked(){
+        mainApp.setAccountInfo(new User(0, 0, User.AccType.TEACHER));
+        mainApp.setStatus("Forward login as teacher");
+    }
+    
+    @FXML
+    public void menuLoginAsParentClicked(){
+        mainApp.setAccountInfo(new User(0, 0, User.AccType.PARENT));
+        mainApp.setStatus("Forward login as parent");
     }
 
     @Override

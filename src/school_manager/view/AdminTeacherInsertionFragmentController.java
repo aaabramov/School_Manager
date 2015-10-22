@@ -8,16 +8,12 @@ package school_manager.view;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import school_manager.MainApp;
@@ -31,7 +27,7 @@ import school_manager.model.Teacher;
 public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {
 
     private MainApp mainApp;
-    private Map<String, Integer> groupOverview;
+    private Map<String, Integer> subjectsOverview;
 
     @FXML
     private TextField tfFname;
@@ -48,31 +44,13 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     @FXML
     private TextField tfNotes;
     @FXML
-    private ComboBox cbSubjects;
-    @FXML
     private HBox hbSubjects;
     @FXML
-    private CheckBox cBox;
-    @FXML
-    private ComboBox cbGroup;
+    private ListView<String> lvSubjects;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initSubjectsComboBox();
-        initGroups();
-
-        cBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Boolean> ov,
-                    Boolean old_val, Boolean new_val) {
-                if (new_val != null && new_val == true) {
-                    cbGroup.setVisible(true);
-                } else if (new_val != null && new_val == false) {
-                    cbGroup.setVisible(false);
-                }
-            }
-        });
+        initSubjectsListView();
 
     }
 
@@ -117,26 +95,26 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         tfAdress.clear();
         tfPhone.clear();
         tfNotes.clear();
-        cbSubjects.setValue(null);
         hbSubjects.getChildren().clear();
-        cbGroup.setValue(null);
-        cBox.selectedProperty().set(false);
     }
 
     @FXML
-    private void initSubjectsComboBox() {
-        ObservableList subjects = FXCollections.observableArrayList(
+    private void initSubjectsListView() {
+        subjectsOverview = DatabaseManager.getSubjectsList();
+        lvSubjects.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        ObservableList subjects = FXCollections.observableArrayList(subjectsOverview.keySet());
+        /*ObservableList subjects = FXCollections.observableArrayList(
                 "Українська мова", "Українська література", new Separator(),
                 "Зарубіжна література", "Англійська мова", new Separator(),
                 "Математика", "Алгебра", "Геометрія", "Інформатика", new Separator(),
                 "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", new Separator(),
                 "Географія", "Біологія", "Фізика", "Хімія", new Separator(),
                 "Музика", "Фізична культура"
-        );
-
-        cbSubjects.setItems(subjects);
+        );*/
+        lvSubjects.setEditable(false);
+        lvSubjects.setItems(subjects);
     }
-
+    /*
     @FXML
     public void btnAddSubjectClicked() {
 
@@ -149,12 +127,6 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
 
         hbSubjects.getChildren().add(new Label(
                 listSubjects[cbSubjects.getSelectionModel().getSelectedIndex()]));
-    }
-
-    @FXML
-    private void initGroups() {
-        groupOverview = DatabaseManager.getGroupsList();
-        ObservableList<String> groupList = FXCollections.observableArrayList(groupOverview.keySet());
-        cbGroup.setItems(groupList);
-    }
+    }*/
+    
 }

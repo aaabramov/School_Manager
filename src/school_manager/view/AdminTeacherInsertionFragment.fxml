@@ -23,9 +23,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Ім’я" GridPane.rowIndex="1" />
@@ -44,22 +42,7 @@
             <Label text="Предмети, що викладає" GridPane.rowIndex="8" />
             <TextField fx:id="tfPhone" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="tfNotes" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <HBox fx:id="hbSubjects" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-               <children>
-                  <ComboBox fx:id="cbSubjects" prefHeight="25.0" prefWidth="373.0" />
-                  <Button mnemonicParsing="false" onAction="#btnAddSubjectClicked" text="Додати" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" top="10.0" />
-               </padding>
-            </HBox>
-            <CheckBox fx:id="cBox" mnemonicParsing="false" text="Класний керівник" GridPane.rowIndex="10" />
-            <ComboBox fx:id="cbGroup" prefHeight="25.0" prefWidth="529.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <ListView fx:id="lvSubjects" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
