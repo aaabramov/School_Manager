@@ -567,12 +567,14 @@ public final class DatabaseManager {
             preStatement = connection.prepareStatement(sql);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                id = rs.getInt(Students.ID_STUDENT);
-                name = rs.getString(Students.FIRST_NAME);
-                lastname = rs.getString(Students.LAST_NAME);
-                patronymic = rs.getString(Students.PATRONYMIC);
-                initials += lastname + " " + name + " " + patronymic;
-                StudentOverview student = new StudentOverview(initials, id);
+
+                id=rs.getInt(Students.ID_STUDENT);
+                name =rs.getString(Students.FIRST_NAME);
+                lastname =rs.getString(Students.LAST_NAME );
+                patronymic =rs.getString(Students.PATRONYMIC);
+                initials+=name + " " + lastname +" " + patronymic;
+                StudentOverview student =new StudentOverview(initials,id);
+
                 result.add(student);
 
             }
@@ -581,8 +583,45 @@ public final class DatabaseManager {
             logger.log(Level.SEVERE, "Error getting student by surname", e);
         }
 
-        return result;
+    
+    return result;
+}
+/**
+     *
+     * @author Shlimazl
+     * @return list of initials of teachers who are not curators 
+     */
+ public static ArrayList <TeacherOverview> getTeachersNotCurators()
+{
+    ArrayList<TeacherOverview> result=new ArrayList<TeacherOverview>();
+    String name="";
+    String lastname="";
+    String patronymic="";
+    String initials="";
+    int id;
+    try {
+            String sql = "SELECT * FROM " + Teachers.TABLE
+                    + " WHERE " + Teachers.ID_TEACHER +
+                    " NOT IN " + "(SELECT " + Groups.ID_CURATOR +  
+                    " FROM "+ Groups.TABLE +");" ;
+            preStatement = connection.prepareStatement(sql);
+           
+             ResultSet rs = preStatement.executeQuery();
+            while (rs.next()) {
+                id=rs.getInt(Teachers.ID_TEACHER);
+                name =rs.getString(Teachers.FIRST_NAME);
+                lastname =rs.getString(Teachers.LAST_NAME);
+                patronymic =rs.getString(Teachers.PATRONYMIC);
+                initials+=name + " " + lastname +" " + patronymic;
+                TeacherOverview teacher =new TeacherOverview(initials,id);
+                result.add(teacher);
+            }
     }
-    // запрос на учителей которые не являются кураторами
-    // SELECT * FROM teachers WHERE teachers.id_teacher NOT IN (SELECT groups.id_curator FROM groups)
+        catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting teachers", e);
+        }
+    return result;
+}
+
+
 }
