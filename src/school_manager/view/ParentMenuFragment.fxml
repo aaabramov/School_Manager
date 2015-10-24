@@ -7,15 +7,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.ParentMenuFragmentController">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.ParentMenuFragmentController">
    <children>
-      <Button fx:id="buttonMyProfile" mnemonicParsing="false" onAction="#buttonMyProfileClicked" prefHeight="25.0" prefWidth="172.0" text="My profile" />
-      <Button disable="true" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="My child" />
-      <Button disable="true" layoutX="20.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Shedule" />
-      <Button disable="true" layoutX="20.0" layoutY="90.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Homework" />
-      <Button disable="true" layoutX="20.0" layoutY="125.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Daybook" />
-      <Button disable="true" layoutX="20.0" layoutY="160.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="172.0" text="Teachers" />
-      <Button layoutX="20.0" layoutY="265.0" mnemonicParsing="false" onAction="#buttonMySettingsClicked" prefHeight="25.0" prefWidth="172.0" text="Settings" />
+      <Button fx:id="buttonMyProfile" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonMyProfileClicked" text="My profile" />
+      <Button disable="true" layoutX="20.0" layoutY="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="My child" />
+      <Button disable="true" layoutX="20.0" layoutY="55.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Shedule" />
+      <Button disable="true" layoutX="20.0" layoutY="90.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Homework" />
+      <Button disable="true" layoutX="20.0" layoutY="125.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Daybook" />
+      <Button disable="true" layoutX="20.0" layoutY="160.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Teachers" />
+      <Button layoutX="20.0" layoutY="265.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonMySettingsClicked" text="Settings" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

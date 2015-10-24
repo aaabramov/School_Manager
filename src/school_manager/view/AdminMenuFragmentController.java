@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import school_manager.MainApp;
@@ -61,7 +60,7 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         try {
 
             loader.setLocation(getClass().getResource("AdminStudentInsertionFragment.fxml"));
-            BorderPane pane = (BorderPane) loader.load();
+            GridPane pane = (GridPane) loader.load();
 
             AdminStudentInsertionFragmentController studentInsertionController = loader.getController();
             studentInsertionController.setMainApp(mainApp);
@@ -128,7 +127,7 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         try {
 
             loader.setLocation(getClass().getResource("AdminGroupInsertionFragment.fxml"));
-            BorderPane pane = (BorderPane) loader.load();
+            GridPane pane = (GridPane) loader.load();
 
             AdminGroupInsertionFragmentController groupInsertionController = loader.getController();
             groupInsertionController.setMainApp(mainApp);

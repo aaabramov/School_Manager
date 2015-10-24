@@ -106,5 +106,6 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         groupOverview = DatabaseManager.getGroupsList();
         ObservableList<String> groupList = FXCollections.observableArrayList(groupOverview.keySet());
         cbGroup.setItems(groupList);
+        cbGroup.setValue(groupList.get(0));
     }
 }

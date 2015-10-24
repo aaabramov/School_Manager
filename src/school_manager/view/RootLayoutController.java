@@ -13,11 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.effect.Effect;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import school_manager.MainApp;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.User;
@@ -51,13 +47,12 @@ public class RootLayoutController implements Initializable, MainReferenced {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        /*
+        
         splitPane.widthProperty().addListener(
                 (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             menuPane.setMaxWidth(newValue.doubleValue() * 0.2);
             contentPane.setMaxWidth(newValue.doubleValue() * 0.8);
-        });*/
+        });
         
 
     }

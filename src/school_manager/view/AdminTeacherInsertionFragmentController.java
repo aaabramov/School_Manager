@@ -66,9 +66,6 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         subjectsOverview.forEach((name, id) -> {
             lvSubjects.getItems().add(new SubjectCell(name, id));
         });
-        lvSubjects.getItems().sort((o1, o2) -> {
-            return o1.getName().compareToIgnoreCase(o2.getName());
-        });
         
     }
 
