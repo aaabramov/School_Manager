@@ -40,7 +40,7 @@ public class MainApp extends Application {
         Scene scene = initRootLayout();
         initLogin();
         //TODO
-        
+
         stage.setTitle("School Manager");
         stage.getIcons().add(new Image("file:view/res/logl_small.png"));
 //        stage.getIcons().add(new Image(new File("view/res/logl_small.png").toURI().toString()));
@@ -93,7 +93,7 @@ public class MainApp extends Application {
             loginController = loader.getController();
             loginController.setMainApp(this);
 
-            setContent(pane);            
+            setContent(pane);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -148,8 +148,26 @@ public class MainApp extends Application {
             switch (accountInfo.getAccType()) {
 
                 case STUDENT:
+                /*VBox studentMenuPane;
 
-                    break;
+                 try {
+                 loader.setLocation(getClass().getResource("view/StudentMenuFragment.fxml"));
+                 studentMenuPane = (VBox) loader.load();
+
+                 TeacherMenuFragmentController teacherMenuController = loader.getController();
+                 teacherMenuController.setMainApp(this);
+                 teacherMenuController.setRootLayout(rootController);
+                 teacherMenuController.setTeacher(accountInfo.getId());
+
+                 setMenu(teacherMenuPane);
+                 setStatus("Teacher menu set.");
+                 //TODO teacherMenuController.setTeacher(null);
+                 } catch (IOException e) {
+                 System.out.println(e.getMessage());
+                 setStatus("Error setting teacher menu...");
+                 }
+
+                 break;*/
                 case TEACHER:
                     VBox teacherMenuPane;
 

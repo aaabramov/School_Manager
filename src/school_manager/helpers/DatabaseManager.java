@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import school_manager.helpers.DatabaseIndexes.*;
@@ -256,7 +258,7 @@ public final class DatabaseManager {
      */
     public static Map<String, Integer> getSubjectsList() {
 
-        Map<String, Integer> list = new HashMap<>();
+        Map<String, Integer> list = new TreeMap<>();
 
         try {
             String sql = "SELECT %1, %2"
@@ -283,7 +285,7 @@ public final class DatabaseManager {
      * @return overview full list of groups
      */
     public static Map<String, Integer> getGroupsList() {
-        Map<String, Integer> list = new HashMap<>();
+        Map<String, Integer> list = new TreeMap<>();
 
         try {
             String sql = "SELECT %1, %2"
@@ -310,7 +312,7 @@ public final class DatabaseManager {
      * @return overview list of students in concrete group
      */
     public static Map<String, Integer> getGroupMembersById(int groupId) {
-        Map<String, Integer> list = new HashMap<>();
+        Map<String, Integer> list = new TreeMap<>();
 
         try {
             String sql = "SELECT %1, %2, %3"
@@ -332,7 +334,6 @@ public final class DatabaseManager {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting group list", e);
         }
-
         return list;
     }
 
