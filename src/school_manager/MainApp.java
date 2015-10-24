@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import school_manager.helpers.DatabaseManager;
@@ -25,8 +27,8 @@ public class MainApp extends Application {
     }
 
     private RootLayoutController rootController;
-    private VBox contentPane;
-    private VBox menuPane;
+    private StackPane contentPane;
+    private StackPane menuPane;
     private Label statusLabel;
     private User accountInfo;
 
@@ -35,9 +37,9 @@ public class MainApp extends Application {
 
         Scene scene = initRootLayout();
         initLogin();
-        //TODO
-        //stage.getIcons().add(new Image(new File("appicon.png").toURI().toString()));
         stage.setScene(scene);
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
         stage.show();
 
     }
@@ -192,7 +194,7 @@ public class MainApp extends Application {
 
                         AdminMenuFragmentController adminMenuController = loader.getController();
                         adminMenuController.setMainApp(this);
-                        
+
                         setMenu(adminMenuPane);
                         setStatus("Admin menu set.");
                     } catch (IOException e) {
@@ -212,31 +214,30 @@ public class MainApp extends Application {
         }
 
     }
-    
-    
+
     /**
-     * 
-     * author bepa 
-    */
-    public void LogoClicled(){
-        if(accountInfo != null){
-            switch(accountInfo.getAccType()){
+     *
+     * author bepa
+     */
+    public void LogoClicled() {
+        if (accountInfo != null) {
+            switch (accountInfo.getAccType()) {
                 case STUDENT:
-                    
+
                     break;
                 case TEACHER:
-                    
+
                     break;
                 case PARENT:
-                    
+
                     break;
                 case ADMIN:
-                    
+
                     break;
                 default:
                     setContent(null);
                     break;
-                        
+
             }
         }
     }

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author abrasha
  */
 public class Subject {
-    
+        
     @JsonProperty("id")
     private int id;
     @JsonProperty("name")

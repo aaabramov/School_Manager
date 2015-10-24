@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
@@ -9,9 +10,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.RootLayoutController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.RootLayoutController">
    <top>
-      <VBox alignment="CENTER" prefHeight="3.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
             <MenuBar>
               <menus>
@@ -38,14 +39,14 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <AnchorPane prefHeight="68.0" prefWidth="800.0">
+            <AnchorPane>
                <children>
                   <ImageView fitHeight="59.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
                         <Image url="@res/logo.png" />
                      </image>
                   </ImageView>
-                  <GridPane hgap="10.0" layoutX="564.0" layoutY="-5.0" prefHeight="59.0" prefWidth="343.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <GridPane hgap="10.0" layoutX="564.0" layoutY="-5.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="214.0" minWidth="10.0" prefWidth="214.0" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="119.0" />
@@ -55,13 +56,13 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="nameLabel" alignment="CENTER_RIGHT" prefHeight="15.0" prefWidth="353.0" text="Name Surname">
+                        <Label fx:id="nameLabel" alignment="CENTER_RIGHT" text="Name Surname">
                            <GridPane.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </GridPane.margin></Label>
-                        <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="25.0" prefWidth="214.0" text="Log out" textAlignment="CENTER" GridPane.columnIndex="1" />
+                        <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" text="Log out" textAlignment="CENTER" GridPane.columnIndex="1" />
                         <TextField promptText="Search.." GridPane.rowIndex="1" />
-                        <Button fx:id="buttonSearch" mnemonicParsing="false" prefHeight="25.0" prefWidth="199.0" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="buttonSearch" mnemonicParsing="false" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -76,15 +77,15 @@
       </VBox>
    </top>
    <center>
-      <SplitPane fx:id="splitPane" dividerPositions="0.0" prefHeight="448.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <SplitPane fx:id="splitPane" dividerPositions="0.2" BorderPane.alignment="CENTER">
          <items>
-            <VBox fx:id="menuPane" alignment="CENTER" />
-            <VBox fx:id="contentPane" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" />
+            <StackPane fx:id="menuPane" minWidth="150.0" />
+            <StackPane fx:id="contentPane" minHeight="300.0" minWidth="400.0" />
          </items>
       </SplitPane>
    </center>
    <bottom>
-      <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="statusLabel" text="Status bar..." />
          </children>
