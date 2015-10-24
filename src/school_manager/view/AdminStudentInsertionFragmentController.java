@@ -38,7 +38,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @FXML
     private TextField tfPatronymic;
     @FXML
-    private ComboBox cbGroup;
+    private ComboBox<String> cbGroup;
     @FXML
     private TextField tfBDay;
     @FXML
@@ -68,11 +68,11 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         String fname = tfFName.getText();
         String lname = tfLName.getText();
         String patronymic = tfPatronymic.getText();
-        int groupId = groupOverview.get((String)cbGroup.getValue());
         String bday = tfBDay.getText();
         String address = tfAddress.getText();
         String phone = tfPhone.getText();
         String notes = tfNotes.getText();
+        int groupId = groupOverview.get(cbGroup.getValue());
         
         Student added = new Student.Builder()
                 .fName(fname)

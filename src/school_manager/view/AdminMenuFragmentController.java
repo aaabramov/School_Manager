@@ -83,7 +83,7 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         try {
 
             loader.setLocation(getClass().getResource("AdminParentInsertionFragment.fxml"));
-            BorderPane pane = (BorderPane) loader.load();
+            GridPane pane = (GridPane) loader.load();
 
             AdminParentInsertionFragmentController parentInsertionController = loader.getController();
             parentInsertionController.setMainApp(mainApp);
