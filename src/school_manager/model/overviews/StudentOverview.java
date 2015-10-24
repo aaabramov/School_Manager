@@ -32,7 +32,7 @@ public class StudentOverview {
     }
 
     public void setInitials(String name) {
-        this.initials = initials;
+        this.initials = name;
     }
 
     @Override
