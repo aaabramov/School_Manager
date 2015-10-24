@@ -6,27 +6,18 @@
 package school_manager.view;
 
 import java.net.URL;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxListCell;
-import javafx.scene.layout.HBox;
-import javax.swing.ListCellRenderer;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.Teacher;
-import school_manager.model.Subject;
 import school_manager.model.overviews.SubjectOverview;
 
 /**
@@ -57,7 +48,6 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initSubjectsListView();
-
     }
     
     private void initSubjectsListView() {

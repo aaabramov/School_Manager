@@ -6,13 +6,18 @@
 package school_manager.view;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import school_manager.MainApp;
+import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
+import school_manager.model.overviews.StudentOverview;
 
 /**
  * FXML Controller class
@@ -23,6 +28,7 @@ public class AdminParentInsertionFragmentController implements Initializable, Ma
 
     
     private MainApp mainApp;
+    private List<StudentOverview> foundStudents;
     
     @FXML
     private TextField tfFname;
@@ -41,11 +47,10 @@ public class AdminParentInsertionFragmentController implements Initializable, Ma
     @FXML
     private TextField tfChildSearch;
     @FXML
-    private ListView lvChild;
+    private ComboBox<StudentOverview> cbFoundedStudents;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }  
     
     @Override
@@ -54,7 +59,7 @@ public class AdminParentInsertionFragmentController implements Initializable, Ma
     }
     
     @FXML
-    private void btnClearClicked(){
+    public void btnClearClicked(){
         tfLname.clear();
         tfFname.clear();
         tfPatronymic.clear();
@@ -63,7 +68,27 @@ public class AdminParentInsertionFragmentController implements Initializable, Ma
         tfPhone.clear();
         tfNotes.clear();
         tfChildSearch.clear();
-        lvChild.setItems(null);
+    }
+    
+    @FXML
+    public void btnAddClicked(){
+        
+    }
+    
+    @FXML
+    public void btnFindChildrenClicked(){
+        cbFoundedStudents.getItems().clear();
+        String surname = tfChildSearch.getText();
+        if (!surname.isEmpty()){
+            foundStudents = DatabaseManager.getStudentsBySurname(surname);
+            if (!foundStudents.isEmpty()){
+                ObservableList<StudentOverview> items = FXCollections.observableArrayList(foundStudents);
+                cbFoundedStudents.setItems(items);
+                cbFoundedStudents.setValue(items.get(0));
+            } else {
+                cbFoundedStudents.setPromptText("No students found");
+            }
+        }
     }
     
 }
