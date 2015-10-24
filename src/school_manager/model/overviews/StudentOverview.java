@@ -31,7 +31,7 @@ public class StudentOverview {
         return initials;
     }
 
-    public void setInitials(String name) {
+    public void setInitials(String initials) {
         this.initials = initials;
     }
 
