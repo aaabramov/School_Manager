@@ -5,48 +5,66 @@
  */
 package school_manager.model;
 
-import java.util.Map;
+import java.util.List;
+import school_manager.model.overviews.StudentOverview;
 
 
 
 public class Group {
 
     private final int idGroup;
+
     private final int idCurator;
-    private String notes;
-    private Map<String, Integer> list;
     private final String code;
+    private final List<StudentOverview> students;
+    private String notes;
     
     
     public Group(Group.Builder builder) {
         this.idGroup = builder.idGroup;
         this.code = builder.code;
-        this.list = builder.list;
+        this.students = builder.list;
         this.idCurator = builder.idCurator;
         this.notes = builder.notes;
+    }
+
+    public int getIdGroup(){
+        return idGroup;
+    }
+
+    public int getIdCurator(){
+        return idCurator;
     }
 
     public void addNote(String note){
         notes += "; " + note;
     }
 
-    public String getNote(){
+    public String getNote() {
         return notes;
     }
 
-    public void removeNotes(){
+    public void removeNotes() {
         notes = "";
     }
 
-    public int getTeacher(){
+    public String getNotes(){
+        return notes;
+    }
+
+    public void setNotes(String notes){
+        this.notes = notes;
+    }
+
+    public int getCuratorId(){
         return idCurator;
     }
 
-    public Map<String, Integer> getList(){
-        return list;
+    public List<StudentOverview> getStudents() {
+        return students;
     }
 
-    public String getCode(){
+    public String getCode() {
         return code;
     }
 
@@ -54,7 +72,7 @@ public class Group {
 
         int idGroup;
         String code;
-        private Map<String, Integer> list;
+        private List<StudentOverview> list;
         int idCurator;
         String notes;
 
@@ -66,7 +84,7 @@ public class Group {
             this.code = code; return this;
         }
 
-        public Group.Builder list(Map<String, Integer> list){
+        public Group.Builder list(List<StudentOverview> list){
             this.list = list; return this;
         }
 
