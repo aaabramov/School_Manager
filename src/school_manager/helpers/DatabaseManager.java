@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import school_manager.helpers.DatabaseIndexes.*;
 import school_manager.model.*;
+import school_manager.model.overviews.StudentOverview;
 
 public final class DatabaseManager {
 
@@ -549,43 +548,41 @@ public final class DatabaseManager {
         }
         return result;
     }
+
     /**
      *
      * @author Shlimazl
      * @return list of student's initials by surname
      */
-public static ArrayList <StudentOverview> getStudentsBySurname(String surname)
-{
-    ArrayList<StudentOverview> result=new ArrayList<StudentOverview>();
-    String name="";
-    String lastname="";
-    String patronymic="";
-    String initials="";
-    int id;
-    try {
+    public static ArrayList<StudentOverview> getStudentsBySurname(String surname) {
+        ArrayList<StudentOverview> result = new ArrayList<>();
+        String name = "";
+        String lastname = "";
+        String patronymic = "";
+        String initials = "";
+        int id;
+        try {
             String sql = "SELECT * FROM " + Students.TABLE
-                    + " WHERE " + Students.LAST_NAME + " LIKE '"+surname+"%';" ;
+                    + " WHERE " + Students.LAST_NAME + " LIKE '" + surname + "%';";
             preStatement = connection.prepareStatement(sql);
-           // preStatement.setString(1, surname);
-             ResultSet rs = preStatement.executeQuery();
+            ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                id=rs.getInt("id_student");
-                name =rs.getString("fname");
-                lastname =rs.getString("lname");
-                patronymic =rs.getString("patronymic");
-                initials+=name + " " + lastname +" " + patronymic;
-                StudentOverview student =new StudentOverview(initials,id);
+                id = rs.getInt(Students.ID_STUDENT);
+                name = rs.getString(Students.FIRST_NAME);
+                lastname = rs.getString(Students.LAST_NAME);
+                patronymic = rs.getString(Students.PATRONYMIC);
+                initials += lastname + " " + name + " " + patronymic;
+                StudentOverview student = new StudentOverview(initials, id);
                 result.add(student);
-                
+
             }
-            
-    }
-    catch (SQLException e) {
+
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting student by surname", e);
         }
-    
-    return result;
-}
+
+        return result;
+    }
     // запрос на учителей которые не являются кураторами
     // SELECT * FROM teachers WHERE teachers.id_teacher NOT IN (SELECT groups.id_curator FROM groups)
 }
