@@ -26,16 +26,16 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Ім’я" GridPane.rowIndex="1" />
-            <Label text="Прізвище" GridPane.rowIndex="2" />
+            <Label text="Прізвище" GridPane.rowIndex="1" />
+            <Label text="Ім’я" GridPane.rowIndex="2" />
             <Label text="По батькові" GridPane.rowIndex="3" />
             <Label text="Клас" GridPane.rowIndex="4" />
             <Label text="День народження" GridPane.rowIndex="5" />
             <Label text="Адреса" GridPane.rowIndex="6" />
             <Label text="Телефон" GridPane.rowIndex="7" />
             <Label text="Нотатки" GridPane.rowIndex="8" />
-            <TextField fx:id="tfFName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="tfLName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="tfLName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="tfFName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="tfPatronymic" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ComboBox fx:id="cbGroup" prefHeight="25.0" prefWidth="461.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>

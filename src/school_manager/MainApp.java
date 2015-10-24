@@ -1,5 +1,6 @@
 package school_manager;
 
+import java.io.File;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -37,6 +39,11 @@ public class MainApp extends Application {
 
         Scene scene = initRootLayout();
         initLogin();
+        //TODO
+        
+        stage.setTitle("School Manager");
+        stage.getIcons().add(new Image("file:view/res/logl_small.png"));
+//        stage.getIcons().add(new Image(new File("view/res/logl_small.png").toURI().toString()));
         stage.setScene(scene);
         stage.setMinHeight(600);
         stage.setMinWidth(800);
@@ -86,7 +93,7 @@ public class MainApp extends Application {
             loginController = loader.getController();
             loginController.setMainApp(this);
 
-            setContent(pane);
+            setContent(pane);            
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

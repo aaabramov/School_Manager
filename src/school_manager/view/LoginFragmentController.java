@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -30,7 +31,7 @@ public class LoginFragmentController implements Initializable, MainReferenced {
     private PasswordField tfPassword;
     @FXML
     private Label infoField;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         infoField.setTextFill(Color.RED);

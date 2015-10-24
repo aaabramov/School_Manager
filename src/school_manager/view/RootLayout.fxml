@@ -41,9 +41,9 @@
             </MenuBar>
             <AnchorPane>
                <children>
-                  <ImageView fitHeight="59.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
-                        <Image url="@res/logo.png" />
+                        <Image url="@res/logo_small.png" />
                      </image>
                   </ImageView>
                   <GridPane hgap="10.0" layoutX="564.0" layoutY="-5.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -56,13 +56,13 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="nameLabel" alignment="CENTER_RIGHT" text="Name Surname">
+                        <Label fx:id="nameLabel" alignment="CENTER_RIGHT" prefHeight="15.0" prefWidth="353.0" text="Виконайте вхід до системи">
                            <GridPane.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </GridPane.margin></Label>
-                        <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" text="Log out" textAlignment="CENTER" GridPane.columnIndex="1" />
-                        <TextField promptText="Search.." GridPane.rowIndex="1" />
-                        <Button fx:id="buttonSearch" mnemonicParsing="false" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="25.0" prefWidth="214.0" text="Вихід" textAlignment="CENTER" GridPane.columnIndex="1" />
+                        <TextField promptText="Пошук ..." GridPane.rowIndex="1" />
+                        <Button fx:id="buttonSearch" mnemonicParsing="false" prefHeight="25.0" prefWidth="199.0" text="Пошук" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                      <opaqueInsets>
                         <Insets />
