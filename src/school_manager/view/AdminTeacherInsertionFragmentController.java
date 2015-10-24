@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import school_manager.MainApp;
@@ -102,15 +103,15 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     private void initSubjectsListView() {
         subjectsOverview = DatabaseManager.getSubjectsList();
         lvSubjects.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        ObservableList subjects = FXCollections.observableArrayList(subjectsOverview.keySet());
-        /*ObservableList subjects = FXCollections.observableArrayList(
+        //ObservableList subjects = FXCollections.observableArrayList(subjectsOverview.keySet());
+        ObservableList subjects = FXCollections.observableArrayList(
                 "Українська мова", "Українська література", new Separator(),
                 "Зарубіжна література", "Англійська мова", new Separator(),
                 "Математика", "Алгебра", "Геометрія", "Інформатика", new Separator(),
                 "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", new Separator(),
                 "Географія", "Біологія", "Фізика", "Хімія", new Separator(),
                 "Музика", "Фізична культура"
-        );*/
+        );
         lvSubjects.setEditable(false);
         lvSubjects.setItems(subjects);
     }
