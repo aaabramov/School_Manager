@@ -615,8 +615,7 @@ public static ArrayList <StudentOverview> getStudentsBySurname(String surname)
                 initials+=name + " " + lastname +" " + patronymic;
                 TeacherOverview teacher =new TeacherOverview(initials,id);
                 result.add(teacher);
-                
-            }
+        }
     }
         catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting teachers", e);
