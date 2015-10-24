@@ -31,8 +31,8 @@ public class TeacherOverview {
         return initials;
     }
 
-    public void setInitials(String name) {
-        this.initials = name;
+    public void setInitials(String initials) {
+        this.initials = initials;
     }
 
     @Override

@@ -6,11 +6,12 @@
 package school_manager.view;
 
 import java.net.URL;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxListCell;
@@ -26,7 +27,7 @@ import school_manager.model.overviews.SubjectOverview;
 public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {
 
     private MainApp mainApp;
-    private Map<String, Integer> subjectsOverview;
+    private List<SubjectOverview> subjectsOverview;
 
     @FXML
     private TextField tfFname;
@@ -49,14 +50,14 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     public void initialize(URL url, ResourceBundle rb) {
         initSubjectsListView();
     }
-    
+
     private void initSubjectsListView() {
         subjectsOverview = DatabaseManager.getSubjectsList();
         lvSubjects.setCellFactory(CheckBoxListCell.forListView(SubjectCell::isChecked));
-        subjectsOverview.forEach((name, id) -> {
-            lvSubjects.getItems().add(new SubjectCell(name, id));
+        subjectsOverview.forEach((e) -> {
+            lvSubjects.getItems().add(new SubjectCell(e.getName(), e.getId()));
         });
-        
+
     }
 
     @Override
@@ -66,7 +67,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
 
     @FXML
     public void btnConfirmClicked() {
-        
+
         String fname = tfFname.getText();
         String lname = tfLname.getText();
         String patronymic = tfPatronymic.getText();
@@ -86,15 +87,20 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
                 .notes(notes)
                 .subjects(subjects)
                 .build();
-        
-        DatabaseManager.insertTeacher(added);
-        btnClearClicked();
+
+        if (DatabaseManager.insertTeacher(added)) {
+            btnClearClicked();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error inserting teacher");
+            alert.setContentText("Check inputed data");
+        }
     }
-    
-    private String parseCheckedSubjects(){
+
+    private String parseCheckedSubjects() {
         final StringBuilder builder = new StringBuilder("");
         lvSubjects.getItems().forEach((e) -> {
-            if (e.isChecked().getValue()){
+            if (e.isChecked().getValue()) {
                 builder.append(e.getId());
                 builder.append(",");
             }
@@ -113,23 +119,23 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         tfPhone.clear();
         tfNotes.clear();
     }
-    
+
     class SubjectCell extends SubjectOverview {
-        
-        public SubjectCell(String name, int id){
+
+        public SubjectCell(String name, int id) {
             super(name, id);
         }
-        
+
         SimpleBooleanProperty checked = new SimpleBooleanProperty(false);
 
         public SimpleBooleanProperty isChecked() {
             return checked;
         }
-        public void setChecked(boolean checked){
+
+        public void setChecked(boolean checked) {
             this.checked.set(checked);
         }
-        
+
     }
-        
-    
+
 }

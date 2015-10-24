@@ -6,12 +6,14 @@
 package school_manager.view;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import school_manager.MainApp;
@@ -19,6 +21,7 @@ import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.Admin;
 import school_manager.model.Student;
+import school_manager.model.overviews.GroupOverview;
 
 /**
  * FXML Controller class
@@ -29,7 +32,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
 
     private MainApp mainApp;
     private Admin admin;
-    private Map<String, Integer> groupOverview;
+    private List<GroupOverview> groupOverview;
     
     @FXML
     private TextField tfFName;
@@ -38,7 +41,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     @FXML
     private TextField tfPatronymic;
     @FXML
-    private ComboBox<String> cbGroup;
+    private ComboBox<GroupOverview> cbGroup;
     @FXML
     private TextField tfBDay;
     @FXML
@@ -72,7 +75,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
         String address = tfAddress.getText();
         String phone = tfPhone.getText();
         String notes = tfNotes.getText();
-        int groupId = groupOverview.get(cbGroup.getValue());
+        int groupId = cbGroup.getSelectionModel().getSelectedItem().getId();
         
         Student added = new Student.Builder()
                 .fName(fname)
@@ -86,7 +89,13 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
                 .build();
         
         btnClearClicked();
-        DatabaseManager.insertStudent(added);
+        if (DatabaseManager.insertStudent(added)) {
+            btnClearClicked();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error inserting student");
+            alert.setContentText("Check inputed data");
+        }
         
     }
     
@@ -104,7 +113,7 @@ public class AdminStudentInsertionFragmentController implements Initializable, M
     
     public void initGroups(){
         groupOverview = DatabaseManager.getGroupsList();
-        ObservableList<String> groupList = FXCollections.observableArrayList(groupOverview.keySet());
+        ObservableList<GroupOverview> groupList = FXCollections.observableArrayList(groupOverview);
         cbGroup.setItems(groupList);
         cbGroup.setValue(groupList.get(0));
     }

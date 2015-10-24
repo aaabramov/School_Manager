@@ -30,9 +30,9 @@ public class StudentOverview {
     public String getInitials() {
         return initials;
     }
+    public void setInitials(String initials) {
+        this.initials = initials;
 
-    public void setInitials(String name) {
-        this.initials = name;
     }
 
     @Override

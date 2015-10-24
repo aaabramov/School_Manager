@@ -26,10 +26,9 @@ import school_manager.model.overviews.StudentOverview;
  */
 public class AdminParentInsertionFragmentController implements Initializable, MainReferenced {
 
-    
     private MainApp mainApp;
     private List<StudentOverview> foundStudents;
-    
+
     @FXML
     private TextField tfFname;
     @FXML
@@ -48,18 +47,18 @@ public class AdminParentInsertionFragmentController implements Initializable, Ma
     private TextField tfChildSearch;
     @FXML
     private ComboBox<StudentOverview> cbFoundedStudents;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }  
-    
+    }
+
     @Override
-    public void setMainApp(MainApp mainApp){
+    public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
-    
+
     @FXML
-    public void btnClearClicked(){
+    public void btnClearClicked() {
         tfLname.clear();
         tfFname.clear();
         tfPatronymic.clear();
@@ -69,19 +68,23 @@ public class AdminParentInsertionFragmentController implements Initializable, Ma
         tfNotes.clear();
         tfChildSearch.clear();
     }
-    
+
     @FXML
-    public void btnAddClicked(){
-        
+    public void btnAddClicked() {
+
     }
-    
+
     @FXML
-    public void btnFindChildrenClicked(){
+    public void btnFindChildrenClicked() {
         cbFoundedStudents.getItems().clear();
         String surname = tfChildSearch.getText();
-        if (!surname.isEmpty()){
+        if (!surname.isEmpty()) {
             foundStudents = DatabaseManager.getStudentsBySurname(surname);
-            if (!foundStudents.isEmpty()){
+            foundStudents.sort((s1, s2) -> {
+                return s1.getInitials().compareTo(s2.getInitials());
+            });
+            
+            if (!foundStudents.isEmpty()) {
                 ObservableList<StudentOverview> items = FXCollections.observableArrayList(foundStudents);
                 cbFoundedStudents.setItems(items);
                 cbFoundedStudents.setValue(items.get(0));
@@ -90,5 +93,5 @@ public class AdminParentInsertionFragmentController implements Initializable, Ma
             }
         }
     }
-    
+
 }
