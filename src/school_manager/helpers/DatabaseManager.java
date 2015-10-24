@@ -7,13 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import school_manager.helpers.DatabaseIndexes.*;
 import school_manager.model.*;
-import school_manager.model.overviews.StudentOverview;
+import school_manager.model.overviews.*;
 
 public final class DatabaseManager {
 
@@ -107,7 +108,9 @@ public final class DatabaseManager {
     /**
      * @author abrasha inserts new student to database
      */
-    public static void insertStudent(Student added) {
+    public static boolean insertStudent(Student added) {
+
+        boolean success = false;
 
         int insertedId = getLastIdFromUsers() + 1;
         int login = insertedId + LOGIN_START;
@@ -140,18 +143,23 @@ public final class DatabaseManager {
             preStatement.executeUpdate();
             logger.log(Level.INFO, "Student inserted.");
             insertUser(new User(insertedId, login, User.AccType.STUDENT));
-
+            success = true;
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error inserting student", e);
 
         }
+
+        return success;
 
     }
 
     /**
      * @author a inserts new teacher to database
      */
-    public static void insertTeacher(Teacher added) {
+    public static boolean insertTeacher(Teacher added) {
+
+        boolean success = false;
+
         int insertedId = getLastIdFromUsers() + 1;
         int login = insertedId + LOGIN_START;
 
@@ -183,10 +191,47 @@ public final class DatabaseManager {
 
             logger.log(Level.INFO, "Teacher inserted");
             insertUser(new User(insertedId, login, User.AccType.TEACHER));
+            success = true;
         } catch (SQLException e) {
             System.out.println("Error adding teacher: " + e.getMessage());
 
         }
+
+        return success;
+
+    }
+
+    /**
+     * @author a inserts new teacher to database
+     */
+    public static boolean insertGroup(Group added) {
+
+        boolean success = false;
+
+        if (!groupCodeIsUsed(added.getCode())) {
+            logger.log(Level.WARNING, "Error inserting group: Group code is already in use", added.getCode());
+        } else {
+            String sqlStatement = "INSERT INTO " + Groups.TABLE
+                    + "(%1, %2, %3) "
+                    + "VALUES (?, ?, ?);";
+            sqlStatement = sqlStatement.replace("%1", Groups.CODE);
+            sqlStatement = sqlStatement.replace("%2", Groups.ID_CURATOR);
+            sqlStatement = sqlStatement.replace("%3", Groups.NOTE);
+            try {
+
+                preStatement = connection.prepareStatement(sqlStatement);
+                preStatement.setString(1, added.getCode());
+                preStatement.setInt(2, added.getCuratorId());
+                preStatement.setString(3, added.getNote());
+                preStatement.executeUpdate();
+
+                logger.log(Level.INFO, "Group inserted");
+                success = true;
+            } catch (SQLException e) {
+                System.out.println("Error adding group: " + e.getMessage());
+            }
+        }
+        return success;
 
     }
 
@@ -256,9 +301,9 @@ public final class DatabaseManager {
      * @author abrasha
      * @return overview full list of subjects
      */
-    public static Map<String, Integer> getSubjectsList() {
+    public static List<SubjectOverview> getSubjectsList() {
 
-        Map<String, Integer> list = new TreeMap<>();
+        List<SubjectOverview> list = new ArrayList<>();
 
         try {
             String sql = "SELECT %1, %2"
@@ -270,7 +315,7 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
 
             while (rs.next()) {
-                list.put(rs.getString(Subjects.NAME), rs.getInt(Subjects.ID_SUBJECT));
+                list.add(new SubjectOverview(rs.getString(Subjects.NAME), rs.getInt(Subjects.ID_SUBJECT)));
             }
 
         } catch (SQLException e) {
@@ -284,8 +329,8 @@ public final class DatabaseManager {
      * @author abrasha
      * @return overview full list of groups
      */
-    public static Map<String, Integer> getGroupsList() {
-        Map<String, Integer> list = new TreeMap<>();
+    public static List<GroupOverview> getGroupsList() {
+        List<GroupOverview> list = new ArrayList<>();
 
         try {
             String sql = "SELECT %1, %2"
@@ -297,7 +342,7 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
 
             while (rs.next()) {
-                list.put(rs.getString(Groups.CODE), rs.getInt(Groups.ID_GROUP));
+                list.add(new GroupOverview(rs.getInt(Groups.ID_GROUP), rs.getString(Groups.CODE)));
             }
 
         } catch (SQLException e) {
@@ -311,24 +356,25 @@ public final class DatabaseManager {
      * @author abrasha
      * @return overview list of students in concrete group
      */
-    public static Map<String, Integer> getGroupMembersById(int groupId) {
-        Map<String, Integer> list = new TreeMap<>();
+    public static List<StudentOverview> getGroupMembersById(int groupId) {
+        List<StudentOverview> list = new ArrayList<>();
 
         try {
-            String sql = "SELECT %1, %2, %3"
+            String sql = "SELECT %1, %2, %3, %4"
                     + " FROM " + Students.TABLE
                     + " WHERE " + Students.ID_GROUP + " = " + groupId + ";";
 
             sql = sql.replace("%1", Students.ID_STUDENT);
             sql = sql.replace("%2", Students.FIRST_NAME);
             sql = sql.replace("%3", Students.LAST_NAME);
+            sql = sql.replace("%4", Students.PATRONYMIC);
 
             preStatement = connection.prepareStatement(sql);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
                 String studentInitials = rs.getString(Students.LAST_NAME) + " "
-                        + rs.getString(Students.FIRST_NAME);
-                list.put(studentInitials, rs.getInt(Students.ID_STUDENT));
+                        + rs.getString(Students.FIRST_NAME) + rs.getString(Students.PATRONYMIC);
+                list.add(new StudentOverview(studentInitials, rs.getInt(Students.ID_STUDENT)));
             }
 
         } catch (SQLException e) {
@@ -544,7 +590,7 @@ public final class DatabaseManager {
                         .build();
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error gettinf group by id", e);
+            logger.log(Level.SEVERE, "Error getting group by id", e);
         }
         return result;
     }
@@ -556,24 +602,19 @@ public final class DatabaseManager {
      */
     public static ArrayList<StudentOverview> getStudentsBySurname(String surname) {
         ArrayList<StudentOverview> result = new ArrayList<>();
-        String name = "";
-        String lastname = "";
-        String patronymic = "";
-        String initials = "";
         int id;
         try {
             String sql = "SELECT * FROM " + Students.TABLE
-                    + " WHERE " + Students.LAST_NAME + " LIKE '" + surname + "%';";
+                    + " WHERE " + Students.LAST_NAME + " LIKE '%" + surname + "%';";
             preStatement = connection.prepareStatement(sql);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-
-                id=rs.getInt(Students.ID_STUDENT);
-                name =rs.getString(Students.FIRST_NAME);
-                lastname =rs.getString(Students.LAST_NAME );
-                patronymic =rs.getString(Students.PATRONYMIC);
-                initials+=name + " " + lastname +" " + patronymic;
-                StudentOverview student =new StudentOverview(initials,id);
+                String initials = "";
+                id = rs.getInt(Students.ID_STUDENT);
+                initials += rs.getString(Students.LAST_NAME) + " "
+                        + rs.getString(Students.FIRST_NAME) + " "
+                        + rs.getString(Students.PATRONYMIC);
+                StudentOverview student = new StudentOverview(initials, id);
 
                 result.add(student);
 
@@ -583,45 +624,56 @@ public final class DatabaseManager {
             logger.log(Level.SEVERE, "Error getting student by surname", e);
         }
 
-    
-    return result;
-}
-/**
+        return result;
+    }
+
+    /**
      *
      * @author Shlimazl
-     * @return list of initials of teachers who are not curators 
+     * @return list of initials of teachers who are not curators
      */
- public static ArrayList <TeacherOverview> getTeachersNotCurators()
-{
-    ArrayList<TeacherOverview> result=new ArrayList<TeacherOverview>();
-    String name="";
-    String lastname="";
-    String patronymic="";
-    String initials="";
-    int id;
-    try {
+    public static List<TeacherOverview> getTeachersNotCurators() {
+        List<TeacherOverview> result = new ArrayList<>();
+        String initials = "";
+        int id;
+        try {
             String sql = "SELECT * FROM " + Teachers.TABLE
-                    + " WHERE " + Teachers.ID_TEACHER +
-                    " NOT IN " + "(SELECT " + Groups.ID_CURATOR +  
-                    " FROM "+ Groups.TABLE +");" ;
+                    + " WHERE " + Teachers.ID_TEACHER
+                    + " NOT IN " + "(SELECT " + Groups.ID_CURATOR
+                    + " FROM " + Groups.TABLE + ");";
             preStatement = connection.prepareStatement(sql);
-           
-             ResultSet rs = preStatement.executeQuery();
+
+            ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                id=rs.getInt(Teachers.ID_TEACHER);
-                name =rs.getString(Teachers.FIRST_NAME);
-                lastname =rs.getString(Teachers.LAST_NAME);
-                patronymic =rs.getString(Teachers.PATRONYMIC);
-                initials+=name + " " + lastname +" " + patronymic;
-                TeacherOverview teacher =new TeacherOverview(initials,id);
+                id = rs.getInt(Teachers.ID_TEACHER);
+                initials += rs.getString(Teachers.LAST_NAME) + " "
+                        + rs.getString(Teachers.FIRST_NAME) + " "
+                        + rs.getString(Teachers.PATRONYMIC);
+                TeacherOverview teacher = new TeacherOverview(initials, id);
                 result.add(teacher);
             }
-    }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting teachers", e);
         }
-    return result;
-}
+        return result;
+    }
 
+    private static boolean groupCodeIsUsed(String code) {
+
+        boolean result = true;
+
+        String sql = "SELECT " + Groups.ID_GROUP
+                + " FROM " + Groups.TABLE
+                + " WHERE " + Groups.CODE + "='" + code + "';";
+
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+            result = rs.next(); // any rows returned
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting teachers", e);
+        }
+
+        return result;
+    }
 
 }
