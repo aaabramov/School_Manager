@@ -19,11 +19,11 @@ public final class DatabaseManager {
     private static Connection connection = null;
     private static Statement statement = null;
     private static PreparedStatement preStatement = null;
-    private static final String DBAddress = "stevie.heliohost.org";
+    private static final String DBAddress = "sql2.freemysqlhosting.net"/*"stevie.heliohost.org"*/;
     private static final String DBPort = "3306";
-    private static final String DBName = "aabrasha_smdb";
-    private static final String DBLogin = "aabrasha_andrew";
-    private static final String DBPassword = "123234q";
+    private static final String DBName = "sql294080"/*"aabrasha_smdb"*/;
+    private static final String DBLogin = "sql294080"/*"aabrasha_andrew"*/;
+    private static final String DBPassword = "kX1*fP2!"/*"123234q"*/;
     private static final int LOGIN_START = 10001;
 
     public static final int STUDENT_TYPE = 0;
@@ -137,12 +137,12 @@ public final class DatabaseManager {
             preStatement.setString(9, added.getNotes());
             preStatement.executeUpdate();
             logger.log(Level.INFO, "Student inserted.");
+            insertUser(new User(insertedId, login, User.AccType.STUDENT));
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error inserting student", e);
 
         }
-        insertUser(new User(insertedId, login, User.AccType.STUDENT));
 
     }
 
@@ -180,12 +180,12 @@ public final class DatabaseManager {
             preStatement.executeUpdate();
 
             logger.log(Level.INFO, "Teacher inserted");
+            insertUser(new User(insertedId, login, User.AccType.TEACHER));
         } catch (SQLException e) {
             System.out.println("Error adding teacher: " + e.getMessage());
 
         }
 
-        insertUser(new User(insertedId, login, User.AccType.TEACHER));
     }
 
     /**
@@ -466,8 +466,7 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl
-     * returns code of curators group
+     * @author Shlimazl returns code of curators group
      */
     public static Group getGroupByCuratorId(int curatorId) {
         Group result = null;
@@ -491,7 +490,7 @@ public final class DatabaseManager {
             logger.log(Level.SEVERE, "Error selecting group code by curator id", e);
         }
         return result;
-        
+
     }
 
     /**
