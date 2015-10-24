@@ -6,20 +6,27 @@
 package school_manager.view;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.HBox;
+import javax.swing.ListCellRenderer;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.Teacher;
+import school_manager.model.Subject;
+import school_manager.model.overviews.SubjectOverview;
 
 /**
  * @author bepa
@@ -44,14 +51,24 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     @FXML
     private TextField tfNotes;
     @FXML
-    private HBox hbSubjects;
-    @FXML
-    private ListView<String> lvSubjects;
+    private ListView<SubjectCell> lvSubjects;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initSubjectsListView();
 
+    }
+    
+    private void initSubjectsListView() {
+        subjectsOverview = DatabaseManager.getSubjectsList();
+        lvSubjects.setCellFactory(CheckBoxListCell.forListView(SubjectCell::isChecked));
+        subjectsOverview.forEach((name, id) -> {
+            lvSubjects.getItems().add(new SubjectCell(name, id));
+        });
+        lvSubjects.getItems().sort((o1, o2) -> {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        });
+        
     }
 
     @Override
@@ -61,14 +78,14 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
 
     @FXML
     public void btnConfirmClicked() {
-
+        
         String fname = tfFname.getText();
         String lname = tfLname.getText();
         String patronymic = tfPatronymic.getText();
         String bday = tfBDay.getText();
         String address = tfAdress.getText();
         String phone = tfPhone.getText();
-        //String subjects = tfSubjects.getText();
+        String subjects = parseCheckedSubjects();
         String notes = tfNotes.getText();
 
         Teacher added = new Teacher.Builder()
@@ -79,11 +96,23 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
                 .address(address)
                 .phone(phone)
                 .notes(notes)
-                //.subjects(subjects)
+                .subjects(subjects)
                 .build();
-
+        
         DatabaseManager.insertTeacher(added);
         btnClearClicked();
+    }
+    
+    private String parseCheckedSubjects(){
+        final StringBuilder builder = new StringBuilder("");
+        lvSubjects.getItems().forEach((e) -> {
+            if (e.isChecked().getValue()){
+                builder.append(e.getId());
+                builder.append(",");
+            }
+        });
+        builder.deleteCharAt(builder.length() - 1);
+        return builder.toString();
     }
 
     @FXML
@@ -95,38 +124,24 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         tfAdress.clear();
         tfPhone.clear();
         tfNotes.clear();
-        hbSubjects.getChildren().clear();
     }
+    
+    class SubjectCell extends SubjectOverview {
+        
+        public SubjectCell(String name, int id){
+            super(name, id);
+        }
+        
+        SimpleBooleanProperty checked = new SimpleBooleanProperty(false);
 
-    @FXML
-    private void initSubjectsListView() {
-        subjectsOverview = DatabaseManager.getSubjectsList();
-        lvSubjects.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        ObservableList subjects = FXCollections.observableArrayList(subjectsOverview.keySet());
-        /*ObservableList subjects = FXCollections.observableArrayList(
-                "Українська мова", "Українська література", new Separator(),
-                "Зарубіжна література", "Англійська мова", new Separator(),
-                "Математика", "Алгебра", "Геометрія", "Інформатика", new Separator(),
-                "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", new Separator(),
-                "Географія", "Біологія", "Фізика", "Хімія", new Separator(),
-                "Музика", "Фізична культура"
-        );*/
-        lvSubjects.setEditable(false);
-        lvSubjects.setItems(subjects);
+        public SimpleBooleanProperty isChecked() {
+            return checked;
+        }
+        public void setChecked(boolean checked){
+            this.checked.set(checked);
+        }
+        
     }
-    /*
-    @FXML
-    public void btnAddSubjectClicked() {
-
-        String[] listSubjects = new String[]{"Українська мова", "Українська література", "",
-            "Зарубіжна література", "Англійська мова", "",
-            "Математика", "Алгебра", "Геометрія", "Інформатика", "",
-            "Історія України", "Всесвітня історія", "Людина і суспільство", "Правознавство", "",
-            "Географія", "Біологія", "Фізика", "Хімія", "",
-            "Музика", "Фізична культура"};
-
-        hbSubjects.getChildren().add(new Label(
-                listSubjects[cbSubjects.getSelectionModel().getSelectedIndex()]));
-    }*/
+        
     
 }

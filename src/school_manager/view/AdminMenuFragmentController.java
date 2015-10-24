@@ -11,7 +11,9 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
@@ -28,114 +30,113 @@ public class AdminMenuFragmentController implements Initializable, MainReference
     Admin admin;
     DatabaseManager DBmanager;
     RootLayoutController rootLayoutController;
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }   
-    
+    }
+
     @Override
-    public void setMainApp(MainApp mainApp){
+    public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
-    
-    public void setRootLayout(RootLayoutController rootContr){
+
+    public void setRootLayout(RootLayoutController rootContr) {
         this.rootLayoutController = rootContr;
     }
-    
-    public void setAdmin(int adminId){
+
+    public void setAdmin(int adminId) {
         this.admin = DBmanager.getAdminById(adminId);
         this.rootLayoutController.nameLabel.setText("You're autorizated as Admin");
     }
-    
-    
+
     @FXML
-    public void buttonAddStudentClicked(){
-        
+    public void buttonAddStudentClicked() {
+
         FXMLLoader loader = new FXMLLoader();
-        
-        try{
-            
+
+        try {
+
             loader.setLocation(getClass().getResource("AdminStudentInsertionFragment.fxml"));
             BorderPane pane = (BorderPane) loader.load();
-            
+
             AdminStudentInsertionFragmentController studentInsertionController = loader.getController();
             studentInsertionController.setMainApp(mainApp);
             studentInsertionController.setAdmin(admin);
-            
+
             mainApp.setContent(pane);
             mainApp.setStatus("Setting student insertion form is set");
-            
-        }catch(IOException e){
+
+        } catch (IOException e) {
             System.out.println(e.getMessage());
             mainApp.setStatus("Error setting student insertion form.");
         }
     }
-    
+
     @FXML
-    public void buttonAddParentClicked(){
-        
+    public void buttonAddParentClicked() {
+
         FXMLLoader loader = new FXMLLoader();
-        
-        try{
-            
+
+        try {
+
             loader.setLocation(getClass().getResource("AdminParentInsertionFragment.fxml"));
             BorderPane pane = (BorderPane) loader.load();
-            
+
             AdminParentInsertionFragmentController parentInsertionController = loader.getController();
             parentInsertionController.setMainApp(mainApp);
-            
+
             mainApp.setContent(pane);
             mainApp.setStatus("Parent insertion form is set");
-            
-        }catch(IOException e){
+
+        } catch (IOException e) {
             System.out.println(e.getMessage());
             mainApp.setStatus("Error setting parent insertion form.");
         }
     }
-    
+
     @FXML
-    public void buttonAddTeacherClicked(){
-        
+    public void buttonAddTeacherClicked() {
+
         FXMLLoader loader = new FXMLLoader();
-        
-        try{
-            
+
+        try {
+
             loader.setLocation(getClass().getResource("AdminTeacherInsertionFragment.fxml"));
-            BorderPane pane = (BorderPane) loader.load();
-            
+            GridPane pane = (GridPane) loader.load();
+
             AdminTeacherInsertionFragmentController teacherInsertionController = loader.getController();
             teacherInsertionController.setMainApp(mainApp);
-            
+
             mainApp.setContent(pane);
             mainApp.setStatus("Teacher insertion form is set");
-            
-        }catch(IOException e){
+
+        } catch (IOException e) {
             System.out.println(e.getMessage());
             mainApp.setStatus("Error setting teacher insertion form.");
         }
     }
-    
+
     @FXML
-    public void buttonAddGroupClicked(){
-        
+    public void buttonAddGroupClicked() {
+
         FXMLLoader loader = new FXMLLoader();
-        
-        try{
-            
+
+        try {
+
             loader.setLocation(getClass().getResource("AdminGroupInsertionFragment.fxml"));
             BorderPane pane = (BorderPane) loader.load();
-            
+
             AdminGroupInsertionFragmentController groupInsertionController = loader.getController();
             groupInsertionController.setMainApp(mainApp);
-            
+
             mainApp.setContent(pane);
             mainApp.setStatus("Teacher insertion form is set");
-            
-        }catch(IOException e){
+
+        } catch (IOException e) {
             System.out.println(e.getMessage());
             mainApp.setStatus("Error setting group insertion form");
         }
