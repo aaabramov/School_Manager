@@ -10,21 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import school_manager.helpers.DatabaseIndexes.Groups;
-import school_manager.helpers.DatabaseIndexes.Students;
-import school_manager.helpers.DatabaseIndexes.Subjects;
-import school_manager.helpers.DatabaseIndexes.Teachers;
-import school_manager.helpers.DatabaseIndexes.Users;
+import school_manager.helpers.DatabaseIndexes.*;
 import school_manager.model.Admin;
 import school_manager.model.Group;
+import school_manager.model.Parent;
 import school_manager.model.Student;
 import school_manager.model.Subject;
 import school_manager.model.Teacher;
 import school_manager.model.User;
-import school_manager.model.overviews.GroupOverview;
-import school_manager.model.overviews.StudentOverview;
-import school_manager.model.overviews.SubjectOverview;
-import school_manager.model.overviews.TeacherOverview;
+import school_manager.model.overviews.*;
 
 public final class DatabaseManager {
 
@@ -162,6 +156,7 @@ public final class DatabaseManager {
         return success;
 
     }
+
     /**
      * @author Shlimazl inserts new parent to database
      */
@@ -184,7 +179,6 @@ public final class DatabaseManager {
         sqlStatement = sqlStatement.replace("%6", Parents.PHONE);
         sqlStatement = sqlStatement.replace("%7", Parents.JOB);
         sqlStatement = sqlStatement.replace("%8", Parents.NOTES);
-        
 
         try {
             preStatement = connection.prepareStatement(sqlStatement);
@@ -205,6 +199,7 @@ public final class DatabaseManager {
         }
         return success;
     }
+
     /**
      * @author abrasha inserts new teacher to database
      */
@@ -260,15 +255,14 @@ public final class DatabaseManager {
         boolean success = false;
         int insertedId = getLastIdFromUsers() + 1;
         int login = insertedId + LOGIN_START;
-        String sqlStatement="INSERT INTO admins VALUES(?,NULL);";
-        try{
+        String sqlStatement = "INSERT INTO " + Admins.TABLE + " VALUES(?, NULL);";
+        try {
             preStatement = connection.prepareStatement(sqlStatement);
             preStatement.setInt(1, insertedId);
             preStatement.executeUpdate();
             insertUser(new User(insertedId, login, User.AccType.ADMIN));
-            success=true;
-        }
-        catch (SQLException e) {
+            success = true;
+        } catch (SQLException e) {
             System.out.println("Error adding admin: " + e.getMessage());
 
         }
@@ -644,10 +638,6 @@ public final class DatabaseManager {
         String initials = "";
         int curatorId;
 
-        // SELECT * FROM teachers INNER JOIN groups 
-        // ON(teachers.id_teacher=groups.id_curator 
-        // AND groups.id_curator = (SELECT groups.id_curator FROM groups INNER JOIN students ON (groups.id_group = 
-        // students.id_group AND students.id_student=5)))
         String sql = "SELECT %1,%2,%3,%4"
                 + " FROM " + Teachers.TABLE
                 + " INNER JOIN " + Groups.TABLE
@@ -719,19 +709,19 @@ public final class DatabaseManager {
      */
     public static List<StudentOverview> getStudentsBySurname(String surname) {
         List<StudentOverview> result = new ArrayList<>();
-        int id;
+        String initials;
+        int studentId;
         try {
             String sql = "SELECT * FROM " + Students.TABLE
                     + " WHERE " + Students.LAST_NAME + " LIKE '%" + surname + "%';";
             preStatement = connection.prepareStatement(sql);
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
-                String initials = "";
-                id = rs.getInt(Students.ID_STUDENT);
+                studentId = rs.getInt(Students.ID_STUDENT);
                 initials = rs.getString(Students.LAST_NAME) + " "
                         + rs.getString(Students.FIRST_NAME) + " "
                         + rs.getString(Students.PATRONYMIC);
-                StudentOverview student = new StudentOverview(initials, id);
+                StudentOverview student = new StudentOverview(initials, studentId);
 
                 result.add(student);
 
@@ -751,7 +741,7 @@ public final class DatabaseManager {
      */
     public static List<TeacherOverview> getTeachersNotCurators() {
         List<TeacherOverview> result = new ArrayList<>();
-        String initials = "";
+        String initials;
         int id;
         try {
             String sql = "SELECT * FROM " + Teachers.TABLE
@@ -792,131 +782,110 @@ public final class DatabaseManager {
 
         return result;
     }
+
     /**
      *
      * @author Shlimazl
      * @return list of initials of student's parents
      */
-    public static ArrayList <ParentOverview> getParentByStudentId(int id)
-    {
-    ArrayList<ParentOverview> result=new ArrayList<ParentOverview>();
-    String name="";
-    String lastname="";
-    String patronymic="";
-    String initials="";
-    int id_parents=0;
-    try{
-        String sql="SELECT p. * FROM "
-                +Students.TABLE+ " s, "
-                +Families.TABLE +" f, " 
-                +Parents.TABLE +" p\n"
-                +"WHERE s."+Students.ID_STUDENT
-                +" = f."+Students.ID_STUDENT
-                +" AND f."+Parents.ID_PARENT
-                +"= p."+Parents.ID_PARENT
-                +" AND s."+Students.ID_STUDENT+ "=?;";
-        preStatement = connection.prepareStatement(sql);
-        preStatement.setInt(1, id);
-        ResultSet rs = preStatement.executeQuery();
-        while(rs.next())
-        {
-            id_parents=rs.getInt(Parents.ID_PARENT);
-            name =rs.getString(Parents.FIRST_NAME);
-            lastname =rs.getString(Parents.LAST_NAME);
-            patronymic =rs.getString(Parents.PATRONYMIC);
-            initials=lastname + " " + name +" " + patronymic;
-            ParentOverview parent =new ParentOverview(initials,id_parents);
-            result.add(parent);
+    public static List<ParentOverview> getParentsByStudentId(int id) {
+        List<ParentOverview> result = new ArrayList<>();
+        String initials;
+        int parentId;
+        try {
+            String sql = "SELECT p. * FROM "
+                    + Students.TABLE + " s, "
+                    + Families.TABLE + " f, "
+                    + Parents.TABLE + " p\n"
+                    + "WHERE s." + Students.ID_STUDENT
+                    + " = f." + Students.ID_STUDENT
+                    + " AND f." + Parents.ID_PARENT
+                    + "= p." + Parents.ID_PARENT
+                    + " AND s." + Students.ID_STUDENT + "=?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            while (rs.next()) {
+                parentId = rs.getInt(Parents.ID_PARENT);
+                initials = rs.getString(Parents.LAST_NAME) + " "
+                        + rs.getString(Parents.FIRST_NAME) + " " + rs.getString(Parents.PATRONYMIC);
+                ParentOverview parent = new ParentOverview(initials, parentId);
+                result.add(parent);
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting parents", e);
         }
-        
+        return result;
+
     }
-    catch(SQLException e){
-        logger.log(Level.SEVERE, "Error getting parents", e);
-    }
-    return result;
-    
-    }
-     /**
+
+    /**
      *
      * @author Shlimazl
      * @return list of initials of parent's childs
      */
-    public static ArrayList <StudentOverview> getStudentByParentId(int id)
-    {
-    ArrayList<StudentOverview> result=new ArrayList<StudentOverview>();
-    String name="";
-    String lastname="";
-    String patronymic="";
-    String initials="";
-    int id_student=0;
-    try{
-        String sql="SELECT s. * FROM "
-                +Students.TABLE+ " s, "
-                +Families.TABLE +" f, " 
-                +Parents.TABLE +" p\n"
-                +"WHERE s."+Students.ID_STUDENT
-                +" = f."+Students.ID_STUDENT
-                +" AND f."+Parents.ID_PARENT
-                +"= p."+Parents.ID_PARENT
-                +" AND p."+Parents.ID_PARENT+ "=?;";
-        preStatement = connection.prepareStatement(sql);
-        preStatement.setInt(1, id);
-        ResultSet rs = preStatement.executeQuery();
-        while(rs.next())
-        {
-            id_student=rs.getInt(Students.ID_STUDENT);
-            name =rs.getString(Students.FIRST_NAME);
-            lastname =rs.getString(Students.LAST_NAME);
-            patronymic =rs.getString(Students.PATRONYMIC);
-            initials=lastname + " " + name +" " + patronymic;
-            StudentOverview student =new StudentOverview(initials,id_student);
-            result.add(student);
+    public static List<StudentOverview> getStudentsByParentId(int id) {
+        List<StudentOverview> result = new ArrayList<>();
+        String initials;
+        int studentId;
+        try {
+            String sql = "SELECT s. * FROM "
+                    + Students.TABLE + " s, "
+                    + Families.TABLE + " f, "
+                    + Parents.TABLE + " p\n"
+                    + "WHERE s." + Students.ID_STUDENT
+                    + " = f." + Students.ID_STUDENT
+                    + " AND f." + Parents.ID_PARENT
+                    + "= p." + Parents.ID_PARENT
+                    + " AND p." + Parents.ID_PARENT + "=?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            while (rs.next()) {
+                studentId = rs.getInt(Students.ID_STUDENT);
+                initials = rs.getString(Students.LAST_NAME) + " "
+                        + rs.getString(Students.FIRST_NAME) + " " + rs.getString(Students.PATRONYMIC);
+                StudentOverview student = new StudentOverview(initials, studentId);
+                result.add(student);
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting students", e);
         }
-        
+        return result;
+
     }
-    catch(SQLException e){
-        logger.log(Level.SEVERE, "Error getting students", e);
-    }
-    return result;
-    
-    }
-    public static ArrayList <ParentOverview> getParentsByGroupId(int id)
-    {
-    ArrayList<ParentOverview> result=new ArrayList<ParentOverview>();
-    String name="";
-    String lastname="";
-    String patronymic="";
-    String initials="";
-    int id_parents=0;
-    try{
-        String sql="SELECT p. * FROM "
-                +Students.TABLE+ " s, "
-                +Families.TABLE +" f, " 
-                +Parents.TABLE +" p\n"
-                +"WHERE s."+Students.ID_STUDENT
-                +" = f."+Students.ID_STUDENT
-                +" AND f."+Parents.ID_PARENT
-                +"= p."+Parents.ID_PARENT
-                +" AND s."+Students.ID_GROUP+ "=?;";
-        preStatement = connection.prepareStatement(sql);
-        preStatement.setInt(1, id);
-        ResultSet rs = preStatement.executeQuery();
-        while(rs.next())
-        {
-            id_parents=rs.getInt(Parents.ID_PARENT);
-            name =rs.getString(Parents.FIRST_NAME);
-                lastname =rs.getString(Parents.LAST_NAME);
-                patronymic =rs.getString(Parents.PATRONYMIC);
-                initials=lastname + " " + name +" " + patronymic;
-                ParentOverview parent =new ParentOverview(initials,id_parents);
+
+    public static List<ParentOverview> getParentsByGroupId(int id) {
+        List<ParentOverview> result = new ArrayList<>();
+        String initials;
+        int parentId;
+        try {
+            String sql = "SELECT p. * FROM "
+                    + Students.TABLE + " s, "
+                    + Families.TABLE + " f, "
+                    + Parents.TABLE + " p\n"
+                    + "WHERE s." + Students.ID_STUDENT
+                    + " = f." + Students.ID_STUDENT
+                    + " AND f." + Parents.ID_PARENT
+                    + "= p." + Parents.ID_PARENT
+                    + " AND s." + Students.ID_GROUP + "=?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            while (rs.next()) {
+                parentId = rs.getInt(Parents.ID_PARENT);
+                initials = rs.getString(Parents.LAST_NAME) + " "
+                        + rs.getString(Parents.FIRST_NAME) + " " + rs.getString(Parents.PATRONYMIC);
+                ParentOverview parent = new ParentOverview(initials, parentId);
                 result.add(parent);
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting parent list", e);
         }
-        
-    }
-    catch(SQLException e){
-        logger.log(Level.SEVERE, "Error getting parents", e);
-    }
-    return result;
+        return result;
     }
 
 }
