@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Accordion;
 import javafx.scene.layout.GridPane;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
@@ -25,33 +25,37 @@ import school_manager.model.Admin;
  */
 public class AdminMenuFragmentController implements Initializable, MainReferenced {
 
-    MainApp mainApp;
-    Admin admin;
-    DatabaseManager DBmanager;
+    private MainApp mainApp;
+    private Admin admin;
     RootLayoutController rootLayoutController;
+    
+    @FXML
+    private Accordion accordionMenu;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        accordionMenu.setExpandedPane(accordionMenu.getPanes().get(0));
     }
 
     @Override
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        this.admin = DatabaseManager.getAdminById(mainApp.getAccountInfo().getId());
+        mainApp.setUserName(admin.toString());
     }
 
     public void setRootLayout(RootLayoutController rootContr) {
         this.rootLayoutController = rootContr;
     }
-
+/*
     public void setAdmin(int adminId) {
-        this.admin = DBmanager.getAdminById(adminId);
+        this.admin = DatabaseManager.getAdminById(adminId);
         this.rootLayoutController.nameLabel.setText("You're autorizated as Admin");
     }
-
+*/
     @FXML
     public void buttonAddStudentClicked() {
 

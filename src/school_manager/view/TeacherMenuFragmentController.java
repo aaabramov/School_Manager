@@ -30,8 +30,6 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
 
     MainApp mainApp;
     Teacher teacher;
-    RootLayoutController rootLayoutController;
-    DatabaseManager DBmanager;
     
     @FXML
     private Button buttonProfile;
@@ -59,16 +57,10 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
     @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
+        this.teacher = DatabaseManager.getTeacherById(mainApp.getAccountInfo().getId());
+        mainApp.setUserName(teacher.toString());
+        
     }
-    
-    public void setRootLayout(RootLayoutController rootContr){
-        this.rootLayoutController = rootContr;
-    }
-    
-    public void setTeacher(int userId){
-        this.teacher = DBmanager.getTeacherById(userId);
-        rootLayoutController.nameLabel.setText(this.teacher.getInitials());
-    } 
     
     @FXML
     public void buttonMyLessonClicked(){
