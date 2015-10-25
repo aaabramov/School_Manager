@@ -215,6 +215,9 @@ public class RootLayoutController implements Initializable, MainReferenced {
     }
 
     private void loadAdminMenu() {
+        
+        
+        
         FXMLLoader loader = new FXMLLoader();
         Accordion adminMenuPane;
 

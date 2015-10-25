@@ -27,8 +27,7 @@ public class AdminMenuFragmentController implements Initializable, MainReference
 
     private MainApp mainApp;
     private Admin admin;
-    RootLayoutController rootLayoutController;
-    
+
     @FXML
     private Accordion accordionMenu;
 
@@ -44,18 +43,14 @@ public class AdminMenuFragmentController implements Initializable, MainReference
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
         this.admin = DatabaseManager.getAdminById(mainApp.getAccountInfo().getId());
-        mainApp.setUserName(admin.toString());
+        if (admin != null) {
+            mainApp.setUserName(admin.toString());
+            DatabaseManager.refreshAdminData(admin.getId());
+        } else {
+            mainApp.setStatus("Error getting admin from db");
+        }
     }
 
-    public void setRootLayout(RootLayoutController rootContr) {
-        this.rootLayoutController = rootContr;
-    }
-/*
-    public void setAdmin(int adminId) {
-        this.admin = DatabaseManager.getAdminById(adminId);
-        this.rootLayoutController.nameLabel.setText("You're autorizated as Admin");
-    }
-*/
     @FXML
     public void buttonAddStudentClicked() {
 
