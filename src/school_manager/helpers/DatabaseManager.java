@@ -565,14 +565,53 @@ public final class DatabaseManager {
     }
 
     /**
+     * @author abrasha
+     */
+    public static Parent getParentById(int id){
+        Parent result = null;
+        try {
+            String sql = "SELECT * FROM " + Parents.TABLE
+                    + " WHERE " + Parents.ID_PARENT + " = ?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if (rs.next()) {
+                result = new Parent.Builder()
+                        .id(rs.getInt(Parents.ID_PARENT))
+                        .fName(rs.getString(Parents.FIRST_NAME))
+                        .lName(rs.getString(Parents.LAST_NAME))
+                        .patronymic(rs.getString(Parents.PATRONYMIC))
+                        .job(rs.getString(Parents.JOB))
+                        .address(rs.getString(Parents.ADDRESS))
+                        .phone(rs.getString(Parents.PHONE))
+                        .notes(rs.getString(Parents.NOTES))
+                        .build();
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting parent by id", e);
+        }
+
+        return result;
+    }
+    
+    /**
      * @author bepa gets teacher from database
      */
     public static Admin getAdminById(int id) {
-
-        //ЗАПРОСЫ ДЛЯ БД И В ИТОГЕ ВСЕ ДАННЫЕ
-        Admin current = new Admin();
-
-        return current;
+        Admin result = null;
+        try {
+            String sql = "SELECT * FROM " + Admins.TABLE
+                    + " WHERE " + Admins.ID_ADMIN + " = ?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if (rs.next()) {
+                result = new Admin(rs.getInt(Admins.ID_ADMIN), rs.getString(Admins.LAST_SEEN));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting admin by id", e);
+        }
+        return result;
     }
 
     /**
