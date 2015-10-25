@@ -240,14 +240,14 @@ public final class DatabaseManager {
             insertUser(new User(insertedId, login, User.AccType.TEACHER));
             success = true;
         } catch (SQLException e) {
-            System.out.println("Error adding teacher: " + e.getMessage());
-
+            logger.log(Level.SEVERE, "Error adding teacher", e);
         }
 
         return success;
 
     }
-     /**
+
+    /**
      * @author Shlimazl inserts new admin to database
      */
     public static boolean insertAdmin() {
@@ -263,34 +263,31 @@ public final class DatabaseManager {
             insertUser(new User(insertedId, login, User.AccType.ADMIN));
             success = true;
         } catch (SQLException e) {
-            System.out.println("Error adding admin: " + e.getMessage());
-
+            logger.log(Level.SEVERE, "Error adding admin", e);
         }
         return success;
     }
-     /**
+
+    /**
      * @author Shlimazl inserts pair parentId-studentId to database
      */
-    public static boolean insertFamily(int idParent,int idChild)
-    {
-        boolean success=false;
-        try
-        {
-        String sqlStatement ="INSERT INTO "+ Families.TABLE+ " VALUES(?,?);";
-        preStatement = connection.prepareStatement(sqlStatement);
-        preStatement.setInt(1,idParent);
-        preStatement.setInt(2,idChild);
-        preStatement.executeUpdate();
-        success=true;
-        }
-        catch (SQLException e) {
-            System.out.println("Error adding family: " + e.getMessage());
+    public static boolean insertFamily(int idParent, int idChild) {
+        boolean success = false;
+        try {
+            String sqlStatement = "INSERT INTO " + Families.TABLE + " VALUES(?,?);";
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, idParent);
+            preStatement.setInt(2, idChild);
+            preStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error adding family", e);
 
         }
-        
+
         return success;
     }
-    
+
     /**
      * @author abrasha inserts new group to database
      */
@@ -318,7 +315,7 @@ public final class DatabaseManager {
                 logger.log(Level.INFO, "Group inserted");
                 success = true;
             } catch (SQLException e) {
-                System.out.println("Error adding group: " + e.getMessage());
+                logger.log(Level.SEVERE, "Error adding group", e);
             }
         }
         return success;
