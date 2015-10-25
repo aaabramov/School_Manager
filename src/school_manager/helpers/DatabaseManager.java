@@ -153,7 +153,49 @@ public final class DatabaseManager {
         return success;
 
     }
+    /**
+     * @author Shlimazl inserts new parent to database
+     */
+    public static boolean insertParent(Parent added) {
 
+        boolean success = false;
+
+        int insertedId = getLastIdFromUsers() + 1;
+        int login = insertedId + LOGIN_START;
+
+        String sqlStatement = "INSERT INTO " + Parents.TABLE
+                + "(%1, %2, %3, %4, %5, %6, %7, %8) "
+                + " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        sqlStatement = sqlStatement.replace("%1", Parents.ID_PARENT);
+        sqlStatement = sqlStatement.replace("%2", Parents.FIRST_NAME);
+        sqlStatement = sqlStatement.replace("%3", Parents.LAST_NAME);
+        sqlStatement = sqlStatement.replace("%4", Parents.PATRONYMIC);
+        sqlStatement = sqlStatement.replace("%5", Parents.ADDRESS);
+        sqlStatement = sqlStatement.replace("%6", Parents.PHONE);
+        sqlStatement = sqlStatement.replace("%7", Parents.JOB);
+        sqlStatement = sqlStatement.replace("%8", Parents.NOTES);
+        
+
+        try {
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, insertedId);
+            preStatement.setString(2, added.getFName());
+            preStatement.setString(3, added.getLName());
+            preStatement.setString(4, added.getPatronymic());
+            preStatement.setString(5, added.getAddress());
+            preStatement.setString(6, added.getPhone());
+            preStatement.setString(7, added.getJob());
+            preStatement.setString(8, added.getNotes());
+            preStatement.executeUpdate();
+            logger.log(Level.INFO, "Parent inserted.");
+            insertUser(new User(insertedId, login, User.AccType.PARENT));
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error inserting parent", e);
+        }
+        return success;
+    }
     /**
      * @author a inserts new teacher to database
      */
