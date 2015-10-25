@@ -676,7 +676,7 @@ public final class DatabaseManager {
             while (rs.next()) {
                 String initials = "";
                 id = rs.getInt(Students.ID_STUDENT);
-                initials += rs.getString(Students.LAST_NAME) + " "
+                initials = rs.getString(Students.LAST_NAME) + " "
                         + rs.getString(Students.FIRST_NAME) + " "
                         + rs.getString(Students.PATRONYMIC);
                 StudentOverview student = new StudentOverview(initials, id);
@@ -711,7 +711,7 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(Teachers.ID_TEACHER);
-                initials += rs.getString(Teachers.LAST_NAME) + " "
+                initials = rs.getString(Teachers.LAST_NAME) + " "
                         + rs.getString(Teachers.FIRST_NAME) + " "
                         + rs.getString(Teachers.PATRONYMIC);
                 TeacherOverview teacher = new TeacherOverview(initials, id);
@@ -739,6 +739,94 @@ public final class DatabaseManager {
         }
 
         return result;
+    }
+    /**
+     *
+     * @author Shlimazl
+     * @return list of initials of student's parents
+     */
+    public static ArrayList <ParentOverview> getParentByStudentId(int id)
+    {
+    ArrayList<ParentOverview> result=new ArrayList<ParentOverview>();
+    String name="";
+    String lastname="";
+    String patronymic="";
+    String initials="";
+    int id_parents=0;
+    try{
+        String sql="SELECT p. * FROM "
+                +Students.TABLE+ " s, "
+                +Families.TABLE +" f, " 
+                +Parents.TABLE +" p\n"
+                +"WHERE s."+Students.ID_STUDENT
+                +" = f."+Students.ID_STUDENT
+                +" AND f."+Parents.ID_PARENT
+                +"= p."+Parents.ID_PARENT
+                +" AND s."+Students.ID_STUDENT+ "=?;";
+        preStatement = connection.prepareStatement(sql);
+        preStatement.setInt(1, id);
+        ResultSet rs = preStatement.executeQuery();
+        while(rs.next())
+        {
+            id_parents=rs.getInt(Parents.ID_PARENT);
+            name =rs.getString(Parents.FIRST_NAME);
+            lastname =rs.getString(Parents.LAST_NAME);
+            patronymic =rs.getString(Parents.PATRONYMIC);
+            initials=lastname + " " + name +" " + patronymic;
+            ParentOverview parent =new ParentOverview(initials,id_parents);
+            result.add(parent);
+        }
+        
+    }
+    catch(SQLException e){
+        logger.log(Level.SEVERE, "Error getting parents", e);
+    }
+    return result;
+    
+    }
+     /**
+     *
+     * @author Shlimazl
+     * @return list of initials of parent's childs
+     */
+    public static ArrayList <StudentOverview> getStudentByParentId(int id)
+    {
+    ArrayList<StudentOverview> result=new ArrayList<StudentOverview>();
+    String name="";
+    String lastname="";
+    String patronymic="";
+    String initials="";
+    int id_student=0;
+    try{
+        String sql="SELECT s. * FROM "
+                +Students.TABLE+ " s, "
+                +Families.TABLE +" f, " 
+                +Parents.TABLE +" p\n"
+                +"WHERE s."+Students.ID_STUDENT
+                +" = f."+Students.ID_STUDENT
+                +" AND f."+Parents.ID_PARENT
+                +"= p."+Parents.ID_PARENT
+                +" AND p."+Parents.ID_PARENT+ "=?;";
+        preStatement = connection.prepareStatement(sql);
+        preStatement.setInt(1, id);
+        ResultSet rs = preStatement.executeQuery();
+        while(rs.next())
+        {
+            id_student=rs.getInt(Students.ID_STUDENT);
+            name =rs.getString(Students.FIRST_NAME);
+            lastname =rs.getString(Students.LAST_NAME);
+            patronymic =rs.getString(Students.PATRONYMIC);
+            initials=lastname + " " + name +" " + patronymic;
+            StudentOverview student =new StudentOverview(initials,id_student);
+            result.add(student);
+        }
+        
+    }
+    catch(SQLException e){
+        logger.log(Level.SEVERE, "Error getting students", e);
+    }
+    return result;
+    
     }
 
 }
