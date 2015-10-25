@@ -153,7 +153,49 @@ public final class DatabaseManager {
         return success;
 
     }
+    /**
+     * @author Shlimazl inserts new parent to database
+     */
+    public static boolean insertParent(Parent added) {
 
+        boolean success = false;
+
+        int insertedId = getLastIdFromUsers() + 1;
+        int login = insertedId + LOGIN_START;
+
+        String sqlStatement = "INSERT INTO " + Parents.TABLE
+                + "(%1, %2, %3, %4, %5, %6, %7, %8) "
+                + " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        sqlStatement = sqlStatement.replace("%1", Parents.ID_PARENT);
+        sqlStatement = sqlStatement.replace("%2", Parents.FIRST_NAME);
+        sqlStatement = sqlStatement.replace("%3", Parents.LAST_NAME);
+        sqlStatement = sqlStatement.replace("%4", Parents.PATRONYMIC);
+        sqlStatement = sqlStatement.replace("%5", Parents.ADDRESS);
+        sqlStatement = sqlStatement.replace("%6", Parents.PHONE);
+        sqlStatement = sqlStatement.replace("%7", Parents.JOB);
+        sqlStatement = sqlStatement.replace("%8", Parents.NOTES);
+        
+
+        try {
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, insertedId);
+            preStatement.setString(2, added.getFName());
+            preStatement.setString(3, added.getLName());
+            preStatement.setString(4, added.getPatronymic());
+            preStatement.setString(5, added.getAddress());
+            preStatement.setString(6, added.getPhone());
+            preStatement.setString(7, added.getJob());
+            preStatement.setString(8, added.getNotes());
+            preStatement.executeUpdate();
+            logger.log(Level.INFO, "Parent inserted.");
+            insertUser(new User(insertedId, login, User.AccType.PARENT));
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error inserting parent", e);
+        }
+        return success;
+    }
     /**
      * @author a inserts new teacher to database
      */
@@ -201,9 +243,27 @@ public final class DatabaseManager {
         return success;
 
     }
+    public static boolean insertAdmin() {
 
+        boolean success = false;
+        int insertedId = getLastIdFromUsers() + 1;
+        int login = insertedId + LOGIN_START;
+        String sqlStatement="INSERT INTO admins VALUES(?,NULL);";
+        try{
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, insertedId);
+            preStatement.executeUpdate();
+            insertUser(new User(insertedId, login, User.AccType.ADMIN));
+            success=true;
+        }
+        catch (SQLException e) {
+            System.out.println("Error adding admin: " + e.getMessage());
+
+        }
+        return success;
+    }
     /**
-     * @author a inserts new teacher to database
+     * @author a inserts new group to database
      */
     public static boolean insertGroup(Group added) {
 
@@ -634,7 +694,7 @@ public final class DatabaseManager {
             while (rs.next()) {
                 String initials = "";
                 id = rs.getInt(Students.ID_STUDENT);
-                initials += rs.getString(Students.LAST_NAME) + " "
+                initials = rs.getString(Students.LAST_NAME) + " "
                         + rs.getString(Students.FIRST_NAME) + " "
                         + rs.getString(Students.PATRONYMIC);
                 StudentOverview student = new StudentOverview(initials, id);
@@ -669,7 +729,7 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(Teachers.ID_TEACHER);
-                initials += rs.getString(Teachers.LAST_NAME) + " "
+                initials = rs.getString(Teachers.LAST_NAME) + " "
                         + rs.getString(Teachers.FIRST_NAME) + " "
                         + rs.getString(Teachers.PATRONYMIC);
                 TeacherOverview teacher = new TeacherOverview(initials, id);
@@ -697,6 +757,132 @@ public final class DatabaseManager {
         }
 
         return result;
+    }
+    /**
+     *
+     * @author Shlimazl
+     * @return list of initials of student's parents
+     */
+    public static ArrayList <ParentOverview> getParentByStudentId(int id)
+    {
+    ArrayList<ParentOverview> result=new ArrayList<ParentOverview>();
+    String name="";
+    String lastname="";
+    String patronymic="";
+    String initials="";
+    int id_parents=0;
+    try{
+        String sql="SELECT p. * FROM "
+                +Students.TABLE+ " s, "
+                +Families.TABLE +" f, " 
+                +Parents.TABLE +" p\n"
+                +"WHERE s."+Students.ID_STUDENT
+                +" = f."+Students.ID_STUDENT
+                +" AND f."+Parents.ID_PARENT
+                +"= p."+Parents.ID_PARENT
+                +" AND s."+Students.ID_STUDENT+ "=?;";
+        preStatement = connection.prepareStatement(sql);
+        preStatement.setInt(1, id);
+        ResultSet rs = preStatement.executeQuery();
+        while(rs.next())
+        {
+            id_parents=rs.getInt(Parents.ID_PARENT);
+            name =rs.getString(Parents.FIRST_NAME);
+            lastname =rs.getString(Parents.LAST_NAME);
+            patronymic =rs.getString(Parents.PATRONYMIC);
+            initials=lastname + " " + name +" " + patronymic;
+            ParentOverview parent =new ParentOverview(initials,id_parents);
+            result.add(parent);
+        }
+        
+    }
+    catch(SQLException e){
+        logger.log(Level.SEVERE, "Error getting parents", e);
+    }
+    return result;
+    
+    }
+     /**
+     *
+     * @author Shlimazl
+     * @return list of initials of parent's childs
+     */
+    public static ArrayList <StudentOverview> getStudentByParentId(int id)
+    {
+    ArrayList<StudentOverview> result=new ArrayList<StudentOverview>();
+    String name="";
+    String lastname="";
+    String patronymic="";
+    String initials="";
+    int id_student=0;
+    try{
+        String sql="SELECT s. * FROM "
+                +Students.TABLE+ " s, "
+                +Families.TABLE +" f, " 
+                +Parents.TABLE +" p\n"
+                +"WHERE s."+Students.ID_STUDENT
+                +" = f."+Students.ID_STUDENT
+                +" AND f."+Parents.ID_PARENT
+                +"= p."+Parents.ID_PARENT
+                +" AND p."+Parents.ID_PARENT+ "=?;";
+        preStatement = connection.prepareStatement(sql);
+        preStatement.setInt(1, id);
+        ResultSet rs = preStatement.executeQuery();
+        while(rs.next())
+        {
+            id_student=rs.getInt(Students.ID_STUDENT);
+            name =rs.getString(Students.FIRST_NAME);
+            lastname =rs.getString(Students.LAST_NAME);
+            patronymic =rs.getString(Students.PATRONYMIC);
+            initials=lastname + " " + name +" " + patronymic;
+            StudentOverview student =new StudentOverview(initials,id_student);
+            result.add(student);
+        }
+        
+    }
+    catch(SQLException e){
+        logger.log(Level.SEVERE, "Error getting students", e);
+    }
+    return result;
+    
+    }
+    public static ArrayList <ParentOverview> getParentsByGroupId(int id)
+    {
+    ArrayList<ParentOverview> result=new ArrayList<ParentOverview>();
+    String name="";
+    String lastname="";
+    String patronymic="";
+    String initials="";
+    int id_parents=0;
+    try{
+        String sql="SELECT p. * FROM "
+                +Students.TABLE+ " s, "
+                +Families.TABLE +" f, " 
+                +Parents.TABLE +" p\n"
+                +"WHERE s."+Students.ID_STUDENT
+                +" = f."+Students.ID_STUDENT
+                +" AND f."+Parents.ID_PARENT
+                +"= p."+Parents.ID_PARENT
+                +" AND s."+Students.ID_GROUP+ "=?;";
+        preStatement = connection.prepareStatement(sql);
+        preStatement.setInt(1, id);
+        ResultSet rs = preStatement.executeQuery();
+        while(rs.next())
+        {
+            id_parents=rs.getInt(Parents.ID_PARENT);
+            name =rs.getString(Parents.FIRST_NAME);
+                lastname =rs.getString(Parents.LAST_NAME);
+                patronymic =rs.getString(Parents.PATRONYMIC);
+                initials=lastname + " " + name +" " + patronymic;
+                ParentOverview parent =new ParentOverview(initials,id_parents);
+                result.add(parent);
+        }
+        
+    }
+    catch(SQLException e){
+        logger.log(Level.SEVERE, "Error getting parents", e);
+    }
+    return result;
     }
 
 }

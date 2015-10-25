@@ -21,6 +21,10 @@ public class Parent extends Person {
         this.job = builder.job;
         
     }
+    public String getJob()
+    {
+        return job;
+    }
     
     public static class Builder extends Person.Builder<Parent.Builder> {
         
