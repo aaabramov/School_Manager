@@ -828,5 +828,43 @@ public final class DatabaseManager {
     return result;
     
     }
+    public static ArrayList <ParentOverview> getParentsByGroupId(int id)
+    {
+    ArrayList<ParentOverview> result=new ArrayList<ParentOverview>();
+    String name="";
+    String lastname="";
+    String patronymic="";
+    String initials="";
+    int id_parents=0;
+    try{
+        String sql="SELECT p. * FROM "
+                +Students.TABLE+ " s, "
+                +Families.TABLE +" f, " 
+                +Parents.TABLE +" p\n"
+                +"WHERE s."+Students.ID_STUDENT
+                +" = f."+Students.ID_STUDENT
+                +" AND f."+Parents.ID_PARENT
+                +"= p."+Parents.ID_PARENT
+                +" AND s."+Students.ID_GROUP+ "=?;";
+        preStatement = connection.prepareStatement(sql);
+        preStatement.setInt(1, id);
+        ResultSet rs = preStatement.executeQuery();
+        while(rs.next())
+        {
+            id_parents=rs.getInt(Parents.ID_PARENT);
+            name =rs.getString(Parents.FIRST_NAME);
+                lastname =rs.getString(Parents.LAST_NAME);
+                patronymic =rs.getString(Parents.PATRONYMIC);
+                initials=lastname + " " + name +" " + patronymic;
+                ParentOverview parent =new ParentOverview(initials,id_parents);
+                result.add(parent);
+        }
+        
+    }
+    catch(SQLException e){
+        logger.log(Level.SEVERE, "Error getting parents", e);
+    }
+    return result;
+    }
 
 }
