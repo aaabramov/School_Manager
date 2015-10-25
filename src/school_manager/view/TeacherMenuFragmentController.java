@@ -58,7 +58,10 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
         this.teacher = DatabaseManager.getTeacherById(mainApp.getAccountInfo().getId());
-        mainApp.setUserName(teacher.toString());
+        if (teacher != null)
+            mainApp.setUserName(teacher.toString());
+        else
+            mainApp.setStatus("Error getting teacher from db");
         
     }
     

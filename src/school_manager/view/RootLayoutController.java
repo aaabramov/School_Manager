@@ -52,9 +52,7 @@ public class RootLayoutController implements Initializable, MainReferenced {
         splitPane.widthProperty().addListener(
                 (observable, oldValue, newValue) -> {
 
-                    menuPane.resize(newValue.doubleValue() * 0.2, menuPane.getHeight());
                     menuPane.setMaxWidth(newValue.doubleValue() * 0.2);
-                    contentPane.resize(newValue.doubleValue() * 0.8, contentPane.getHeight());
                     contentPane.setMaxWidth(newValue.doubleValue() * 0.8);
                 });
     }
@@ -68,12 +66,7 @@ public class RootLayoutController implements Initializable, MainReferenced {
     public void btnLogoutClicked() {
         mainApp.logOut();
     }
-    /*
-     @FXML
-     public void imgLogoClicked(){
-     mainApp.LogoClicked();
-     }*/
-
+   
     @FXML
     public void menuLoginAsAdminClicked() {
         mainApp.setAccountInfo(new User(3, 0, User.AccType.ADMIN));

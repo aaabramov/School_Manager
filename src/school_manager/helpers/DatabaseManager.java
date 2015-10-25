@@ -26,11 +26,11 @@ public final class DatabaseManager {
     private static Connection connection = null;
     private static Statement statement = null;
     private static PreparedStatement preStatement = null;
-    private static final String DBAddress = "sql2.freemysqlhosting.net"/*"stevie.heliohost.org"*/;
+    private static final String DBAddress = "sql2.freemysqlhosting.net";
     private static final String DBPort = "3306";
-    private static final String DBName = "sql294080"/*"aabrasha_smdb"*/;
-    private static final String DBLogin = "sql294080"/*"aabrasha_andrew"*/;
-    private static final String DBPassword = "kX1*fP2!"/*"123234q"*/;
+    private static final String DBName = "sql294080";
+    private static final String DBLogin = "sql294080";
+    private static final String DBPassword = "kX1*fP2!";
     private static final int LOGIN_START = 10001;
 
     public static final int STUDENT_TYPE = 0;

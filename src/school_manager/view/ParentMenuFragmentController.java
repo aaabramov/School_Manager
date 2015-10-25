@@ -24,7 +24,6 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
 
     private MainApp mainApp;
     private Parent parent;
-    RootLayoutController rootLayoutController;
 
     /**
      * Initializes the controller class.
@@ -38,7 +37,10 @@ public class ParentMenuFragmentController implements Initializable, MainReferenc
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
         this.parent = DatabaseManager.getParentById(mainApp.getAccountInfo().getId());
-        mainApp.setUserName(parent.toString());
+        if (parent != null)
+            mainApp.setUserName(parent.toString());
+        else
+            mainApp.setStatus("Error getting parent from db");
     }
 
     @FXML
