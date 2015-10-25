@@ -243,9 +243,27 @@ public final class DatabaseManager {
         return success;
 
     }
+    public static boolean insertAdmin() {
 
+        boolean success = false;
+        int insertedId = getLastIdFromUsers() + 1;
+        int login = insertedId + LOGIN_START;
+        String sqlStatement="INSERT INTO admins VALUES(?,NULL);";
+        try{
+            preStatement = connection.prepareStatement(sqlStatement);
+            preStatement.setInt(1, insertedId);
+            preStatement.executeUpdate();
+            insertUser(new User(insertedId, login, User.AccType.ADMIN));
+            success=true;
+        }
+        catch (SQLException e) {
+            System.out.println("Error adding admin: " + e.getMessage());
+
+        }
+        return success;
+    }
     /**
-     * @author a inserts new teacher to database
+     * @author a inserts new group to database
      */
     public static boolean insertGroup(Group added) {
 
