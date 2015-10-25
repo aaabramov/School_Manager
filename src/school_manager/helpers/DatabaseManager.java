@@ -8,14 +8,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javaapplication5.JavaApplication5;
-import school_manager.helpers.DatabaseIndexes.*;
-import school_manager.model.*;
-import school_manager.model.overviews.*;
+import school_manager.helpers.DatabaseIndexes.Groups;
+import school_manager.helpers.DatabaseIndexes.Students;
+import school_manager.helpers.DatabaseIndexes.Subjects;
+import school_manager.helpers.DatabaseIndexes.Teachers;
+import school_manager.helpers.DatabaseIndexes.Users;
+import school_manager.model.Admin;
+import school_manager.model.Group;
+import school_manager.model.Student;
+import school_manager.model.Subject;
+import school_manager.model.Teacher;
+import school_manager.model.User;
+import school_manager.model.overviews.GroupOverview;
+import school_manager.model.overviews.StudentOverview;
+import school_manager.model.overviews.SubjectOverview;
+import school_manager.model.overviews.TeacherOverview;
 
 public final class DatabaseManager {
 
@@ -630,50 +639,49 @@ public final class DatabaseManager {
     /**
      * @author Shlimazl returns initials of curator of student's group
      */
-    public static TeacherOverview getCuratorByStudent(int id) {
-        String result = "";
-        String lastname = "";
-        String fname = "";
-        String patronymic = "";
-        int id_curator;
-        TeacherOverview res=new TeacherOverview("",0);
+    public static TeacherOverview getCuratorByStudentId(int id) {
+        TeacherOverview result = null;
+        String initials = "";
+        int curatorId;
+
+        // SELECT * FROM teachers INNER JOIN groups 
+        // ON(teachers.id_teacher=groups.id_curator 
+        // AND groups.id_curator = (SELECT groups.id_curator FROM groups INNER JOIN students ON (groups.id_group = 
+        // students.id_group AND students.id_student=5)))
+        String sql = "SELECT %1,%2,%3,%4"
+                + " FROM " + Teachers.TABLE
+                + " INNER JOIN " + Groups.TABLE
+                + " ON( " + Teachers.TABLE + '.' + Teachers.ID_TEACHER
+                + '=' + Groups.TABLE
+                + '.' + Groups.ID_CURATOR
+                + " AND " + Groups.TABLE + '.' + Groups.ID_CURATOR
+                + " =(SELECT " + Groups.ID_CURATOR
+                + " FROM " + Groups.TABLE
+                + " INNER JOIN " + Students.TABLE
+                + " ON( " + Groups.TABLE
+                + '.' + Groups.ID_GROUP
+                + '=' + Students.TABLE + "." + Students.ID_GROUP
+                + " AND " + Students.TABLE
+                + "." + Students.ID_STUDENT + "=? )));";
+
+        sql = sql.replace("%1", Teachers.ID_TEACHER);
+        sql = sql.replace("%2", Teachers.FIRST_NAME);
+        sql = sql.replace("%3", Teachers.LAST_NAME);
+        sql = sql.replace("%4", Teachers.PATRONYMIC);
         try {
-            String sql = "SELECT *from " + Teachers.TABLE
-                    + " INNER JOIN "+ Groups.TABLE 
-                    +" ON( "+Teachers.TABLE
-                    +"."+Teachers.ID_TEACHER
-                    +"="+Groups.TABLE
-                    +"."+Groups.ID_CURATOR
-                    +" AND "+ Groups.TABLE
-                    +"."+Groups.ID_CURATOR
-                    +" =(SELECT "
-                    +Groups.ID_CURATOR+ " FROM "
-                    +Groups.TABLE+ " INNER JOIN "
-                    +Students.TABLE
-                    + " ON( "+Groups.TABLE+"."
-                    +Groups.ID_GROUP+ "="
-                    +Students.TABLE
-                    +"."+Students.ID_GROUP
-                    +" AND "+ Students.TABLE
-                    +"."+Students.ID_STUDENT
-                    +"=? )));";
-                    
             preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                id_curator=rs.getInt(Teachers.ID_TEACHER);
-                lastname=rs.getString(Teachers.LAST_NAME);
-                fname=rs.getString(Teachers.FIRST_NAME);
-                patronymic=rs.getString(Teachers.PATRONYMIC);
-                result+=lastname+" "+fname+" "+patronymic;
-                res.setInitials(result);
-                res.setId(id_curator);
+                curatorId = rs.getInt(Teachers.ID_TEACHER);
+                initials += rs.getString(Teachers.LAST_NAME) + ' '
+                        + rs.getString(Teachers.FIRST_NAME) + ' ' + rs.getString(Teachers.PATRONYMIC);
+                result = new TeacherOverview(initials, curatorId);
             }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error selecting curator by student id", e);
         }
-        return res;
+        return result;
     }
 
     /**
@@ -709,8 +717,8 @@ public final class DatabaseManager {
      * @author Shlimazl
      * @return list of student's initials by surname
      */
-    public static ArrayList<StudentOverview> getStudentsBySurname(String surname) {
-        ArrayList<StudentOverview> result = new ArrayList<>();
+    public static List<StudentOverview> getStudentsBySurname(String surname) {
+        List<StudentOverview> result = new ArrayList<>();
         int id;
         try {
             String sql = "SELECT * FROM " + Students.TABLE
