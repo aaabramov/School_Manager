@@ -197,7 +197,7 @@ public final class DatabaseManager {
         return success;
     }
     /**
-     * @author a inserts new teacher to database
+     * @author abrasha inserts new teacher to database
      */
     public static boolean insertTeacher(Teacher added) {
 
@@ -243,6 +243,9 @@ public final class DatabaseManager {
         return success;
 
     }
+     /**
+     * @author Shlimazl inserts new admin to database
+     */
     public static boolean insertAdmin() {
 
         boolean success = false;
@@ -262,8 +265,31 @@ public final class DatabaseManager {
         }
         return success;
     }
+     /**
+     * @author Shlimazl inserts pair parentId-studentId to database
+     */
+    public static boolean insertFamily(int idParent,int idChild)
+    {
+        boolean success=false;
+        try
+        {
+        String sqlStatement ="INSERT INTO "+ Families.TABLE+ " VALUES(?,?);";
+        preStatement = connection.prepareStatement(sqlStatement);
+        preStatement.setInt(1,idParent);
+        preStatement.setInt(2,idChild);
+        preStatement.executeUpdate();
+        success=true;
+        }
+        catch (SQLException e) {
+            System.out.println("Error adding family: " + e.getMessage());
+
+        }
+        
+        return success;
+    }
+    
     /**
-     * @author a inserts new group to database
+     * @author abrasha inserts new group to database
      */
     public static boolean insertGroup(Group added) {
 
