@@ -14,21 +14,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class Person {
 
     @JsonProperty("fname")
-    private String fName;
+    protected String fName;
     @JsonProperty("lName")
-    private String lName;
+    protected String lName;
     @JsonProperty("patronymic")
-    private String patronymic;
+    protected String patronymic;
     @JsonProperty("address")
-    private String address;
+    protected String address;
     @JsonProperty("phone")
-    private String phone;
+    protected String phone;
     @JsonProperty("bday")
-    private String bday;
+    protected String bday;
     @JsonProperty("notes")
-    private String notes;
+    protected String notes;
     @JsonProperty("id")
-    private int id;
+    protected int id;
     
     /**
     * @author bepa
@@ -85,6 +85,7 @@ public abstract class Person {
 
     public Person(Builder builder) {
         
+        this.id = builder.id;
         this.fName = builder.fName;
         this.lName = builder.lName;
         this.patronymic = builder.patronymic;
@@ -179,7 +180,7 @@ public abstract class Person {
     }
     
     public String getInitials(){
-        return getLName() + " " + getFName();
+        return lName + ' ' + fName + ' ' + patronymic;
     }
 
 }

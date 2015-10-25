@@ -6,6 +6,7 @@
 package school_manager.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.logging.Logger;
 import school_manager.helpers.DatabaseManager;
 
 /**
@@ -106,6 +107,11 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "accType=" + accType + ", login=" + login + ", id=" + id + '}';
     }
 
     public enum AccType {

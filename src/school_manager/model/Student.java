@@ -5,36 +5,25 @@
  */
 package school_manager.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import school_manager.helpers.DatabaseIndexes;
-
 /**
  *
  * @author abrasha
  */
 public class Student extends Person {
 
-    @JsonProperty(DatabaseIndexes.Students.ID_GROUP)
-    private int groupId;
-    
+    private final int groupId;
+
     public int getGroupId() {
         return groupId;
-    }
-
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
     }
 
     public static class Builder extends Person.Builder<Student.Builder> {
 
         private int groupId;
-        private int studentId;
-
-        public Builder() {
-        }
 
         public Builder idGroup(int groupId) {
-            this.groupId = groupId; return this;
+            this.groupId = groupId;
+            return this;
         }
 
         @Override
@@ -51,18 +40,7 @@ public class Student extends Person {
 
     @Override
     public String toString() {
-
-        String result = "Student profile:"
-                + "\nFirst name: " + getFName()
-                + "\nLast name: " + getLName()
-                + "\nPatronymic: " + getPatronymic()
-                //+ "\nStudent id: " + studentId
-                + "\nClass: " + groupId
-                + "\nAddress: " + getAddress()
-                + "\nPhone:" + getPhone()
-                + "\nBirthday: " + getBirthday();
-
-        return result;
+        return getInitials();
 
     }
 

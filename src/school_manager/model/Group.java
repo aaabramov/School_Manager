@@ -8,8 +8,6 @@ package school_manager.model;
 import java.util.List;
 import school_manager.model.overviews.StudentOverview;
 
-
-
 public class Group {
 
     private final int idGroup;
@@ -18,9 +16,8 @@ public class Group {
     private final String code;
     private final List<StudentOverview> students;
     private String notes;
-    
-    
-    public Group(Group.Builder builder) {
+
+    private Group(Group.Builder builder) {
         this.idGroup = builder.idGroup;
         this.code = builder.code;
         this.students = builder.list;
@@ -28,15 +25,15 @@ public class Group {
         this.notes = builder.notes;
     }
 
-    public int getIdGroup(){
+    public int getIdGroup() {
         return idGroup;
     }
 
-    public int getIdCurator(){
+    public int getIdCurator() {
         return idCurator;
     }
 
-    public void addNote(String note){
+    public void addNote(String note) {
         notes += "; " + note;
     }
 
@@ -48,15 +45,15 @@ public class Group {
         notes = "";
     }
 
-    public String getNotes(){
+    public String getNotes() {
         return notes;
     }
 
-    public void setNotes(String notes){
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 
-    public int getCuratorId(){
+    public int getCuratorId() {
         return idCurator;
     }
 
@@ -68,6 +65,11 @@ public class Group {
         return code;
     }
 
+    @Override
+    public String toString() {
+        return code;
+    }
+
     public static class Builder {
 
         int idGroup;
@@ -76,31 +78,34 @@ public class Group {
         int idCurator;
         String notes;
 
-        public Group.Builder idGroup(int idGroup){
-            this.idGroup = idGroup; return this;
+        public Group.Builder idGroup(int idGroup) {
+            this.idGroup = idGroup;
+            return this;
         }
 
-        public Group.Builder code(String code){
-            this.code = code; return this;
+        public Group.Builder code(String code) {
+            this.code = code;
+            return this;
         }
 
-        public Group.Builder list(List<StudentOverview> list){
-            this.list = list; return this;
+        public Group.Builder list(List<StudentOverview> list) {
+            this.list = list;
+            return this;
         }
 
-        public Group.Builder notes(String notes){
-            this.notes = notes; return this;
+        public Group.Builder notes(String notes) {
+            this.notes = notes;
+            return this;
         }
 
-        public Group.Builder idCurator(int idCurator){
-            this.idCurator = idCurator; return this;
+        public Group.Builder idCurator(int idCurator) {
+            this.idCurator = idCurator;
+            return this;
         }
 
-        public Group build(){
+        public Group build() {
             return (new Group(this));
         }
     }
-
-
 
 }
