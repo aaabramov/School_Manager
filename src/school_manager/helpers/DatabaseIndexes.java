@@ -108,4 +108,11 @@ public class DatabaseIndexes {
         public static final String ACC_TYPE = "acc_type";
     }
 
+    public static class Admins {
+
+        public static final String TABLE = "admins";
+        public static final String ID_ADMIN = "id_admin";
+        public static final String LAST_SEEN = "last_seen";
+    }
+
 }
