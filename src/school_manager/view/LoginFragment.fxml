@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
@@ -8,9 +9,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="343.0" prefWidth="571.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.LoginFragmentController">
+<BorderPane prefHeight="343.0" prefWidth="571.0" stylesheets="@css/LogInFragmentStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.LoginFragmentController">
    <top>
-      <ImageView fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="150.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@res/logo_main.png" />
          </image>
@@ -20,7 +21,7 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <center>
-      <GridPane alignment="CENTER" hgap="10.0" prefHeight="84.0" prefWidth="551.0" vgap="10.0" BorderPane.alignment="CENTER">
+      <GridPane alignment="CENTER" hgap="10.0" prefHeight="103.0" prefWidth="551.0" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="119.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="341.0" />
@@ -31,10 +32,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Логін:" />
-            <Label text="Пароль:" GridPane.rowIndex="1" />
-            <TextField fx:id="tfLogin" promptText="Введіть логін ..." GridPane.columnIndex="1" />
-            <PasswordField fx:id="tfPassword" promptText="Введіть пароль ..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label stylesheets="@css/LogInFragmentStyle.css" text="Login:" />
+            <Label text="Password:" GridPane.rowIndex="1" />
+            <TextField fx:id="tfLogin" promptText="Enter login..." styleClass="textField" GridPane.columnIndex="1" />
+            <PasswordField fx:id="tfPassword" promptText="Enter password..." styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="infoField" alignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
          </children>
          <padding>
@@ -46,10 +47,10 @@
       </GridPane>
    </center>
    <bottom>
-      <HBox alignment="BOTTOM_RIGHT" prefHeight="84.0" prefWidth="490.0" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="62.0" prefWidth="551.0" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <Button fx:id="buttonOK" mnemonicParsing="false" onAction="#okClicked" text="Увійти" />
-            <Button fx:id="buttonCancel" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelClicked" text="Скасувати" />
+            <Button fx:id="buttonOK" mnemonicParsing="false" onAction="#okClicked" text="OK" />
+            <Button fx:id="buttonCancel" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelClicked" text="Cancel" />
          </children>
       </HBox>
    </bottom>
