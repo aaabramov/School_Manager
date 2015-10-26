@@ -48,6 +48,13 @@ and open the template in the editor.
     -fx-opacity: 0.6;
 }
 
+.labelTitle{
+    -fx-text-fill: #5555a6;
+    -fx-font-size: 20pt;
+    -fx-font-weight: bold;
+    -fx-border-bottom: 2px;
+}
+
 .text-field {
     -fx-padding: 5 5 5 5;
     -fx-border-color: #4682B4;
@@ -134,6 +141,11 @@ and open the template in the editor.
     -fx-background-color: #bcd1ed;
     -fx-border-color: #4682B4;
     -fx-border-width: 1;
+}
+
+.combo-box:focused {
+    -fx-background-color: #7da1d2;
+    -fx-text-fill: #E6E6FA;
 }
 
  .list-view .list-cell{

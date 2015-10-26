@@ -90,6 +90,7 @@ public class MainApp extends Application {
         if (accountInfo != null) {
             setAccountInfo(null);
             rootController.loadLoginFragment();
+            rootController.nameLabel.setText("Виконайте вхід до системи");
             setStatus("User logged out");
         }
     }
