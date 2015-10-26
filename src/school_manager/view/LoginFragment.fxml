@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="343.0" prefWidth="571.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.LoginFragmentController">
+<BorderPane prefHeight="343.0" prefWidth="571.0" stylesheets="@css/LogInFragmentStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.LoginFragmentController">
    <top>
       <ImageView fitHeight="150.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
@@ -31,10 +32,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Login:" />
+            <Label stylesheets="@css/LogInFragmentStyle.css" text="Login:" />
             <Label text="Password:" GridPane.rowIndex="1" />
-            <TextField fx:id="tfLogin" promptText="Enter login..." GridPane.columnIndex="1" />
-            <PasswordField fx:id="tfPassword" promptText="Enter password..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="tfLogin" promptText="Enter login..." styleClass="textField" GridPane.columnIndex="1" />
+            <PasswordField fx:id="tfPassword" promptText="Enter password..." styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="infoField" alignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
          </children>
          <padding>

@@ -1,0 +1,33 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 26, 2015, 1:19:36 PM
+    Author     : bepa
+*/
+
+.label {
+    -fx-font-size: 13pt;
+    -fx-font-family: "Segoe UI Semibold", Arial, Helvetica, sans-serif;
+    -fx-text-fill: #3c6d96;
+    -fx-opacity: 0.6;
+}
+
+.textField {
+    -fx-padding: 5 5 5 5;
+    -fx-border-color: #4682B4;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-background-color: #ffffec;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 10pt;
+    -fx-text-fill: #000000;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.textField:focused {
+    -fx-background-color: #fbfbdc;
+    -fx-border-color: #4682B4;
+}
