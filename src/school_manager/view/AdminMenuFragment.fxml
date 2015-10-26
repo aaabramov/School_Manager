@@ -7,9 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Accordion fx:id="accordionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="282.0" prefWidth="218.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.AdminMenuFragmentController">
+<Accordion fx:id="accordionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="282.0" prefWidth="218.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.AdminMenuFragmentController">
   <panes>
-    <TitledPane animated="false" text="Add ...">
+    <TitledPane animated="false" styleClass="titledPane" text="Add ...">
          <content>
             <VBox prefHeight="150.0" prefWidth="164.0" spacing="10.0">
                <children>
@@ -25,12 +25,12 @@
             </VBox>
          </content>
     </TitledPane>
-    <TitledPane animated="false" text="Edit ...">
+    <TitledPane animated="false" styleClass="titledPane" text="Edit ...">
          <content>
             <VBox prefHeight="200.0" prefWidth="100.0" />
          </content>
     </TitledPane>
-    <TitledPane animated="false" text="Delete">
+    <TitledPane animated="false" styleClass="titledPane" text="Delete">
          <content>
             <VBox prefHeight="200.0" prefWidth="100.0" />
          </content>

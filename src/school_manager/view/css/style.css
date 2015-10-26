@@ -1,0 +1,152 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 26, 2015, 10:47:47 AM
+    Author     : bepa
+*/
+
+.anchor-pane {
+    -fx-background-color: #E6E6FA;
+}
+
+.split-pane {
+    -fx-background-color: #FFFFFA;    
+}
+
+.split-pane:horizontal> .split-pane-divider {
+    -fx-background-color: #E6E6FA;
+}
+
+.menu-bar{
+    -fx-background-color: #3c6d96;
+    -fx-text-fill: #E6E6FA;
+}
+
+.menu-bar .label {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #E6E6FA;
+    -fx-opacity: 0.6;
+}
+
+.menu-bar .menu:hover, .menu-bar .menu:checked {
+    -fx-background-color: #96b8d4;
+    -fx-text-fill: #E6E6FA;
+}
+
+#menu-label .label {
+    -fx-text-fill: black;
+}
+
+.label {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #5555a6;
+    -fx-opacity: 0.6;
+}
+
+.text-field {
+    -fx-padding: 5 5 5 5;
+    -fx-border-color: #4682B4;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-background-color: #ffffec;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 10pt;
+    -fx-text-fill: #000000;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.text-field:focused {
+    -fx-background-color: #fbfbdc;
+    -fx-border-color: #4682B4;
+}
+
+.text-fieldRoot {
+    -fx-padding: 5 5 5 5;
+    -fx-border-color: #4682B4;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-background-color: #bcd1ed;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 10pt;
+    -fx-text-fill: #4682B4;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.text-fieldRoot:focused {
+    -fx-background-color: #d6e0ef;
+    -fx-border-color: #FFFFFA;
+}
+
+.accordion .titled-pane {
+    -fx-text-fill: black;
+}
+
+.accordion .titled-pane .title {
+    -fx-base: #ffffd8;
+}
+
+.accordion .button {
+    -fx-padding: 5 22 5 22; 
+    -fx-border-color: #FFFACD;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 2px;
+    -fx-background-color: #FFFFE0;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 10pt;
+    -fx-text-fill: black;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.accordion .button:hover, .accordion .button:focused {
+    -fx-background-color: #FFFACD;
+}
+
+.button {
+    -fx-padding: 5 22 5 22; 
+    -fx-border-color: #4682B4;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 2px;
+    -fx-background-color: #bcd1ed;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 10pt;
+    -fx-text-fill: #4682B4;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.button:hover {
+    -fx-border-color: #4682B4;    
+    -fx-background-color: #4682B4;
+    -fx-text-fill: #E6E6FA;
+}
+
+.button:focused {
+    -fx-background-color: #7da1d2;
+    -fx-border-color: #3a6298;
+    -fx-text-fill: #E6E6FA;
+}
+
+.combo-box {
+    -fx-background-color: #bcd1ed;
+    -fx-border-color: #4682B4;
+    -fx-border-width: 1;
+}
+
+ .list-view .list-cell{
+    -fx-background-color: #E6E6FA;
+    -fx-text-fill: black;
+}
+
+ .list-view .list-cell:hover, .combo-box .list-view .list-cell:filled:selected{
+    -fx-background-color: #4682B4;
+    -fx-text-fill: white;
+    -fx-cursor: default;
+}
+
+.list-view .list-cell .check-box:selected{
+    -fx-base: #7da1d2;
+}

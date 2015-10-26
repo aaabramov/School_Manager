@@ -11,7 +11,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" styleClass="anchorPane" stylesheets="@css/RootLayoutStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.RootLayoutController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" styleClass="anchorPane" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.RootLayoutController">
    <top>
       <VBox alignment="CENTER" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -19,23 +19,23 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Login as">
                   <items>
-                    <MenuItem id="menuLabel" mnemonicParsing="false" onAction="#menuLoginAsAdminClicked" text="Admin" />
-                        <MenuItem id="menuLabel" mnemonicParsing="false" onAction="#menuLoginAsStudentClicked" text="Student" />
-                        <MenuItem id="menuLabel" mnemonicParsing="false" onAction="#menuLoginAsTeacherClicked" text="Teacher" />
-                        <MenuItem id="menuLabel" mnemonicParsing="false" onAction="#menuLoginAsParentClicked" text="Parent" />
+                    <MenuItem id="menu-label" mnemonicParsing="false" onAction="#menuLoginAsAdminClicked" text="Admin" />
+                        <MenuItem id="menu-label" mnemonicParsing="false" onAction="#menuLoginAsStudentClicked" text="Student" />
+                        <MenuItem id="menu-label" mnemonicParsing="false" onAction="#menuLoginAsTeacherClicked" text="Teacher" />
+                        <MenuItem id="menu-label" mnemonicParsing="false" onAction="#menuLoginAsParentClicked" text="Parent" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                   <items>
-                    <MenuItem id="menuLabel" mnemonicParsing="false" text="Delete" />
-                        <MenuItem id="menuLabel" mnemonicParsing="false" text="Unspecified Action" />
+                    <MenuItem id="menu-label" mnemonicParsing="false" text="Delete" />
+                        <MenuItem id="menu-label" mnemonicParsing="false" text="Unspecified Action" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
-                    <MenuItem id="menuLabel" mnemonicParsing="false" text="About" />
-                        <MenuItem id="menuLabel" mnemonicParsing="false" text="Unspecified Action" />
-                        <MenuItem id="menuLabel" mnemonicParsing="false" text="Unspecified Action" />
+                    <MenuItem id="menu-label" mnemonicParsing="false" text="About" />
+                        <MenuItem id="menu-label" mnemonicParsing="false" text="Unspecified Action" />
+                        <MenuItem id="menu-label" mnemonicParsing="false" text="Unspecified Action" />
                   </items>
                 </Menu>
               </menus>
@@ -62,7 +62,7 @@
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </GridPane.margin></Label>
                         <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#btnLogoutClicked" prefHeight="25.0" prefWidth="214.0" text="Вихід" textAlignment="CENTER" GridPane.columnIndex="1" />
-                        <TextField promptText="Пошук ..." styleClass="textField" GridPane.rowIndex="1" />
+                        <TextField promptText="Пошук ..." styleClass="text-fieldRoot" GridPane.rowIndex="1" />
                         <Button fx:id="buttonSearch" mnemonicParsing="false" prefHeight="25.0" prefWidth="199.0" text="Пошук" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                      <opaqueInsets>
