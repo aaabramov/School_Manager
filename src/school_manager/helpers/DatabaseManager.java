@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -567,7 +568,7 @@ public final class DatabaseManager {
     /**
      * @author abrasha
      */
-    public static Parent getParentById(int id){
+    public static Parent getParentById(int id) {
         Parent result = null;
         try {
             String sql = "SELECT * FROM " + Parents.TABLE
@@ -593,7 +594,7 @@ public final class DatabaseManager {
 
         return result;
     }
-    
+
     /**
      * @author bepa gets teacher from database
      */
@@ -922,6 +923,23 @@ public final class DatabaseManager {
             logger.log(Level.SEVERE, "Error getting parent list", e);
         }
         return result;
+    }
+
+    public static void refreshAdminData(int id) {
+
+        Runnable r = () -> {
+
+            String sql = "UPDATE " + Admins.TABLE
+                    + " SET " + Admins.LAST_SEEN + "='"
+                    + DateTimeConverter.format(LocalDate.now())
+                    + "' WHERE " + Admins.ID_ADMIN + '=' + id + ';';
+            try {
+                statement.executeUpdate(sql);
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "Error updating admin last seen", e);
+            }
+        };
+        r.run();
     }
 
 }
