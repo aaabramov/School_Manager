@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane vgap="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.AdminParentInsertionFragmentController">
+<GridPane alignment="TOP_CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.AdminParentInsertionFragmentController">
    <children>
       <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="labelTitle" stylesheets="@css/style.css" text="Анкета батьків" GridPane.columnSpan="2">
          <font>
