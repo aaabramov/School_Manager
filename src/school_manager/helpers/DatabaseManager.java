@@ -23,7 +23,7 @@ import school_manager.model.overviews.*;
 
 public final class DatabaseManager {
 
-    private static final Logger logger;
+    private static Logger logger;
     private static Connection connection = null;
     private static Statement statement = null;
     private static PreparedStatement preStatement = null;
@@ -40,9 +40,9 @@ public final class DatabaseManager {
     public static final int ADMIN_TYPE = 3;
 
     /**
-     * @author abrasha loading database connection
+     @author abrasha loading database connection
      */
-    static {
+    public static void load(){
 
         logger = Logger.getLogger(DatabaseManager.class.getCanonicalName());
 
@@ -66,9 +66,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha closes databases connection
+     @author abrasha closes databases connection
      */
-    public static void close() {
+    public static void close(){
 
         try {
             if (connection != null) {
@@ -86,9 +86,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha inserts new user to database
+     @author abrasha inserts new user to database
      */
-    private static void insertUser(User user) {
+    private static void insertUser(User user){
         try {
             String sqlStatement = ("INSERT INTO " + Users.TABLE
                     + " (%1, %2, %3)"
@@ -111,9 +111,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha inserts new student to database
+     @author abrasha inserts new student to database
      */
-    public static boolean insertStudent(Student added) {
+    public static boolean insertStudent(Student added){
 
         boolean success = false;
 
@@ -159,9 +159,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl inserts new parent to database
+     @author Shlimazl inserts new parent to database
      */
-    public static boolean insertParent(Parent added) {
+    public static boolean insertParent(Parent added){
 
         boolean success = false;
 
@@ -202,9 +202,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha inserts new teacher to database
+     @author abrasha inserts new teacher to database
      */
-    public static boolean insertTeacher(Teacher added) {
+    public static boolean insertTeacher(Teacher added){
 
         boolean success = false;
 
@@ -249,9 +249,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl inserts new admin to database
+     @author Shlimazl inserts new admin to database
      */
-    public static boolean insertAdmin() {
+    public static boolean insertAdmin(){
 
         boolean success = false;
         int insertedId = getLastIdFromUsers() + 1;
@@ -270,9 +270,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl inserts pair parentId-studentId to database
+     @author Shlimazl inserts pair parentId-studentId to database
      */
-    public static boolean insertFamily(int idParent, int idChild) {
+    public static boolean insertFamily(int idParent, int idChild){
         boolean success = false;
         try {
             String sqlStatement = "INSERT INTO " + Families.TABLE + " VALUES(?,?);";
@@ -290,9 +290,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha inserts new group to database
+     @author abrasha inserts new group to database
      */
-    public static boolean insertGroup(Group added) {
+    public static boolean insertGroup(Group added){
 
         boolean success = false;
 
@@ -324,9 +324,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha returns the last inserted id from users table
+     @author abrasha returns the last inserted id from users table
      */
-    private static int getLastIdFromUsers() {
+    private static int getLastIdFromUsers(){
 
         int result = -1;
 
@@ -350,9 +350,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha process of authorization into program
+     @author abrasha process of authorization into program
      */
-    public static User authorize(int login, String password) {
+    public static User authorize(int login, String password){
 
         User result = null;
 
@@ -386,10 +386,10 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha
-     * @return overview full list of subjects
+     @author abrasha
+     @return overview full list of subjects
      */
-    public static List<SubjectOverview> getSubjectsList() {
+    public static List<SubjectOverview> getSubjectsList(){
 
         List<SubjectOverview> list = new ArrayList<>();
 
@@ -414,10 +414,10 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha
-     * @return overview full list of groups
+     @author abrasha
+     @return overview full list of groups
      */
-    public static List<GroupOverview> getGroupsList() {
+    public static List<GroupOverview> getGroupsList(){
         List<GroupOverview> list = new ArrayList<>();
 
         try {
@@ -441,10 +441,10 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha
-     * @return overview list of students in concrete group
+     @author abrasha
+     @return overview list of students in concrete group
      */
-    public static List<StudentOverview> getGroupMembersById(int groupId) {
+    public static List<StudentOverview> getGroupMembersById(int groupId){
         List<StudentOverview> list = new ArrayList<>();
 
         try {
@@ -461,7 +461,7 @@ public final class DatabaseManager {
             ResultSet rs = preStatement.executeQuery();
             while (rs.next()) {
                 String studentInitials = rs.getString(Students.LAST_NAME) + " "
-                        + rs.getString(Students.FIRST_NAME) + rs.getString(Students.PATRONYMIC);
+                        + rs.getString(Students.FIRST_NAME) + " " + rs.getString(Students.PATRONYMIC);
                 list.add(new StudentOverview(studentInitials, rs.getInt(Students.ID_STUDENT)));
             }
 
@@ -472,10 +472,10 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha
-     * @return Subject with concrete id
+     @author abrasha
+     @return Subject with concrete id
      */
-    public static Subject getSubjectById(int subjectId) {
+    public static Subject getSubjectById(int subjectId){
 
         Subject result = null;
 
@@ -502,9 +502,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha
+     @author abrasha
      */
-    public static Teacher getTeacherById(int id) {
+    public static Teacher getTeacherById(int id){
 
         Teacher result = null;
         String sql = "SELECT * FROM " + Teachers.TABLE
@@ -534,9 +534,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha
+     @author abrasha
      */
-    public static Student getStudentById(int id) {
+    public static Student getStudentById(int id){
 
         Student result = null;
         try {
@@ -566,9 +566,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author abrasha
+     @author abrasha
      */
-    public static Parent getParentById(int id) {
+    public static Parent getParentById(int id){
         Parent result = null;
         try {
             String sql = "SELECT * FROM " + Parents.TABLE
@@ -596,9 +596,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author bepa gets teacher from database
+     @author bepa gets teacher from database
      */
-    public static Admin getAdminById(int id) {
+    public static Admin getAdminById(int id){
         Admin result = null;
         try {
             String sql = "SELECT * FROM " + Admins.TABLE
@@ -616,9 +616,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl returns code of student's group
+     @author Shlimazl returns code of student's group
      */
-    public static String getGroupCodeByStudent(int id) {
+    public static String getGroupCodeByStudent(int id){
         String result = "";
         String sql = "SELECT " + Groups.CODE
                 + " FROM " + Groups.TABLE
@@ -640,9 +640,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl returns code of curators group
+     @author Shlimazl returns code of curators group
      */
-    public static Group getGroupByCuratorId(int curatorId) {
+    public static Group getGroupByCuratorId(int curatorId){
         Group result = null;
         try {
             String sql = "SELECT * "
@@ -668,9 +668,9 @@ public final class DatabaseManager {
     }
 
     /**
-     * @author Shlimazl returns initials of curator of student's group
+     @author Shlimazl returns initials of curator of student's group
      */
-    public static TeacherOverview getCuratorByStudentId(int id) {
+    public static TeacherOverview getCuratorByStudentId(int id){
         TeacherOverview result = null;
         String initials = "";
         int curatorId;
@@ -712,11 +712,11 @@ public final class DatabaseManager {
     }
 
     /**
-     *
-     * @author Shlimazl
-     * @return Group Object returns code of group by id
+
+     @author Shlimazl
+     @return Group Object returns code of group by id
      */
-    public static Group getGroupById(int id) {
+    public static Group getGroupById(int id){
         Group result = null;
         try {
             String sql = "SELECT * FROM " + Groups.TABLE
@@ -740,11 +740,11 @@ public final class DatabaseManager {
     }
 
     /**
-     *
-     * @author Shlimazl
-     * @return list of student's initials by surname
+
+     @author Shlimazl
+     @return list of student's initials by surname
      */
-    public static List<StudentOverview> getStudentsBySurname(String surname) {
+    public static List<StudentOverview> getStudentsBySurname(String surname){
         List<StudentOverview> result = new ArrayList<>();
         String initials;
         int studentId;
@@ -772,11 +772,11 @@ public final class DatabaseManager {
     }
 
     /**
-     *
-     * @author Shlimazl
-     * @return list of initials of teachers who are not curators
+
+     @author Shlimazl
+     @return list of initials of teachers who are not curators
      */
-    public static List<TeacherOverview> getTeachersNotCurators() {
+    public static List<TeacherOverview> getTeachersNotCurators(){
         List<TeacherOverview> result = new ArrayList<>();
         String initials;
         int id;
@@ -802,7 +802,7 @@ public final class DatabaseManager {
         return result;
     }
 
-    private static boolean groupCodeIsUsed(String code) {
+    private static boolean groupCodeIsUsed(String code){
 
         boolean result = true;
 
@@ -821,11 +821,11 @@ public final class DatabaseManager {
     }
 
     /**
-     *
-     * @author Shlimazl
-     * @return list of initials of student's parents
+
+     @author Shlimazl
+     @return list of initials of student's parents
      */
-    public static List<ParentOverview> getParentsByStudentId(int id) {
+    public static List<ParentOverview> getParentsByStudentId(int id){
         List<ParentOverview> result = new ArrayList<>();
         String initials;
         int parentId;
@@ -858,11 +858,11 @@ public final class DatabaseManager {
     }
 
     /**
-     *
-     * @author Shlimazl
-     * @return list of initials of parent's childs
+
+     @author Shlimazl
+     @return list of initials of parent's childs
      */
-    public static List<StudentOverview> getStudentsByParentId(int id) {
+    public static List<StudentOverview> getStudentsByParentId(int id){
         List<StudentOverview> result = new ArrayList<>();
         String initials;
         int studentId;
@@ -894,7 +894,7 @@ public final class DatabaseManager {
 
     }
 
-    public static List<ParentOverview> getParentsByGroupId(int id) {
+    public static List<ParentOverview> getParentsByGroupId(int id){
         List<ParentOverview> result = new ArrayList<>();
         String initials;
         int parentId;
@@ -925,7 +925,7 @@ public final class DatabaseManager {
         return result;
     }
 
-    public static void refreshAdminData(int id) {
+    public static void refreshAdminData(int id){
 
         Runnable r = () -> {
 

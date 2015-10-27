@@ -26,6 +26,8 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+        new Thread(DatabaseManager::load).start();
+        
         logger = Logger.getLogger(getClass().getCanonicalName());
 
         Scene scene = initRootLayout();
