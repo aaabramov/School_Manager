@@ -66,7 +66,7 @@ public class RootLayoutController implements Initializable, MainReferenced {
     public void btnLogoutClicked() {
         mainApp.logOut();
     }
-   
+
     @FXML
     public void menuLoginAsAdminClicked() {
         mainApp.setAccountInfo(new User(3, 0, User.AccType.ADMIN));
@@ -146,7 +146,6 @@ public class RootLayoutController implements Initializable, MainReferenced {
         }
     }
 
-    
     public void loadLoginFragment() {
         menuPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader();
@@ -166,14 +165,14 @@ public class RootLayoutController implements Initializable, MainReferenced {
             mainApp.getLogger().log(Level.SEVERE, "Error initializing Login Layout", e);
         }
     }
-    
+
     public void loadMenu(User.AccType accType) {
 
         switch (accType) {
 
             case STUDENT:
                 setStatus("Student form has not been created yet.");
-                // loadStudentMenu();
+                loadStudentMenu();
                 break;
             case TEACHER:
                 loadTeacherMenu();
@@ -193,6 +192,21 @@ public class RootLayoutController implements Initializable, MainReferenced {
 
     private void loadStudentMenu() {
         FXMLLoader loader = new FXMLLoader();
+        VBox studentMenuPane;
+
+        try {
+            loader.setLocation(getClass().getResource("StudentMenuFragment.fxml"));
+            studentMenuPane = (VBox) loader.load();
+
+            StudentMenuFragmentController studentMenuController = loader.getController();
+            studentMenuController.setMainApp(mainApp);
+
+            setMenu(studentMenuPane);
+            setStatus("Student menu set.");
+        } catch (IOException e) {
+            mainApp.getLogger().log(Level.SEVERE, "Error setting student menu", e);
+            setStatus("Error setting student menu...");
+        }
     }
 
     private void loadTeacherMenu() {
@@ -215,9 +229,7 @@ public class RootLayoutController implements Initializable, MainReferenced {
     }
 
     private void loadAdminMenu() {
-        
-        
-        
+
         FXMLLoader loader = new FXMLLoader();
         Accordion adminMenuPane;
 
