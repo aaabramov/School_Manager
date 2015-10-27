@@ -32,7 +32,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label stylesheets="@css/LogInFragmentStyle.css" text="Login:" />
+            <Label text="Login:" />
             <Label text="Password:" GridPane.rowIndex="1" />
             <TextField fx:id="tfLogin" promptText="Enter login..." styleClass="textField" GridPane.columnIndex="1" />
             <PasswordField fx:id="tfPassword" promptText="Enter password..." styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
