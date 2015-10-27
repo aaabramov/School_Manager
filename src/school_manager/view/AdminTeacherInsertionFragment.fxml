@@ -19,7 +19,7 @@
       <Label text="Нотатки" GridPane.rowIndex="7" />
       <Label text="Предмети" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.vgrow="ALWAYS" />
       <ListView fx:id="lvSubjects" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.vgrow="ALWAYS" />
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Анкета вчителя" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" styleClass="labelTitle" stylesheets="@css/style.css" text="Анкета вчителя" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font name="Times New Roman" size="30.0" />
          </font>
