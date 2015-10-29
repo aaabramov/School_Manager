@@ -40,6 +40,30 @@ public abstract class Schedule<T extends Lesson> {
         String classroom;
         Day day;
 
+        public int getOrder(){
+            return order;
+        }
+
+        public void setOrder(int order){
+            this.order = order;
+        }
+
+        public String getClassroom(){
+            return classroom;
+        }
+
+        public void setClassroom(String classroom){
+            this.classroom = classroom;
+        }
+
+        public Day getDay(){
+            return day;
+        }
+
+        public void setDay(Day day){
+            this.day = day;
+        }
+
         public Lesson(int subjectId, String name, String classroom, int order, Day day){
             super(name, subjectId);
             this.classroom = classroom;
