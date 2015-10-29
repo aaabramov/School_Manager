@@ -157,12 +157,12 @@ and open the template in the editor.
     -fx-text-fill: #E6E6FA;
 }
 
- .list-view .list-cell{
+.list-view .list-cell{
     -fx-background-color: #E6E6FA;
     -fx-text-fill: black;
 }
 
- .list-view .list-cell:hover, .combo-box .list-view .list-cell:filled:selected{
+.list-view .list-cell:hover, .combo-box .list-view .list-cell:filled:selected{
     -fx-background-color: #4682B4;
     -fx-text-fill: white;
     -fx-cursor: default;
