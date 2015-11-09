@@ -88,11 +88,12 @@ public class DatabaseIndexes {
         public static final String PRESENCE = "presence";
     }
 
-    public static class Schedule {
+    public static class Schedules {
 
         public static final String TABLE = "schedule";
         public static final String ID_DAY = "id_day";
         public static final String ID_GROUP = "id_group";
+        public static final String CLASSROOM = "classroom";
         public static final String ID_LESSON = "id_lesson";
         public static final String ID_SUBJECT = "id_subject";
         public static final String ID_TEACHER = "id_teacher";

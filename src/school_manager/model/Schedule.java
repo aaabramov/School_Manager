@@ -64,11 +64,53 @@ public abstract class Schedule<T extends Lesson> {
             this.day = day;
         }
 
-        public Lesson(int subjectId, String name, String classroom, int order, Day day){
+        public Lesson(int subjectId, String name, String classroom, int order, int day){
             super(name, subjectId);
             this.classroom = classroom;
             this.order = order;
-            this.day = day;
+            switch(day)
+            {
+                case 1:
+                {
+                    this.day =Schedule.Day.MONDAY ;
+                    break;
+                }
+                case 2:
+                {
+                    this.day =Schedule.Day.TUESDAY ;
+                    break;
+                }
+                case 3:
+                {
+                    this.day =Schedule.Day.WEDNESDAY ;
+                    break;
+                }
+                case 4:
+                {
+                    this.day =Schedule.Day.THURSDAY ;
+                    break;
+                }
+                case 5:
+                {
+                    this.day =Schedule.Day.FRIDAY ;
+                    break;
+                }
+                case 6:
+                {
+                    this.day =Schedule.Day.SATURDAY ;
+                    break;
+                }
+                case 7:
+                {
+                    this.day =Schedule.Day.SUNDAY ;
+                    break;
+                }
+                default:
+                {
+                    this.day =Schedule.Day.SUNDAY ;
+                    break;
+                }
+            }
         }
 
     }

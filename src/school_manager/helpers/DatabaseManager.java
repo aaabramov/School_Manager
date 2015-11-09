@@ -19,7 +19,12 @@ import school_manager.model.Student;
 import school_manager.model.Subject;
 import school_manager.model.Teacher;
 import school_manager.model.User;
+import school_manager.model.StudentSchedule;
+import school_manager.model.StudentSchedule.StudentLesson;
+import school_manager.model.Schedule.Lesson;
+import school_manager.model.Schedule;
 import school_manager.model.overviews.*;
+
 
 public final class DatabaseManager {
 
@@ -941,5 +946,38 @@ public final class DatabaseManager {
         };
         r.run();
     }
+    /**
+
+     @author Shlimazl
+     @return student's schedule
+     */
+    public StudentSchedule getScheduleByStudent(int id)
+    {
+        StudentSchedule result = new StudentSchedule(id);
+        
+        try{
+            String sql="SELECT * FROM "+Schedules.TABLE +" WHERE "+Schedules.ID_GROUP+" =?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1,id);
+            ResultSet rs = preStatement.executeQuery();
+            while(rs.next())
+            {
+               
+               Subject subject=getSubjectById(rs.getInt(Schedules.ID_SUBJECT));
+               result.addLesson(result.new StudentLesson(rs.getInt(Schedules.ID_SUBJECT),
+               subject.getName(),
+               rs.getString(Schedules.CLASSROOM),
+               rs.getInt(Schedules.ID_TEACHER),
+               rs.getInt(Schedules.NUMBER),rs.getInt(Schedules.NUMBER)));
+             }
+            
+            }
+        catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting student's schedule", e);
+        }
+        return result;
+        
+    }
+   
 
 }
