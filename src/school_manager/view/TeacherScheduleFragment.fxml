@@ -7,9 +7,4 @@
 <?import javafx.scene.layout.*?>
 
 
-<TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <columns>
-    <TableColumn maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="C1" />
-    <TableColumn maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="C2" />
-  </columns>
-</TableView>
+<ListView prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />

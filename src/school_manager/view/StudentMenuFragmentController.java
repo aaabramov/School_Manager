@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
@@ -89,7 +88,10 @@ public class StudentMenuFragmentController implements Initializable, MainReferen
 
     @FXML
     public void btnScheduleClicked(){
-
+        StudentScheduleFragment studentScheduleFragment = new StudentScheduleFragment();
+        studentScheduleFragment.setMainApp(mainApp);
+        studentScheduleFragment.Initialize();
+        mainApp.setStatus("Scheldue set");
     }
 
     @FXML
