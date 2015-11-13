@@ -106,7 +106,7 @@ and open the template in the editor.
 
 .accordion .button {
     -fx-padding: 5 22 5 22; 
-    -fx-border-color: #FFFACD;
+    -fx-border-color: #fff79f;
     -fx-border-width: 1.5;
     -fx-background-radius: 2px;
     -fx-background-color: #FFFFE0;
@@ -117,7 +117,8 @@ and open the template in the editor.
 }
 
 .accordion .button:hover, .accordion .button:focused {
-    -fx-background-color: #FFFACD;
+    /*-fx-background-color: #FFFACD;*/
+    -fx-background-color: #fff79f;
     -fx-cursor: hand;
 }
 
@@ -170,4 +171,33 @@ and open the template in the editor.
 
 .list-view .list-cell .check-box:selected{
     -fx-base: #7da1d2;
+}
+
+#grid-pane {
+    -fx-background-color: #E6E6FA;
+    -fx-border-color: red;
+    -fx-text-fill: white;
+}
+
+#grid-vbox {
+    -fx-border-color: #3c6d96;
+    -fx-alignment: center;
+    -fx-padding: 15px;
+}
+
+#grid-subject {
+    -fx-font-size: 16pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #3c6d96;
+}
+
+#grid-teacher {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: black;
+}
+#grid-class {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #3c6d96;
 }
