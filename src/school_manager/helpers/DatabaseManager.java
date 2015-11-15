@@ -1053,7 +1053,7 @@ public final  class DatabaseManager {
                      +" FROM "+Schedules.TABLE
                      +" WHERE "+Schedules.ID_DAY
                      +" =? AND "+Schedules.NUMBER
-                     +" =? AND "+Schedules.CLASSROOM
+                     +" =? AND "+Schedules.ID_TEACHER
                      +" =?;";
         try
         {
