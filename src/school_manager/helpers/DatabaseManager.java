@@ -1012,7 +1012,66 @@ public final  class DatabaseManager {
         return result;
         
     }
-    
+    /**
+     @author Shlimazl
+     @return if classroom is used 
+     */
+    public static boolean ClassroomIsUsed(int day,int number,int classroom)
+    {
+        boolean result = false ;
+        String sql = "SELECT "+Schedules.ID_LESSON
+                     +" FROM "+Schedules.TABLE
+                     +" WHERE "+Schedules.ID_DAY
+                     +" =? AND "+Schedules.NUMBER
+                     +" =? AND "+Schedules.CLASSROOM
+                     +" =?;";
+        try
+        {
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1,day);
+            preStatement.setInt(2,number);
+            preStatement.setInt(3,classroom);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            {result = true;}
+            else
+            {result = false;}
+        }
+        catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error checking classroom", e);
+        }
+        return result;
+    }
+    /**
+     @author Shlimazl
+     @return if teacher is busy 
+     */
+    public static boolean TeacherIsBusy(int day,int number,int teacher)
+    {
+        boolean result = false ;
+        String sql = "SELECT "+Schedules.ID_LESSON
+                     +" FROM "+Schedules.TABLE
+                     +" WHERE "+Schedules.ID_DAY
+                     +" =? AND "+Schedules.NUMBER
+                     +" =? AND "+Schedules.CLASSROOM
+                     +" =?;";
+        try
+        {
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1,day);
+            preStatement.setInt(2,number);
+            preStatement.setInt(3,teacher);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            {result = true;}
+            else
+            {result = false;}
+        }
+        catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error checking teacher", e);
+        }
+        return result;
+    }
     
 }
 
