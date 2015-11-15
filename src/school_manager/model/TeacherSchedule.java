@@ -27,7 +27,7 @@ public class TeacherSchedule extends Schedule<TeacherLesson> {
 
         int groupId;
 
-        public TeacherLesson(int subjectId, String name, String classroom, int groupId, int order, Day day){
+        public TeacherLesson(int subjectId, String name, String classroom, int groupId, int order, int day){
             super(subjectId, name, classroom, order, day);
             this.groupId = groupId;
         }

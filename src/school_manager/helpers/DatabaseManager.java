@@ -21,12 +21,14 @@ import school_manager.model.Teacher;
 import school_manager.model.User;
 import school_manager.model.StudentSchedule;
 import school_manager.model.StudentSchedule.StudentLesson;
+import school_manager.model.TeacherSchedule;
+import school_manager.model.TeacherSchedule.TeacherLesson;
 import school_manager.model.Schedule.Lesson;
 import school_manager.model.Schedule;
 import school_manager.model.overviews.*;
 
 
-public final class DatabaseManager {
+public final  class DatabaseManager {
 
     private static Logger logger;
     private static Connection connection = null;
@@ -951,7 +953,7 @@ public final class DatabaseManager {
      @author Shlimazl
      @return student's schedule
      */
-    public StudentSchedule getScheduleByStudent(int id)
+    public static StudentSchedule getScheduleByStudent(int id)
     {
         StudentSchedule result = new StudentSchedule(id);
         
@@ -968,7 +970,7 @@ public final class DatabaseManager {
                subject.getName(),
                rs.getString(Schedules.CLASSROOM),
                rs.getInt(Schedules.ID_TEACHER),
-               rs.getInt(Schedules.NUMBER),rs.getInt(Schedules.NUMBER)));
+               rs.getInt(Schedules.NUMBER),rs.getInt(Schedules.ID_DAY)));
              }
             
             }
@@ -978,6 +980,41 @@ public final class DatabaseManager {
         return result;
         
     }
-   
+    
+    /**
 
+     @author Shlimazl
+     @return teacher's schedule
+     */
+    public static TeacherSchedule getScheduleByTeacher(int id)
+    {
+        TeacherSchedule result = new TeacherSchedule();
+        
+        try{
+            String sql="SELECT * FROM "+Schedules.TABLE +" WHERE "+Schedules.ID_TEACHER+" =?;";
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1,id);
+            ResultSet rs = preStatement.executeQuery();
+            while(rs.next())
+            {
+               Subject subject=getSubjectById(rs.getInt(Schedules.ID_SUBJECT));
+               result.addLesson(result.new TeacherLesson(rs.getInt(Schedules.ID_SUBJECT),
+               subject.getName(),
+               rs.getString(Schedules.CLASSROOM),
+               rs.getInt(Schedules.ID_GROUP),
+               rs.getInt(Schedules.NUMBER),rs.getInt(Schedules.ID_DAY)));
+             }
+            
+            }
+        catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting teacher's schedule", e);
+        }
+        return result;
+        
+    }
+    
+    
 }
+
+  
+
