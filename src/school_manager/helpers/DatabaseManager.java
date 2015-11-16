@@ -951,14 +951,14 @@ public final class DatabaseManager {
      @author Shlimazl
      @return student's schedule
      */
-    public StudentSchedule getScheduleByStudent(int id)
+    public static StudentSchedule getScheduleByStudent(int groupId)
     {
-        StudentSchedule result = new StudentSchedule(id);
+        StudentSchedule result = new StudentSchedule(groupId);
         
         try{
             String sql="SELECT * FROM "+Schedules.TABLE +" WHERE "+Schedules.ID_GROUP+" =?;";
             preStatement = connection.prepareStatement(sql);
-            preStatement.setInt(1,id);
+            preStatement.setInt(1,groupId);
             ResultSet rs = preStatement.executeQuery();
             while(rs.next())
             {
