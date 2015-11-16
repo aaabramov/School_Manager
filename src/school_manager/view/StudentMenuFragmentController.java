@@ -26,7 +26,7 @@ import school_manager.model.Student;
 public class StudentMenuFragmentController implements Initializable, MainReferenced {
 
     private MainApp mainApp;
-    private Student student;
+    static Student student;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
