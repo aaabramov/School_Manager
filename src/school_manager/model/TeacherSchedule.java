@@ -26,10 +26,11 @@ public class TeacherSchedule extends Schedule<TeacherLesson> {
     public class TeacherLesson extends Lesson {
 
         int groupId;
-
+        String groupCode;
         public TeacherLesson(int subjectId, String name, String classroom, int groupId,String groupCode, int order, int day){
             super(subjectId, name, classroom, order, day);
             this.groupId = groupId;
+            this.groupCode=groupCode;
         }
 
     }
