@@ -645,6 +645,27 @@ public final  class DatabaseManager {
         }
         return result;
     }
+    
+    /**
+     @author Shlimazl returns code of group by group id
+     */
+    public static String getGroupCodeById(int id){
+        String result = "";
+        String sql = "SELECT " + Groups.CODE
+                + " FROM " + Groups.TABLE
+                + " WHERE " + Groups.ID_GROUP + " =? ;";
+            try {
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, id);
+            ResultSet rs = preStatement.executeQuery();
+            if (rs.next()) {
+                result = rs.getString(Groups.CODE);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error selecting group code by group id", e);
+        }
+        return result;
+    }
 
     /**
      @author Shlimazl returns code of curators group
@@ -998,10 +1019,12 @@ public final  class DatabaseManager {
             while(rs.next())
             {
                Subject subject=getSubjectById(rs.getInt(Schedules.ID_SUBJECT));
+               int group = rs.getInt(Schedules.ID_GROUP);
+               String code = getGroupCodeById(group);
                result.addLesson(result.new TeacherLesson(rs.getInt(Schedules.ID_SUBJECT),
                subject.getName(),
                rs.getString(Schedules.CLASSROOM),
-               rs.getInt(Schedules.ID_GROUP),
+               group,code,
                rs.getInt(Schedules.NUMBER),rs.getInt(Schedules.ID_DAY)));
              }
             
@@ -1072,6 +1095,9 @@ public final  class DatabaseManager {
         }
         return result;
     }
+    
+    
+    
     
 }
 
