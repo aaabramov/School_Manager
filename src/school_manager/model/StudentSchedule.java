@@ -34,6 +34,10 @@ public class StudentSchedule extends Schedule<StudentLesson> {
             super(subjectId, name, classroom, order, day);
             this.teacherId = teacherId;
         }
+        
+        public int getTeacherId(){
+            return teacherId;
+        }
 
     }
 

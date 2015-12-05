@@ -13,7 +13,6 @@ import javafx.fxml.Initializable;
 import school_manager.MainApp;
 import school_manager.model.Teacher;
 import java.io.IOException;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import school_manager.helpers.DatabaseManager;
@@ -96,22 +95,10 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
     
     @FXML
     public void buttonMyScheduleClicked(){
-        FXMLLoader loader = new FXMLLoader();
-        
-        try{
-            
-            loader.setLocation(getClass().getResource("TeacherScheduleFragment.fxml"));
-            ListView pane = (ListView) loader.load();
-            
-            TeacherScheduleFragmentController teacherScheduleController = loader.getController();
-            
-            mainApp.setContent(pane);
-            mainApp.setStatus("Teacher schedule has been set");
-            
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-            mainApp.setStatus("Error loading teacher schedule.");
-        }
+        TeacherScheduleFragment teacherScheduleFragment = new TeacherScheduleFragment();
+        teacherScheduleFragment.setMainApp(mainApp);
+        teacherScheduleFragment.Initialize();
+        mainApp.setStatus("Scheldue set");
     }
     
 }

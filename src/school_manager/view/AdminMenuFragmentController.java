@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
@@ -137,6 +138,27 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         } catch (IOException e) {
             System.out.println(e.getMessage());
             mainApp.setStatus("Error setting group insertion form");
+        }
+    }
+    
+    @FXML
+    public void buttonAddScheduleClicked(){
+        FXMLLoader loader = new FXMLLoader();
+        
+        try{
+            
+            loader.setLocation(getClass().getResource("AdminScheduleInsertionFragment.fxml"));
+            GridPane pane = (GridPane) loader.load();
+            
+            AdminScheduleInsertionFragmentController adminScheduleInsertionFragmentController = loader.getController();
+            adminScheduleInsertionFragmentController.setMainApp(mainApp);
+            
+            mainApp.setContent(pane);
+            mainApp.setStatus("Schedule insertion form is set");
+            
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+            mainApp.setStatus("Error setting schedule insertion form");
         }
     }
 }
