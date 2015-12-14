@@ -17,7 +17,6 @@ import school_manager.helpers.DatabaseIndexes.Groups;
 import school_manager.helpers.DatabaseIndexes.Journal;
 import school_manager.helpers.DatabaseIndexes.Parents;
 import school_manager.helpers.DatabaseIndexes.Schedules;
-import school_manager.helpers.DatabaseIndexes.Schedules;
 import school_manager.helpers.DatabaseIndexes.Students;
 import school_manager.helpers.DatabaseIndexes.Subjects;
 import school_manager.helpers.DatabaseIndexes.Teachers;
