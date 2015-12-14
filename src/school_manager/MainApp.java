@@ -27,7 +27,8 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        new Thread(DatabaseManager::load).start();
+        //new Thread(DatabaseManager::load).start();
+        DatabaseManager.load();
         
         logger = Logger.getLogger(getClass().getCanonicalName());
 

@@ -22,7 +22,7 @@ import school_manager.model.Teacher;
 import school_manager.model.overviews.SubjectOverview;
 
 /**
- * @author bepa
+ @author bepa
  */
 public class AdminTeacherInsertionFragmentController implements Initializable, MainReferenced {
 
@@ -47,11 +47,11 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     private ListView<SubjectCell> lvSubjects;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb){
         initSubjectsListView();
     }
 
-    private void initSubjectsListView() {
+    private void initSubjectsListView(){
         subjectsOverview = DatabaseManager.getSubjectsList();
         lvSubjects.setCellFactory(CheckBoxListCell.forListView(SubjectCell::isChecked));
         subjectsOverview.forEach((e) -> {
@@ -61,12 +61,12 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     }
 
     @Override
-    public void setMainApp(MainApp mainApp) {
+    public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
     }
 
     @FXML
-    public void btnConfirmClicked() {
+    public void btnConfirmClicked(){
 
         String fname = tfFname.getText();
         String lname = tfLname.getText();
@@ -97,7 +97,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         }
     }
 
-    private String parseCheckedSubjects() {
+    private String parseCheckedSubjects(){
         final StringBuilder builder = new StringBuilder("");
         lvSubjects.getItems().forEach((e) -> {
             if (e.isChecked().getValue()) {
@@ -110,7 +110,7 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
     }
 
     @FXML
-    public void btnClearClicked() {
+    public void btnClearClicked(){
         tfFname.clear();
         tfLname.clear();
         tfPatronymic.clear();
@@ -118,21 +118,22 @@ public class AdminTeacherInsertionFragmentController implements Initializable, M
         tfAdress.clear();
         tfPhone.clear();
         tfNotes.clear();
+        lvSubjects.getItems().forEach(e -> e.setChecked(false));
     }
 
     class SubjectCell extends SubjectOverview {
 
-        public SubjectCell(String name, int id) {
+        public SubjectCell(String name, int id){
             super(name, id);
         }
 
         SimpleBooleanProperty checked = new SimpleBooleanProperty(false);
 
-        public SimpleBooleanProperty isChecked() {
+        public SimpleBooleanProperty isChecked(){
             return checked;
         }
 
-        public void setChecked(boolean checked) {
+        public void setChecked(boolean checked){
             this.checked.set(checked);
         }
 

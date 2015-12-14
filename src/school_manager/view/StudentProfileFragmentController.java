@@ -50,7 +50,7 @@ public class StudentProfileFragmentController implements Initializable, MainRefe
                 GridPane view = loader.load();
 
                 mainApp.setContent(view);
-                
+
                 GroupProfileFragmentController gpfc = loader.getController();
                 gpfc.setMainApp(mainApp);
                 gpfc.setGroup(id);
@@ -77,7 +77,7 @@ public class StudentProfileFragmentController implements Initializable, MainRefe
 
     private void fillInProfile(){
         labelInitials.setText(student.getLName() + ' ' + student.getFName());
-        labelForm.setText(DatabaseManager.getGroupCodeByStudent(student.getId()));
+        labelForm.setText(DatabaseManager.getGroupOverviewByStudent(student.getId()).getCode());
         labelAddress.setText(student.getAddress());
         labelPhone.setText(student.getPhone());
         labelNotes.setText(student.getNotes());

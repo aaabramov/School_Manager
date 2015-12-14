@@ -12,38 +12,39 @@ import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.helpers.ScheduleCell;
-import school_manager.model.StudentSchedule;
-import school_manager.model.StudentSchedule.StudentLesson;
+import school_manager.model.schedule.StudentSchedule;
+import school_manager.model.schedule.StudentLesson;
 import school_manager.model.Teacher;
 
 /**
- *
- * @author bepa
+
+ @author bepa
  */
 public class StudentScheduleFragment implements MainReferenced {
+
     private MainApp mainApp;
-    
-    public void Initialize() {
+
+    public void Initialize(){
         GridPane grid = new GridPane();
-        
-        StudentSchedule schedule = DatabaseManager.getScheduleByStudent(
+
+        StudentSchedule schedule = DatabaseManager.getStudentScheduleById(
                 StudentMenuFragmentController.student.getGroupId());
-        
-        List<StudentLesson> list = schedule.getLessonList();        
+
+        List<StudentLesson> list = schedule.getLessonList();
         ScheduleCell scCell = new ScheduleCell();
-        
+
         list.forEach((e) -> {
             //TEACHER OVERVIEW    
-            Teacher teacher = DatabaseManager.getTeacherById(e.getTeacherId());
-            String str = new String(teacher.getLName() + "\n" + teacher.getFName() + " " + teacher.getPatronymic());
-            scCell.setData(e.getName(), str, e.getClassroom(), e.getDay(), e.getOrder());
+            Teacher teacher = DatabaseManager.getTeacherById(e.getTeacher().getId());
+            String str = teacher.getLName() + "\n" + teacher.getFName() + " " + teacher.getPatronymic();
+            scCell.setData(e.getTeacher().getInitials(), str, e.getClassroom(), e.getDay(), e.getOrder());
             grid.add(scCell.getVB(), scCell.getColumn(), scCell.getRow());
         });
-        
+
         ScrollPane pane = new ScrollPane(grid);
         mainApp.setContent(pane);
     }
-    
+
     @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;

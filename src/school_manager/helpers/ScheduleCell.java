@@ -7,45 +7,46 @@ package school_manager.helpers;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import school_manager.model.Schedule;
+import school_manager.model.schedule.Schedule;
 
 /**
- *
- * @author bepa
+
+ @author bepa
  */
 public class ScheduleCell {
+
     private VBox vb;
     private Label lbl;
     private int day; //Monday, ...
     private int lesson; //first, second, ...
-    
+
     public ScheduleCell(){
         vb = new VBox();
         lbl = new Label();
         day = -1;
         lesson = -1;
     }
-    
+
     public ScheduleCell(String textSub, String textTeachorGroup, String textClass, int Day, int Lesson){
-        
+
         vb = new VBox(NewL(textSub, 0), NewL(textTeachorGroup, 1), NewL(textClass, 2));
         vb.setId("grid-vbox");
         day = Day;
         lesson = Lesson;
     }
-    
+
     public VBox getVB(){
         return vb;
     }
-    
+
     private Label NewL(String text, int type){
         lbl = new Label(text);
-        switch(type){
+        switch (type) {
             case 0:
                 lbl.setId("grid-subject");
                 break;
             case 1:
-                lbl.setId("grid-teacher");                
+                lbl.setId("grid-teacher");
                 break;
             case 2:
                 lbl.setId("grid-class");
@@ -55,11 +56,11 @@ public class ScheduleCell {
         }
         return lbl;
     }
-    
+
     public void setData(String textSub, String textTeach, String textClass, Schedule.Day Day, int Lesson){
         vb = new VBox(NewL(textSub, 0), NewL(textTeach, 1), NewL(textClass, 2));
         vb.setId("grid-vbox");
-        switch(Day){
+        switch (Day) {
             case MONDAY:
                 day = 0;
                 break;
@@ -81,18 +82,18 @@ public class ScheduleCell {
         }
         lesson = Lesson;
     }
-    
+
     public void setData(String textSub, String textTeach, String textClass, int Day, int Lesson){
         vb = new VBox(NewL(textSub, 0), NewL(textTeach, 1), NewL(textClass, 2));
         vb.setId("grid-vbox");
         day = Day;
         lesson = Lesson;
     }
-    
+
     public int getRow(){
         return lesson;
     }
-    
+
     public int getColumn(){
         return day;
     }

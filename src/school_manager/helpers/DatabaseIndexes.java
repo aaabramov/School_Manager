@@ -98,7 +98,7 @@ public class DatabaseIndexes {
         public static final String ID_LESSON = "id_lesson";
         public static final String ID_SUBJECT = "id_subject";
         public static final String ID_TEACHER = "id_teacher";
-        public static final String NUMBER = "number";
+        public static final String ORDER = "number";
     }
 
     public static class Users {

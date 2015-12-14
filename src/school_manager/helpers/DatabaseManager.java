@@ -11,7 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import school_manager.helpers.DatabaseIndexes.*;
+import school_manager.helpers.DatabaseIndexes.Admins;
+import school_manager.helpers.DatabaseIndexes.Families;
+import school_manager.helpers.DatabaseIndexes.Groups;
+import school_manager.helpers.DatabaseIndexes.Journal;
+import school_manager.helpers.DatabaseIndexes.Parents;
+import school_manager.helpers.DatabaseIndexes.Schedules;
+import school_manager.helpers.DatabaseIndexes.Schedules;
+import school_manager.helpers.DatabaseIndexes.Students;
+import school_manager.helpers.DatabaseIndexes.Subjects;
+import school_manager.helpers.DatabaseIndexes.Teachers;
+import school_manager.helpers.DatabaseIndexes.Users;
 import school_manager.model.Admin;
 import school_manager.model.Group;
 import school_manager.model.Parent;
@@ -19,17 +29,19 @@ import school_manager.model.Student;
 import school_manager.model.Subject;
 import school_manager.model.Teacher;
 import school_manager.model.User;
-import school_manager.model.StudentSchedule;
-import school_manager.model.StudentSchedule.StudentLesson;
-import school_manager.model.TeacherSchedule;
-import school_manager.model.TeacherSchedule.TeacherLesson;
+import school_manager.model.overviews.GroupOverview;
 import school_manager.model.overviews.MarkOverview;
-import school_manager.model.Schedule.Lesson;
-import school_manager.model.Schedule;
-import school_manager.model.overviews.*;
+import school_manager.model.overviews.ParentOverview;
+import school_manager.model.overviews.StudentOverview;
+import school_manager.model.overviews.SubjectOverview;
+import school_manager.model.overviews.TeacherOverview;
+import school_manager.model.schedule.Lesson;
+import school_manager.model.schedule.StudentLesson;
+import school_manager.model.schedule.StudentSchedule;
+import school_manager.model.schedule.TeacherLesson;
+import school_manager.model.schedule.TeacherSchedule;
 
-
-public final  class DatabaseManager {
+public final class DatabaseManager {
 
     private static Logger logger;
     private static Connection connection = null;
@@ -511,6 +523,35 @@ public final  class DatabaseManager {
 
     /**
      @author abrasha
+     @return Subject with concrete id
+     */
+    public static SubjectOverview getSubjectOverviewById(int subjectId){
+
+        SubjectOverview result = null;
+
+        try {
+
+            String sql = "SELECT " + Subjects.ID_SUBJECT + ',' + Subjects.NAME
+                    + " FROM " + Subjects.TABLE
+                    + " WHERE " + Subjects.ID_SUBJECT + " = " + subjectId + ";";
+            ResultSet rs = statement.executeQuery(sql);
+
+            if (rs.next()) {
+
+                result = new SubjectOverview(rs.getString(Subjects.NAME), rs.getInt(Subjects.ID_SUBJECT));
+
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting subject overview by id", e);
+        }
+
+        return result;
+
+    }
+
+    /**
+     @author abrasha
      */
     public static Teacher getTeacherById(int id){
 
@@ -536,6 +577,32 @@ public final  class DatabaseManager {
             }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting teacher by id", e);
+        }
+
+        return result;
+    }
+
+    /**
+     @author abrasha
+     */
+    public static TeacherOverview getTeacherOverviewById(int id){
+
+        TeacherOverview result = null;
+        String sql = "SELECT %1, %2, %3, %4 FROM " + Teachers.TABLE
+                + " WHERE " + Teachers.ID_TEACHER + '=' + id + ';';
+        sql = sql.replace("%1", Teachers.ID_TEACHER);
+        sql = sql.replace("%2", Teachers.FIRST_NAME);
+        sql = sql.replace("%3", Teachers.LAST_NAME);
+        sql = sql.replace("%4", Teachers.PATRONYMIC);
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+            if (rs.next()) {
+                String initials = rs.getString(Teachers.LAST_NAME) + ' ' + rs.getString(Teachers.FIRST_NAME)
+                        + ' ' + rs.getString(Teachers.PATRONYMIC);
+                result = new TeacherOverview(initials, rs.getInt(Teachers.ID_TEACHER));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting teacher overview by id", e);
         }
 
         return result;
@@ -576,6 +643,34 @@ public final  class DatabaseManager {
     /**
      @author abrasha
      */
+    public static StudentOverview getStudentOverviewById(int id){
+
+        StudentOverview result = null;
+        try {
+            String sql = "SELECT %1,%2,%3,%3 FROM " + Students.TABLE
+                    + " WHERE " + Students.ID_STUDENT + '=' + id + ';';
+
+            sql = sql.replace("%1", Students.ID_STUDENT);
+            sql = sql.replace("%2", Students.FIRST_NAME);
+            sql = sql.replace("%3", Students.LAST_NAME);
+            sql = sql.replace("%4", Students.PATRONYMIC);
+
+            ResultSet rs = statement.executeQuery(sql);
+            if (rs.next()) {
+                String initials = rs.getString(Students.LAST_NAME) + ' '
+                        + rs.getString(Students.FIRST_NAME) + ' ' + rs.getString(Students.PATRONYMIC);
+                result = new StudentOverview(initials, rs.getInt(Students.ID_STUDENT));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting student overview by id", e);
+        }
+
+        return result;
+    }
+
+    /**
+     @author abrasha
+     */
     public static Parent getParentById(int id){
         Parent result = null;
         try {
@@ -603,6 +698,7 @@ public final  class DatabaseManager {
         return result;
     }
 
+    //TODO public static ParentOverview getParentById(int id){    
     /**
      @author bepa gets teacher from database
      */
@@ -626,9 +722,9 @@ public final  class DatabaseManager {
     /**
      @author Shlimazl returns code of student's group
      */
-    public static String getGroupCodeByStudent(int id){
-        String result = "";
-        String sql = "SELECT " + Groups.CODE
+    public static GroupOverview getGroupOverviewByStudent(int id){
+        GroupOverview result = null;
+        String sql = "SELECT " + Groups.CODE + ',' + Groups.ID_GROUP
                 + " FROM " + Groups.TABLE
                 + " WHERE " + Groups.ID_GROUP + " = "
                 + " (SELECT " + Students.ID_GROUP
@@ -639,14 +735,14 @@ public final  class DatabaseManager {
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                result = rs.getString(Groups.CODE);
+                result = new GroupOverview(rs.getInt(Groups.ID_GROUP), rs.getString(Groups.CODE));
             }
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error selecting group code by student id", e);
+            logger.log(Level.WARNING, "Error getting group overview by student id", e);
         }
         return result;
     }
-    
+
     /**
      @author Shlimazl returns code of group by group id
      */
@@ -655,7 +751,7 @@ public final  class DatabaseManager {
         String sql = "SELECT " + Groups.CODE
                 + " FROM " + Groups.TABLE
                 + " WHERE " + Groups.ID_GROUP + " =? ;";
-            try {
+        try {
             preStatement = connection.prepareStatement(sql);
             preStatement.setInt(1, id);
             ResultSet rs = preStatement.executeQuery();
@@ -768,6 +864,24 @@ public final  class DatabaseManager {
         return result;
     }
 
+    public static GroupOverview getGroupOverviewById(int id){
+        GroupOverview result = null;
+        try {
+            String sql = "SELECT %1, %2 FROM " + Groups.TABLE
+                    + " WHERE " + Groups.ID_GROUP + '=' + id + ';';
+            sql = sql.replace("%1", Groups.ID_GROUP);
+            sql = sql.replace("%2", Groups.CODE);
+            preStatement = connection.prepareStatement(sql);
+            ResultSet rs = preStatement.executeQuery();
+            if (rs.next()) {
+                result = new GroupOverview(rs.getInt(Groups.ID_GROUP), rs.getString(Groups.CODE));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting group overview by id", e);
+        }
+        return result;
+    }
+
     /**
 
      @author Shlimazl
@@ -831,6 +945,11 @@ public final  class DatabaseManager {
         return result;
     }
 
+    /**
+
+     @author abrasha
+     @return true if group code is used
+     */
     private static boolean groupCodeIsUsed(String code){
 
         boolean result = true;
@@ -970,168 +1089,197 @@ public final  class DatabaseManager {
         };
         r.run();
     }
-    /**
 
-     @author Shlimazl
-     @return student's schedule
-     */
-    public static StudentSchedule getScheduleByStudent(int groupId)
-    {
-        StudentSchedule result = new StudentSchedule(groupId);
-        
-        try{
-            String sql="SELECT * FROM "+Schedules.TABLE +" WHERE "+Schedules.ID_GROUP+" =?;";
-            preStatement = connection.prepareStatement(sql);
-            preStatement.setInt(1,groupId);
-            ResultSet rs = preStatement.executeQuery();
-            while(rs.next())
-            {
-               
-               Subject subject=getSubjectById(rs.getInt(Schedules.ID_SUBJECT));
-               result.addLesson(result.new StudentLesson(rs.getInt(Schedules.ID_SUBJECT),
-               subject.getName(),
-               rs.getString(Schedules.CLASSROOM),
-               rs.getInt(Schedules.ID_TEACHER),
-               rs.getInt(Schedules.NUMBER),rs.getInt(Schedules.ID_DAY)));
-             }
-            
-            }
-        catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error getting student's schedule", e);
-        }
-        return result;
-        
-    }
-    
-    /**
-
-     @author Shlimazl
-     @return teacher's schedule
-     */
-    public static TeacherSchedule getScheduleByTeacher(int id)
-    {
-        TeacherSchedule result = new TeacherSchedule();
-        
-        try{
-            String sql="SELECT * FROM "+Schedules.TABLE +" WHERE "+Schedules.ID_TEACHER+" =?;";
-            preStatement = connection.prepareStatement(sql);
-            preStatement.setInt(1,id);
-            ResultSet rs = preStatement.executeQuery();
-            while(rs.next())
-            {
-               Subject subject=getSubjectById(rs.getInt(Schedules.ID_SUBJECT));
-               int group = rs.getInt(Schedules.ID_GROUP);
-               String code = getGroupCodeById(group);
-               result.addLesson(result.new TeacherLesson(rs.getInt(Schedules.ID_SUBJECT),
-               subject.getName(),
-               rs.getString(Schedules.CLASSROOM),
-               group,code,
-               rs.getInt(Schedules.NUMBER),rs.getInt(Schedules.ID_DAY)));
-             }
-            
-            }
-        catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error getting teacher's schedule", e);
-        }
-        return result;
-        
-    }
     /**
      @author Shlimazl
-     @return if classroom is used 
+     @return if classroom is used
      */
-    public static boolean ClassroomIsUsed(int day,int number,int classroom)
-    {
-        boolean result = false ;
-        String sql = "SELECT "+Schedules.ID_LESSON
-                     +" FROM "+Schedules.TABLE
-                     +" WHERE "+Schedules.ID_DAY
-                     +" =? AND "+Schedules.NUMBER
-                     +" =? AND "+Schedules.CLASSROOM
-                     +" =?;";
-        try
-        {
+    public static boolean ClassroomIsUsed(int day, int number, int classroom){
+        boolean result = false;
+        String sql = "SELECT " + Schedules.ID_LESSON
+                + " FROM " + Schedules.TABLE
+                + " WHERE " + Schedules.ID_DAY
+                + " =? AND " + Schedules.ORDER
+                + " =? AND " + Schedules.CLASSROOM
+                + " =?;";
+        try {
             preStatement = connection.prepareStatement(sql);
-            preStatement.setInt(1,day);
-            preStatement.setInt(2,number);
-            preStatement.setInt(3,classroom);
+            preStatement.setInt(1, day);
+            preStatement.setInt(2, number);
+            preStatement.setInt(3, classroom);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            {result = true;}
-            else
-            {result = false;}
-        }
-        catch (SQLException e) {
+            if (rs.next()) {
+                result = true;
+            } else {
+                result = false;
+            }
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error checking classroom", e);
         }
         return result;
     }
+
     /**
      @author Shlimazl
-     @return if teacher is busy 
+     @return if teacher is busy
      */
-    public static boolean TeacherIsBusy(int day,int number,int teacher)
-    {
-        boolean result = false ;
-        String sql = "SELECT "+Schedules.ID_LESSON
-                     +" FROM "+Schedules.TABLE
-                     +" WHERE "+Schedules.ID_DAY
-                     +" =? AND "+Schedules.NUMBER
-                     +" =? AND "+Schedules.ID_TEACHER
-                     +" =?;";
-        try
-        {
+    public static boolean TeacherIsBusy(int day, int number, int teacher){
+        boolean result = false;
+        String sql = "SELECT " + Schedules.ID_LESSON
+                + " FROM " + Schedules.TABLE
+                + " WHERE " + Schedules.ID_DAY
+                + " =? AND " + Schedules.ORDER
+                + " =? AND " + Schedules.ID_TEACHER
+                + " =?;";
+        try {
             preStatement = connection.prepareStatement(sql);
-            preStatement.setInt(1,day);
-            preStatement.setInt(2,number);
-            preStatement.setInt(3,teacher);
+            preStatement.setInt(1, day);
+            preStatement.setInt(2, number);
+            preStatement.setInt(3, teacher);
             ResultSet rs = preStatement.executeQuery();
-            if(rs.next())
-            {result = true;}
-            else
-            {result = false;}
-        }
-        catch (SQLException e) {
+            if (rs.next()) {
+                result = true;
+            } else {
+                result = false;
+            }
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error checking teacher", e);
         }
         return result;
     }
+
     /**
      @author Shlimazl
      @return returns student's marks of subjects
      */
-    public static List<MarkOverview> getMarksOfSubjectByStudent(int student,int subject)
-    {
-           List<MarkOverview> result = new ArrayList<>();
-           String sql = "SELECT * FROM " + Journal.TABLE 
-                        + " WHERE " + Journal.ID_STUDENT 
-                        + " =? AND " + Journal.ID_SUBJECT 
-                        + " =?;";
-           try
-           {
-               preStatement = connection.prepareStatement(sql);
-               preStatement.setInt(1,student );
-               preStatement.setInt(2, subject);
-               ResultSet rs = preStatement.executeQuery();
-               while(rs.next())
-               {
-                   MarkOverview mark = new MarkOverview(rs.getInt(Journal.MARK),
-                                                        rs.getString(Journal.MARK_TYPE),
-                                                        rs.getInt(Journal.PRESENCE),
-                                                        rs.getString(Journal.DATE));
-                   result.add(mark);
-               }
-           }
-           catch (SQLException e) {
+    public static List<MarkOverview> getMarksOfSubjectByStudent(int student, int subject){
+        List<MarkOverview> result = new ArrayList<>();
+        String sql = "SELECT * FROM " + Journal.TABLE
+                + " WHERE " + Journal.ID_STUDENT
+                + " =? AND " + Journal.ID_SUBJECT
+                + " =?;";
+        try {
+            preStatement = connection.prepareStatement(sql);
+            preStatement.setInt(1, student);
+            preStatement.setInt(2, subject);
+            ResultSet rs = preStatement.executeQuery();
+            while (rs.next()) {
+                MarkOverview mark = new MarkOverview(rs.getInt(Journal.MARK),
+                        rs.getString(Journal.MARK_TYPE),
+                        rs.getInt(Journal.PRESENCE),
+                        rs.getString(Journal.DATE));
+                result.add(mark);
+            }
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error selecting marks", e);
         }
         return result;
-           
+
     }
-    
-    
-    
+
+    public static Lesson getLessonById(int id){
+
+        Lesson result = null;
+
+        String sql = "SELECT * FROM " + Schedules.TABLE
+                + " WHERE " + Schedules.ID_LESSON + '=' + id + ';';
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+
+            if (rs.next()) {
+                result = new Lesson.Builder()
+                        .idLesson(rs.getInt(Schedules.ID_LESSON))
+                        .day(DateTimeConverter.parseDayOfWeek(rs.getInt(Schedules.ID_DAY)))
+                        .group(getGroupOverviewById(rs.getInt(Schedules.ID_GROUP)))
+                        .order(rs.getInt(Schedules.ORDER))
+                        .subject(getSubjectOverviewById(rs.getInt(Schedules.ID_SUBJECT)))
+                        .teacher(getTeacherOverviewById(rs.getInt(Schedules.ID_TEACHER)))
+                        .classroom(rs.getString(Schedules.CLASSROOM))
+                        .build();
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting lesson by id", e);
+        }
+
+        return result;
+    }
+
+    public static StudentSchedule getStudentScheduleById(int id){
+
+        StudentSchedule result = new StudentSchedule(getGroupOverviewByStudent(id));
+
+        String sql = "SELECT %1, %2 ,%3, %4, %5, %6 "
+                + " FROM " + Schedules.TABLE
+                + " WHERE " + Schedules.ID_GROUP + '=' + result.getGroup().getId() + ';';
+        sql = sql.replace("%1", Schedules.ID_LESSON);
+        sql = sql.replace("%2", Schedules.ID_SUBJECT);
+        sql = sql.replace("%3", Schedules.ID_DAY);
+        sql = sql.replace("%4", Schedules.CLASSROOM);
+        sql = sql.replace("%5", Schedules.ID_TEACHER);
+        sql = sql.replace("%6", Schedules.ORDER);
+
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+
+                StudentLesson added = new StudentLesson.Builder()
+                        .idLesson(rs.getInt(Schedules.ID_LESSON))
+                        .subject(getSubjectOverviewById(rs.getInt(Schedules.ID_SUBJECT)))
+                        .day(DateTimeConverter.parseDayOfWeek(rs.getInt(Schedules.ID_DAY)))
+                        .classroom(rs.getString(Schedules.CLASSROOM))
+                        .order(rs.getInt(Schedules.ORDER))
+                        .teacher(getTeacherOverviewById(rs.getInt(Schedules.ID_TEACHER)))
+                        .build();
+
+                result.addLesson(added);
+
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting student schedule", e);
+        }
+
+        return result;
+    }
+
+    public static TeacherSchedule getTeacherScheduleById(int id){
+
+        TeacherSchedule result = new TeacherSchedule(getTeacherOverviewById(id));
+
+        String sql = "SELECT %1, %2 ,%3, %4, %5, %6 "
+                + " FROM " + Schedules.TABLE
+                + " WHERE " + Schedules.ID_GROUP + '=' + result.getTeacher().getId() + ';';
+        sql = sql.replace("%1", Schedules.ID_LESSON);
+        sql = sql.replace("%2", Schedules.ID_SUBJECT);
+        sql = sql.replace("%3", Schedules.ID_DAY);
+        sql = sql.replace("%4", Schedules.CLASSROOM);
+        sql = sql.replace("%5", Schedules.ID_GROUP);
+        sql = sql.replace("%6", Schedules.ORDER);
+
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+
+                TeacherLesson added = new TeacherLesson.Builder()
+                        .idLesson(rs.getInt(Schedules.ID_LESSON))
+                        .subject(getSubjectOverviewById(rs.getInt(Schedules.ID_SUBJECT)))
+                        .day(DateTimeConverter.parseDayOfWeek(rs.getInt(Schedules.ID_DAY)))
+                        .classroom(rs.getString(Schedules.CLASSROOM))
+                        .order(rs.getInt(Schedules.ORDER))
+                        .group(getGroupOverviewById(rs.getInt(Schedules.ID_GROUP)))
+                        .build();
+
+                result.addLesson(added);
+
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting teacher schedule", e);
+        }
+
+        return result;
+    }
 }
-
-  
-

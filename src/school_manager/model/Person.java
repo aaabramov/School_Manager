@@ -30,7 +30,7 @@ public abstract class Person {
     @JsonProperty("id")
     protected int id;
 
-    public Person(Builder builder){
+    public Person(Person.Builder builder){
 
         this.id = builder.id;
         this.fName = builder.fName;
