@@ -23,6 +23,7 @@ import school_manager.model.StudentSchedule;
 import school_manager.model.StudentSchedule.StudentLesson;
 import school_manager.model.TeacherSchedule;
 import school_manager.model.TeacherSchedule.TeacherLesson;
+import school_manager.model.overviews.MarkOverview;
 import school_manager.model.Schedule.Lesson;
 import school_manager.model.Schedule;
 import school_manager.model.overviews.*;
@@ -34,11 +35,11 @@ public final  class DatabaseManager {
     private static Connection connection = null;
     private static Statement statement = null;
     private static PreparedStatement preStatement = null;
-    private static final String DBAddress = "sql2.freemysqlhosting.net";
+    private static final String DBAddress = "sql4.freemysqlhosting.net";
     private static final String DBPort = "3306";
-    private static final String DBName = "sql294080";
-    private static final String DBLogin = "sql294080";
-    private static final String DBPassword = "kX1*fP2!";
+    private static final String DBName = "sql499817";
+    private static final String DBLogin = "sql499817";
+    private static final String DBPassword = "WjVGy87DA3";
     private static final int LOGIN_START = 10001;
 
     public static final int STUDENT_TYPE = 0;
@@ -1095,7 +1096,38 @@ public final  class DatabaseManager {
         }
         return result;
     }
-    
+    /**
+     @author Shlimazl
+     @return returns student's marks of subjects
+     */
+    public static List<MarkOverview> getMarksOfSubjectByStudent(int student,int subject)
+    {
+           List<MarkOverview> result = new ArrayList<>();
+           String sql = "SELECT * FROM " + Journal.TABLE 
+                        + " WHERE " + Journal.ID_STUDENT 
+                        + " =? AND " + Journal.ID_SUBJECT 
+                        + " =?;";
+           try
+           {
+               preStatement = connection.prepareStatement(sql);
+               preStatement.setInt(1,student );
+               preStatement.setInt(2, subject);
+               ResultSet rs = preStatement.executeQuery();
+               while(rs.next())
+               {
+                   MarkOverview mark = new MarkOverview(rs.getInt(Journal.MARK),
+                                                        rs.getString(Journal.MARK_TYPE),
+                                                        rs.getInt(Journal.PRESENCE),
+                                                        rs.getString(Journal.DATE));
+                   result.add(mark);
+               }
+           }
+           catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error selecting marks", e);
+        }
+        return result;
+           
+    }
     
     
     

@@ -81,11 +81,12 @@ public class DatabaseIndexes {
     public static class Journal {
 
         public static final String TABLE = "journal";
-        public static final String ID_LESSON = "id_lesson";
+        public static final String ID_SUBJECT = "id_subject";
         public static final String ID_STUDENT = "id_student";
         public static final String MARK = "mark";
         public static final String MARK_TYPE = "mark_type";
         public static final String PRESENCE = "presence";
+        public static final String DATE = "date";
     }
 
     public static class Schedules {
