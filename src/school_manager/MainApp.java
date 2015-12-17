@@ -9,14 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import school_manager.helpers.DatabaseManager;
 import school_manager.model.User;
 import school_manager.view.RootLayoutController;
+import school_manager.helpers.DatabaseManager;
+
 
 public class MainApp extends Application {
 
     public static void main(String[] args) {
-      
+        
         launch(args);
     }
 

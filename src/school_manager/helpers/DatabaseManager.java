@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Map;
+import java.util.HashMap;
 import school_manager.helpers.DatabaseIndexes.*;
 import school_manager.model.Admin;
 import school_manager.model.Group;
@@ -1129,8 +1131,96 @@ public final  class DatabaseManager {
            
     }
     
+    //insers one lesson into database
+    public static void setLesson(Lesson x,int id)
+    {
+        String sql = "INSERT INTO " + Schedules.TABLE
+                     +" VALUES(?,?,?,?,?,?,?);";
+        
+        try
+            {
+                preStatement = connection.prepareStatement(sql);
+                preStatement.setInt(1, id+1);
+                preStatement.setInt(2, x.getDay());
+                preStatement.setInt(3, x.getOrder());
+                preStatement.setString(4, x.getClassroom());
+                preStatement.setInt(5, x.getGroup());
+                preStatement.setInt(6, x.getId());
+                preStatement.setInt(7,x.getTeacher());
+                preStatement.executeUpdate();
+            }
+            catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error inserting lesson", e);
+            }
+            
+            
+        
+    }
     
+    //returns last id from schedule
+    public static int getLastIdFromSchedule()
+    {
+        int result =0;
+        String sql = "SELECT MAX( "+ Schedules.ID_LESSON+ ") AS x FROM " + Schedules.TABLE + ";";
+        try
+        {
+            preStatement = connection.prepareStatement(sql);
+            ResultSet rs = preStatement.executeQuery();
+            if(rs.next())
+            {
+                result = rs.getInt("x");
+            }
+        }
+        catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error selecting last id", e);
+            }
+        return result;
+    }
     
+
+    //inserts schedule into database
+    public static void setSchedule(Schedule added)
+    {
+        int count = 0;
+        int lastId = getLastIdFromSchedule()+1;
+        
+        String sql = "INSERT INTO " + Schedules.TABLE
+                     +" VALUES(?,?,?,?,?,?,?);";
+        
+        while(added.getLesson(count)!=null)
+        {
+            try
+            {
+                setLesson(added.getLesson(count),lastId);
+                count++;
+                lastId++;
+            }
+            catch (Exception e) {
+            logger.log(Level.SEVERE, "Error inserting schedule", e);
+            }
+            
+        }
+        
+    }
+    
+    //returns marks of group of one subject
+    public static HashMap<StudentOverview, List <MarkOverview>> getMarksOfSubjectByGroup(int group, int subject)
+    {
+        HashMap<StudentOverview, List <MarkOverview>> result = new HashMap<StudentOverview, List <MarkOverview>>();
+     try
+     {
+        List<StudentOverview> students = getGroupMembersById(group);
+        for(StudentOverview x : students)
+        {
+            List <MarkOverview> marks = getMarksOfSubjectByStudent(x.getId(),subject);
+            result.put(x, marks);
+        }
+     }
+     catch (Exception e) {
+            logger.log(Level.SEVERE, "Error selecting marks of group", e);
+            }
+        return result;
+    }
 }
 
   

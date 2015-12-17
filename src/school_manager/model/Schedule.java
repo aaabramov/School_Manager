@@ -14,7 +14,7 @@ import school_manager.model.overviews.SubjectOverview;
 
  @author abrasha
  */
-public abstract class Schedule<T extends Lesson> {
+public class Schedule<T extends Lesson> {
 
 
     private final List<T> lessons;
@@ -22,11 +22,21 @@ public abstract class Schedule<T extends Lesson> {
     public Schedule(){
         lessons = new LinkedList<>();
     }
-
-    public abstract void addLesson(T added);
+   
+    public void addLesson(T added)
+    {
+        lessons.add(added);
+    }
 
     public List<T> getLessonList(){
         return lessons;
+    }
+    public Lesson getLesson(int i)
+    {
+        if(lessons.size()>i)
+        {return lessons.get(i);}
+        else 
+        {return null;}
     }
 
     public enum Day {
@@ -34,11 +44,13 @@ public abstract class Schedule<T extends Lesson> {
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     }
 
-    public abstract class Lesson extends SubjectOverview {
+    public class Lesson extends SubjectOverview {
 
         int order;
         String classroom;
         Day day;
+        int groupId;
+        int teacherId;
 
         public int getOrder(){
             return order;
@@ -56,18 +68,131 @@ public abstract class Schedule<T extends Lesson> {
             this.classroom = classroom;
         }
 
-        public Day getDay(){
-            return day;
+        public int getDay(){
+            int result;
+            switch(day)
+            {
+                case MONDAY:
+                {
+                    result = 1; 
+                    break;
+                }
+                case TUESDAY:
+                {
+                    result = 2;
+                    break;
+                }
+                case WEDNESDAY:
+                {
+                    result = 3;
+                    break;
+                }
+                case THURSDAY:
+                {
+                    result = 4 ;
+                    break;
+                }
+                case FRIDAY:
+                {
+                    result = 5 ;
+                    break;
+                }
+                case SATURDAY:
+                {
+                    result = 6;
+                    break;
+                }
+                case SUNDAY:
+                {
+                    result = 7;
+                    break;
+                }
+                default:
+                {
+                    result = 7 ;
+                    break;
+                }
+            }
+             return result;    
         }
 
         public void setDay(Day day){
             this.day = day;
         }
-
+        
+        public void setGroup(int id)
+        {
+            this.groupId=id;
+        }
+        public int getGroup()
+        {
+            return this.groupId;
+        }
+        
+        public void setTeacher(int id)
+        {
+            this.teacherId=id;
+        }
+        public int getTeacher()
+        {
+            return this.teacherId;
+        }
         public Lesson(int subjectId, String name, String classroom, int order, int day){
             super(name, subjectId);
             this.classroom = classroom;
             this.order = order;
+            
+            switch(day)
+            {
+                case 1:
+                {
+                    this.day =Schedule.Day.MONDAY ;
+                    break;
+                }
+                case 2:
+                {
+                    this.day =Schedule.Day.TUESDAY ;
+                    break;
+                }
+                case 3:
+                {
+                    this.day =Schedule.Day.WEDNESDAY ;
+                    break;
+                }
+                case 4:
+                {
+                    this.day =Schedule.Day.THURSDAY ;
+                    break;
+                }
+                case 5:
+                {
+                    this.day =Schedule.Day.FRIDAY ;
+                    break;
+                }
+                case 6:
+                {
+                    this.day =Schedule.Day.SATURDAY ;
+                    break;
+                }
+                case 7:
+                {
+                    this.day =Schedule.Day.SUNDAY ;
+                    break;
+                }
+                default:
+                {
+                    this.day =Schedule.Day.SUNDAY ;
+                    break;
+                }
+            }
+        }
+        
+        public Lesson(int subjectId, String name, String classroom, int order, int day,int group,int teacher){
+            super(name, subjectId);
+            this.classroom = classroom;
+            this.order = order;
+            this.groupId=group;
+            this.teacherId= teacher;
             switch(day)
             {
                 case 1:
