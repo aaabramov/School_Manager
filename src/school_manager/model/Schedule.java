@@ -113,7 +113,7 @@ public class Schedule<T extends Lesson> {
                     break;
                 }
             }
-             return result;    
+             return (result-1);    
         }
 
         public void setDay(Day day){

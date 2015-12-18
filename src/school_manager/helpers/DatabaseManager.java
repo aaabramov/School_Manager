@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-<<<<<<< HEAD
 import school_manager.helpers.DatabaseIndexes.Admins;
 import school_manager.helpers.DatabaseIndexes.Families;
 import school_manager.helpers.DatabaseIndexes.Groups;
@@ -22,11 +21,10 @@ import school_manager.helpers.DatabaseIndexes.Students;
 import school_manager.helpers.DatabaseIndexes.Subjects;
 import school_manager.helpers.DatabaseIndexes.Teachers;
 import school_manager.helpers.DatabaseIndexes.Users;
-=======
 import java.util.Map;
 import java.util.HashMap;
+import school_manager.model.Schedule;
 import school_manager.helpers.DatabaseIndexes.*;
->>>>>>> feature
 import school_manager.model.Admin;
 import school_manager.model.Group;
 import school_manager.model.Parent;
@@ -1248,11 +1246,7 @@ public final class DatabaseManager {
 
         return result;
     }
-<<<<<<< HEAD
-=======
-    
-    //insers one lesson into database
-    public static void setLesson(Lesson x,int id)
+    public static void setLesson(Schedule.Lesson x,int id)
     {
         String sql = "INSERT INTO " + Schedules.TABLE
                      +" VALUES(?,?,?,?,?,?,?);";
@@ -1342,44 +1336,5 @@ public final class DatabaseManager {
         return result;
     }
 }
->>>>>>> feature
 
-    public static TeacherSchedule getTeacherScheduleById(int id){
 
-        TeacherSchedule result = new TeacherSchedule(getTeacherOverviewById(id));
-
-        String sql = "SELECT %1, %2 ,%3, %4, %5, %6 "
-                + " FROM " + Schedules.TABLE
-                + " WHERE " + Schedules.ID_GROUP + '=' + result.getTeacher().getId() + ';';
-        sql = sql.replace("%1", Schedules.ID_LESSON);
-        sql = sql.replace("%2", Schedules.ID_SUBJECT);
-        sql = sql.replace("%3", Schedules.ID_DAY);
-        sql = sql.replace("%4", Schedules.CLASSROOM);
-        sql = sql.replace("%5", Schedules.ID_GROUP);
-        sql = sql.replace("%6", Schedules.ORDER);
-
-        try {
-            ResultSet rs = statement.executeQuery(sql);
-
-            while (rs.next()) {
-
-                TeacherLesson added = new TeacherLesson.Builder()
-                        .idLesson(rs.getInt(Schedules.ID_LESSON))
-                        .subject(getSubjectOverviewById(rs.getInt(Schedules.ID_SUBJECT)))
-                        .day(DateTimeConverter.parseDayOfWeek(rs.getInt(Schedules.ID_DAY)))
-                        .classroom(rs.getString(Schedules.CLASSROOM))
-                        .order(rs.getInt(Schedules.ORDER))
-                        .group(getGroupOverviewById(rs.getInt(Schedules.ID_GROUP)))
-                        .build();
-
-                result.addLesson(added);
-
-            }
-
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error getting teacher schedule", e);
-        }
-
-        return result;
-    }
-}
