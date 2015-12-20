@@ -1289,7 +1289,7 @@ public final class DatabaseManager {
     
     
     
-    public static void setLesson(Schedule.Lesson x,int id)
+    public static void setLesson(Lesson x,int id)
     {
         String sql = "INSERT INTO " + Schedules.TABLE
                      +" VALUES(?,?,?,?,?,?,?);";
@@ -1298,12 +1298,12 @@ public final class DatabaseManager {
             {
                 preStatement = connection.prepareStatement(sql);
                 preStatement.setInt(1, id);
-                preStatement.setInt(2, x.getDay());
+                preStatement.setInt(2, x.getIntDay());
                 preStatement.setInt(3, x.getOrder());
                 preStatement.setString(4, x.getClassroom());
-                preStatement.setInt(5, x.getGroup());
-                preStatement.setInt(6, x.getId());
-                preStatement.setInt(7,x.getTeacher());
+                preStatement.setInt(5, x.getGroup().getId());
+                preStatement.setInt(6, x.getSubject().getId());
+                preStatement.setInt(7,x.getTeacher().getId());
                 preStatement.executeUpdate();
             }
             catch (SQLException e) {
@@ -1348,7 +1348,7 @@ public final class DatabaseManager {
         {
             try
             {
-                setLesson(added.getLesson(count),lastId);
+                setLesson((Lesson)added.getLessonList().get(count),lastId);
                 count++;
                 lastId++;
             }
