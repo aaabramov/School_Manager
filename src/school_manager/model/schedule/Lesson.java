@@ -86,7 +86,10 @@ public class Lesson {
     public GroupOverview getGroup(){
         return group;
     }
-
+    public String getClassroom()
+    {
+        return classroom;
+    }
     public void setGroup(GroupOverview group){
         this.group = group;
     }
@@ -129,5 +132,38 @@ public class Lesson {
 
     public void setIdLesson(int idLesson){
         this.idLesson = idLesson;
+    }
+    public int getIntDay()
+    {
+        int result=0;
+         switch (day) {
+
+            case MONDAY:
+                result = 0;
+                break;
+            case TUESDAY:
+                result = 1;
+                break;
+            case WEDNESDAY:
+                result = 2;
+                break;
+            case THURSDAY:
+                result = 3;
+                break;
+            case FRIDAY:
+                result = 4;
+                break;
+            case SATURDAY:
+                result = 5;
+                break;
+            case SUNDAY:
+                result = 6;
+                break;
+
+        }
+
+        return result;
+        
+    
     }
 }
