@@ -28,6 +28,7 @@ public class Lesson {
         this.teacher = builder.teacher;
         this.subject = builder.subject;
         this.day = builder.day;
+        this.classroom = builder.classroom;
         this.order = builder.order;
         this.idLesson = builder.idLesson;
     }
@@ -129,5 +130,13 @@ public class Lesson {
 
     public void setIdLesson(int idLesson){
         this.idLesson = idLesson;
+    }
+    
+    public String getClassroom(){
+        return classroom;
+    }
+    
+    public void setClassroom(String classroom){
+        this.classroom = classroom;
     }
 }

@@ -102,6 +102,7 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
         btnNext.setDisable(false);
         btnConfirm.setDisable(true);
         tfClassroom.setText(null);
+        cmbGroup.setDisable(false);
         data.clear();
     }
     
@@ -128,7 +129,8 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
                 btnNext.setDisable(true);
                 btnConfirm.setDisable(false);
             }                        
-        }        
+        }
+        cmbGroup.setDisable(true);
     }
     
     public void initGroups(){
@@ -155,23 +157,26 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
     private void initTable(){
         
         TableColumn orderCol = new TableColumn("№");
+        orderCol.setMinWidth(25);
+        orderCol.setMaxWidth(25);
         orderCol.setCellValueFactory(
                 new PropertyValueFactory<ScheduleItemTable,String>("order")
         );
 
         TableColumn subjectCol = new TableColumn("Subject");
+        subjectCol.setMinWidth(175);
         subjectCol.setCellValueFactory(
             new PropertyValueFactory<ScheduleItemTable,String>("subject")
         );
 
         TableColumn teacherCol = new TableColumn("Teacher");
-        teacherCol.setMinWidth(100);
+        teacherCol.setMinWidth(270);
         teacherCol.setCellValueFactory(
             new PropertyValueFactory<ScheduleItemTable,String>("teacher")
         );
         
         TableColumn classCol = new TableColumn("Classroom");
-        classCol.setMinWidth(50);
+        classCol.setMinWidth(30);
         classCol.setCellValueFactory(
                 new PropertyValueFactory<ScheduleItemTable, String>("classroom")
         );
