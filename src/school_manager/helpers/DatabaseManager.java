@@ -537,18 +537,18 @@ public final class DatabaseManager {
             String sql = "SELECT " + Subjects.ID_SUBJECT + ',' + Subjects.NAME
                     + " FROM " + Subjects.TABLE
                     + " WHERE " + Subjects.ID_SUBJECT + " = " + subjectId + ";";
-            ResultSet rs = statement.executeQuery(sql);
+            ResultSet rs1 = statement.executeQuery(sql);
 
-            if (rs.next()) {
+            if (rs1.next()) {
 
-                result = new SubjectOverview(rs.getString(Subjects.NAME), rs.getInt(Subjects.ID_SUBJECT));
+                result = new SubjectOverview(rs1.getString(Subjects.NAME), rs1.getInt(Subjects.ID_SUBJECT));
 
             }
-
+            rs1.close();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting subject overview by id", e);
         }
-
+        
         return result;
 
     }
@@ -870,15 +870,16 @@ public final class DatabaseManager {
     public static GroupOverview getGroupOverviewById(int id){
         GroupOverview result = null;
         try {
-            String sql = "SELECT %1, %2 FROM " + Groups.TABLE
+            String sql = "SELECT %1 FROM " + Groups.TABLE
                     + " WHERE " + Groups.ID_GROUP + '=' + id + ';';
-            sql = sql.replace("%1", Groups.ID_GROUP);
-            sql = sql.replace("%2", Groups.CODE);
+          //  sql = sql.replace("%1", Groups.ID_GROUP);
+            sql = sql.replace("%1", Groups.CODE);
             preStatement = connection.prepareStatement(sql);
             ResultSet rs = preStatement.executeQuery();
             if (rs.next()) {
-                result = new GroupOverview(rs.getInt(Groups.ID_GROUP), rs.getString(Groups.CODE));
+                result = new GroupOverview(id, rs.getString(Groups.CODE));
             }
+            rs.close();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting group overview by id", e);
         }
@@ -1209,8 +1210,8 @@ public final class DatabaseManager {
     }
 
     public static StudentSchedule getStudentScheduleById(int id){
-
-        StudentSchedule result = new StudentSchedule(getGroupOverviewByStudent(id));
+        
+       StudentSchedule result = new StudentSchedule(getGroupOverviewById(id));
 
         String sql = "SELECT %1, %2 ,%3, %4, %5, %6 "
                 + " FROM " + Schedules.TABLE
@@ -1223,7 +1224,8 @@ public final class DatabaseManager {
         sql = sql.replace("%6", Schedules.ORDER);
 
         try {
-            ResultSet rs = statement.executeQuery(sql);
+            ResultSet rs = connection.createStatement().executeQuery(sql);
+
 
             while (rs.next()) {
 
@@ -1245,6 +1247,8 @@ public final class DatabaseManager {
         }
 
         return result;
+    
+        
     }
     
     
@@ -1263,8 +1267,7 @@ public final class DatabaseManager {
         sql = sql.replace("%6", Schedules.ORDER);
 
         try {
-            ResultSet rs = statement.executeQuery(sql);
-
+            ResultSet rs =  connection.createStatement().executeQuery(sql);
             while (rs.next()) {
 
                 TeacherLesson added = new TeacherLesson.Builder()
@@ -1279,7 +1282,7 @@ public final class DatabaseManager {
                 result.addLesson(added);
 
             }
-
+            rs.close();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error getting teacher's schedule", e);
         }

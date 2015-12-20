@@ -14,6 +14,7 @@ import school_manager.view.RootLayoutController;
 import school_manager.helpers.DatabaseManager;
 
 
+
 public class MainApp extends Application {
 
     public static void main(String[] args) {
