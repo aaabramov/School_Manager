@@ -1246,6 +1246,49 @@ public final class DatabaseManager {
 
         return result;
     }
+    
+    
+    public static TeacherSchedule getTeacherScheduleById(int id){
+
+        TeacherSchedule result = new TeacherSchedule(getTeacherOverviewById(id));
+
+        String sql = "SELECT %1, %2 ,%3, %4, %5, %6 "
+                + " FROM " + Schedules.TABLE
+                + " WHERE " + Schedules.ID_TEACHER + '=' + result.getTeacher().getId() + ';';
+        sql = sql.replace("%1", Schedules.ID_LESSON);
+        sql = sql.replace("%2", Schedules.ID_SUBJECT);
+        sql = sql.replace("%3", Schedules.ID_DAY);
+        sql = sql.replace("%4", Schedules.CLASSROOM);
+        sql = sql.replace("%5", Schedules.ID_GROUP);
+        sql = sql.replace("%6", Schedules.ORDER);
+
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+
+                TeacherLesson added = new TeacherLesson.Builder()
+                        .idLesson(rs.getInt(Schedules.ID_LESSON))
+                        .subject(getSubjectOverviewById(rs.getInt(Schedules.ID_SUBJECT)))
+                        .day(DateTimeConverter.parseDayOfWeek(rs.getInt(Schedules.ID_DAY)))
+                        .classroom(rs.getString(Schedules.CLASSROOM))
+                        .order(rs.getInt(Schedules.ORDER))
+                        .group(getGroupOverviewById(rs.getInt(Schedules.ID_GROUP)))
+                        .build();
+
+                result.addLesson(added);
+
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error getting teacher's schedule", e);
+        }
+
+        return result;
+    }
+    
+    
+    
     public static void setLesson(Schedule.Lesson x,int id)
     {
         String sql = "INSERT INTO " + Schedules.TABLE
@@ -1254,7 +1297,7 @@ public final class DatabaseManager {
         try
             {
                 preStatement = connection.prepareStatement(sql);
-                preStatement.setInt(1, id+1);
+                preStatement.setInt(1, id);
                 preStatement.setInt(2, x.getDay());
                 preStatement.setInt(3, x.getOrder());
                 preStatement.setString(4, x.getClassroom());
