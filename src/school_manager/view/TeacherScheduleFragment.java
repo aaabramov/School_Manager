@@ -5,15 +5,14 @@
  */
 package school_manager.view;
 
-import java.util.List;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import school_manager.MainApp;
+import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.helpers.ScheduleCell;
-import school_manager.model.schedule.Schedule;
+import school_manager.model.Teacher;
 import school_manager.model.schedule.TeacherSchedule;
-import school_manager.model.schedule.TeacherLesson;
 
 /**
 
@@ -22,16 +21,17 @@ import school_manager.model.schedule.TeacherLesson;
 public class TeacherScheduleFragment implements MainReferenced {
 
     private MainApp mainApp;
+    private Teacher teacher;
     private final String[] Days = new String[]{"Monday", "Tuesday", "Wednesday", "Thuesday", "Friday"};
     
     public void Initialize(){
         GridPane grid = new GridPane();
 
-        TeacherSchedule schedule;
+        TeacherSchedule schedule = DatabaseManager.getTeacherScheduleById(this.teacher.getId());
 
-        List<TeacherLesson> list;
+//        List<TeacherLesson> list = schedule.getLessonList();
         ScheduleCell scCell = new ScheduleCell();
-
+/*
         scCell.setData(null, null, null, 0, 0);        
         grid.add(scCell.getVB(), scCell.getColumn(), scCell.getRow());
         
@@ -50,12 +50,12 @@ public class TeacherScheduleFragment implements MainReferenced {
                 grid.add(scCell.getVB(), scCell.getColumn(), scCell.getRow());
             }
         }
+*/
+        schedule.getLessonList().forEach((e) -> {
+            scCell.setData(e.getSubject().getName(), "GROUP", e.getClassroom(), e.getDay(), e.getOrder());
+            grid.add(scCell.getVB(), scCell.getColumn(), scCell.getRow());
+        });
 
-//        list.forEach((e) -> {
-//            //TEACHER OVERVIEW    
-//            scCell.setData(e.getName(), "value", e.getClassroom(), e.getDay(), e.getOrder());
-//            grid.add(scCell.getVB(), scCell.getColumn(), scCell.getRow());
-//        });
         ScrollPane pane = new ScrollPane(grid);
         mainApp.setContent(pane);
     }
@@ -63,5 +63,9 @@ public class TeacherScheduleFragment implements MainReferenced {
     @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
+    }
+    
+    public void setTeacher(Teacher teacher){
+        this.teacher = teacher;
     }
 }

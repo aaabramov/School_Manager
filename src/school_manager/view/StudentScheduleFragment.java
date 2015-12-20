@@ -12,9 +12,9 @@ import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.helpers.ScheduleCell;
-import school_manager.model.schedule.StudentSchedule;
+import school_manager.model.Student;
 import school_manager.model.schedule.StudentLesson;
-import school_manager.model.Teacher;
+import school_manager.model.schedule.StudentSchedule;
 
 /**
 
@@ -23,24 +23,22 @@ import school_manager.model.Teacher;
 public class StudentScheduleFragment implements MainReferenced {
 
     private MainApp mainApp;
+    private Student student;
 
     public void Initialize(){
         GridPane grid = new GridPane();
 
-        StudentSchedule schedule = DatabaseManager.getStudentScheduleById(
-                StudentMenuFragmentController.student.getGroupId());
-
-        List<StudentLesson> list = schedule.getLessonList();
+        StudentSchedule schedule = DatabaseManager.getStudentScheduleById(student.getGroupId());
+        //List<StudentLesson> list = schedule.getLessonList();
+        
         ScheduleCell scCell = new ScheduleCell();
 
-        list.forEach((e) -> {
-            //TEACHER OVERVIEW    
-            Teacher teacher = DatabaseManager.getTeacherById(e.getTeacher().getId());
-            String str = teacher.getLName() + "\n" + teacher.getFName() + " " + teacher.getPatronymic();
-            scCell.setData(e.getTeacher().getInitials(), str, e.getClassroom(), e.getDay(), e.getOrder());
-            grid.add(scCell.getVB(), scCell.getColumn(), scCell.getRow());
+        
+        
+        schedule.getLessonList().forEach((e) -> {
+            scCell.setData(e.getSubject().getName(), e.getTeacher().getInitials(), e.getClassroom(), e.getDay(), e.getOrder());
         });
-
+        
         ScrollPane pane = new ScrollPane(grid);
         mainApp.setContent(pane);
     }
@@ -48,5 +46,9 @@ public class StudentScheduleFragment implements MainReferenced {
     @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
+    }
+    
+    public void setStudent(Student student){
+        this.student = student;
     }
 }
