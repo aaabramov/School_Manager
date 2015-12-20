@@ -10,7 +10,7 @@
 <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="accordion" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="school_manager.view.TeacherMenuFragmentController">
    <children>
       <Button fx:id="buttonProfile" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonMyProfileClicked" text="Профіль" />
-      <Button fx:id="buttonMyLesson" defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonMyLessonClicked" text="Мій урок" />
+      <Button fx:id="buttonMyLesson" defaultButton="true" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonMyLessonClicked" text="Мій урок" />
       <Button fx:id="buttonSchedule" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonMyScheduleClicked" text="Розклад" />
       <Button fx:id="buttonClasses" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Журнал (класи)" />
       <Button fx:id="buttonSettings" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Налаштування" />
