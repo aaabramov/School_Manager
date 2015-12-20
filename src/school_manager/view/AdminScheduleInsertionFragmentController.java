@@ -104,7 +104,7 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
                 .build());
         
         lblOrder.setText(Integer.toString(data.size() + 1));
-        tfClassroom.setText("-");
+        tfClassroom.setText("13");
     }
     
     @FXML
@@ -122,6 +122,7 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
     @FXML
     public void NextDay(){
         data.clear();
+        scheduleToAdd.clear();
         lblOrder.setText(Integer.toString(data.size() + 1));
         tfClassroom.setText(null);
         if(indexDay < 5){
@@ -137,11 +138,10 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
     
     @FXML
     public void btnConfirmIsClicked(){
-        //когда будет норм функция
-        
         scheduleToAdd.forEach((e) ->{
-            //DatabaseManager.setLesson(e, DatabaseManager.getLastIdFromSchedule() + 1);
+            DatabaseManager.setLesson(e, DatabaseManager.getLastIdFromSchedule() + 1);
         });
+        btnCancelIsClicked();
     }
     
     public void initGroups(){

@@ -5,6 +5,7 @@
  */
 package school_manager.view;
 
+import java.util.List;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import school_manager.MainApp;
@@ -12,6 +13,7 @@ import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.helpers.ScheduleCell;
 import school_manager.model.Student;
+import school_manager.model.schedule.StudentLesson;
 import school_manager.model.schedule.StudentSchedule;
 
 /**
@@ -27,9 +29,12 @@ public class StudentScheduleFragment implements MainReferenced {
         GridPane grid = new GridPane();
 
         StudentSchedule schedule = DatabaseManager.getStudentScheduleById(student.getGroupId());
-
+        //List<StudentLesson> list = schedule.getLessonList();
+        
         ScheduleCell scCell = new ScheduleCell();
 
+        
+        
         schedule.getLessonList().forEach((e) -> {
             scCell.setData(e.getSubject().getName(), e.getTeacher().getInitials(), e.getClassroom(), e.getDay(), e.getOrder());
         });

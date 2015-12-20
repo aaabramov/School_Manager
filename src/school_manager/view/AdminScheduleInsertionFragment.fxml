@@ -43,7 +43,7 @@
                <children>
                   <Label fx:id="lblDay" text="Schedule for Monday" />
                   <Button fx:id="btnNext" mnemonicParsing="false" onAction="#NextDay" text="Tuesday" />
-                  <Button fx:id="btnConfirm" disable="true" mnemonicParsing="false" text="Confirm" />
+                  <Button fx:id="btnConfirm" disable="true" mnemonicParsing="false" onAction="#btnConfirmIsClicked" text="Confirm" />
                   <Button mnemonicParsing="false" onAction="#btnCancelIsClicked" prefHeight="32.0" prefWidth="104.0" text="Cancel" />
                </children>
             </HBox>
