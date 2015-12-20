@@ -97,6 +97,7 @@ public class TeacherMenuFragmentController implements Initializable, MainReferen
     public void buttonMyScheduleClicked(){
         TeacherScheduleFragment teacherScheduleFragment = new TeacherScheduleFragment();
         teacherScheduleFragment.setMainApp(mainApp);
+        teacherScheduleFragment.setTeacher(teacher);
         teacherScheduleFragment.Initialize();
         mainApp.setStatus("Scheldue set");
     }

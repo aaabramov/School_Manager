@@ -25,10 +25,10 @@ import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.overviews.GroupOverview;
-import school_manager.model.overviews.LessonOverview;
 import school_manager.model.overviews.SubjectOverview;
 import school_manager.model.overviews.TeacherOverview;
-import school_manager.model.schedule.Schedule;
+import school_manager.model.schedule.Schedule.Day;
+import school_manager.model.schedule.Lesson;
 
 /**
  * FXML Controller class
@@ -62,9 +62,11 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
     private Label lblDay;
     
     private final String[] Days = new String[]{"Monday", "Tuesday", "Wednesday", "Thuesday", "Friday"};
+    private final Day[] eDays = new Day[]{Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY};
     private int indexDay = 1;
+    private int indexLesson = DatabaseManager.getLastIdFromSchedule() + 1;
     
-    public List<LessonOverview> scheduleToAdd = FXCollections.observableArrayList();
+    public List<Lesson> scheduleToAdd = FXCollections.observableArrayList();
     
     private TableView<ScheduleItemTable> table = new TableView<ScheduleItemTable>();
     private final ObservableList<ScheduleItemTable> data =
@@ -90,8 +92,19 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
     public void addItem(){
         data.add(new ScheduleItemTable(lblOrder.getText(), cmbSubject.getValue().toString(), 
                 cmbTeacher.getValue().toString(), tfClassroom.getText()));
+        
+        scheduleToAdd.add(new Lesson.Builder()
+                .classroom(tfClassroom.getText())
+                .day(eDays[indexDay - 1])
+                .group(cmbGroup.getValue())
+                .idLesson(indexLesson++)
+                .order(Integer.parseInt(lblOrder.getText()))
+                .subject(cmbSubject.getValue())
+                .teacher(cmbTeacher.getValue())
+                .build());
+        
         lblOrder.setText(Integer.toString(data.size() + 1));
-        tfClassroom.setText(null);
+        tfClassroom.setText("13");
     }
     
     @FXML
@@ -108,18 +121,8 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
     
     @FXML
     public void NextDay(){
-        //TODO Add subject currently
-        data.forEach(a ->{
-            scheduleToAdd.add(new LessonOverview.Builder()
-                    .order(Integer.parseInt(a.getOrder()))
-                    //!!!!!!!! get Subject By Name
-                    .subject(subjectsOverview.get(4))
-                    .classroom(a.getClassroom())
-                    .build()
-            );
-        });
-        
         data.clear();
+        scheduleToAdd.clear();
         lblOrder.setText(Integer.toString(data.size() + 1));
         tfClassroom.setText(null);
         if(indexDay < 5){
@@ -131,6 +134,14 @@ public class AdminScheduleInsertionFragmentController implements Initializable, 
             }                        
         }
         cmbGroup.setDisable(true);
+    }
+    
+    @FXML
+    public void btnConfirmIsClicked(){
+        scheduleToAdd.forEach((e) ->{
+            DatabaseManager.setLesson(e, DatabaseManager.getLastIdFromSchedule() + 1);
+        });
+        btnCancelIsClicked();
     }
     
     public void initGroups(){
