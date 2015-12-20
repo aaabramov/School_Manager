@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import school_manager.MainApp;
@@ -148,10 +149,10 @@ public class AdminMenuFragmentController implements Initializable, MainReference
         try{
             
             loader.setLocation(getClass().getResource("AdminScheduleInsertionFragment.fxml"));
-            GridPane pane = (GridPane) loader.load();
+            BorderPane pane = (BorderPane) loader.load();
             
-            AdminScheduleInsertionFragmentController adminScheduleInsertionFragmentController = loader.getController();
-            adminScheduleInsertionFragmentController.setMainApp(mainApp);
+            AdminScheduleInsertionFragmentController scheduleInsertionController = loader.getController();
+            scheduleInsertionController.setMainApp(mainApp);
             
             mainApp.setContent(pane);
             mainApp.setStatus("Schedule insertion form is set");

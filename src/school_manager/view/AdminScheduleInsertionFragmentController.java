@@ -13,144 +13,221 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import school_manager.MainApp;
 import school_manager.helpers.DatabaseManager;
 import school_manager.helpers.MainReferenced;
 import school_manager.model.overviews.GroupOverview;
+import school_manager.model.overviews.LessonOverview;
 import school_manager.model.overviews.SubjectOverview;
 import school_manager.model.overviews.TeacherOverview;
+import school_manager.model.schedule.Schedule;
 
 /**
  * FXML Controller class
  *
- * @author bepa
+ * @author bepar
  */
 public class AdminScheduleInsertionFragmentController implements Initializable, MainReferenced {
-    
+
     private MainApp mainApp;
     private List<GroupOverview> groupOverview;
     private List<SubjectOverview> subjectsOverview;
     private List<TeacherOverview> teacherOverview;
 
     @FXML
-    private ComboBox<GroupOverview> cbGroup;
+    private BorderPane bpMain;
     @FXML
-    private ComboBox<SubjectOverview> cbSubjectsMon;
+    private ComboBox<GroupOverview> cmbGroup;
     @FXML
-    private ComboBox<SubjectOverview> cbSubjectsTue;
+    private Label lblOrder;
     @FXML
-    private ComboBox<SubjectOverview> cbSubjectsWed;
+    private ComboBox<SubjectOverview> cmbSubject;
     @FXML
-    private ComboBox<SubjectOverview> cbSubjectsThu;
-    @FXML
-    private ComboBox<SubjectOverview> cbSubjectsFri;
-    @FXML
-    private ComboBox<TeacherOverview> cbTeachersMon;
-    @FXML
-    private ComboBox<TeacherOverview> cbTeachersTue;
-    @FXML
-    private ComboBox<TeacherOverview> cbTeachersWed;
-    @FXML
-    private ComboBox<TeacherOverview> cbTeachersThu;
-    @FXML
-    private ComboBox<TeacherOverview> cbTeachersFri;
-    @FXML
-    private TextField tfMon;
-    @FXML
-    private TextField tfTue;
-    @FXML
-    private TextField tfWed;
-    @FXML
-    private TextField tfThu;
-    @FXML
-    private TextField tfFri;
-    @FXML
-    private TableView<TableItemSchedule> tvMonday;
-    @FXML
-    private TableView<TableItemSchedule> tvTuesday;
-    @FXML
-    private TableView<TableItemSchedule> tvWednesday;
-    @FXML
-    private TableView<TableItemSchedule> tvThuesday;
-    @FXML
-    private TableView<TableItemSchedule> tvFriday;
+    private ComboBox<TeacherOverview> cmbTeacher;
     @FXML 
-    private Label lblMon;
-    @FXML 
-    private Label lblTue;
-    @FXML 
-    private Label lblWed;
-    @FXML 
-    private Label lblThu;
-    @FXML 
-    private Label lblFri;
+    private TextField tfClassroom;
+    @FXML
+    private Button btnNext;
+    @FXML
+    private Button btnConfirm;
+    @FXML
+    private Label lblDay;
     
+    private final String[] Days = new String[]{"Monday", "Tuesday", "Wednesday", "Thuesday", "Friday"};
+    private int indexDay = 1;
+    
+    public List<LessonOverview> scheduleToAdd = FXCollections.observableArrayList();
+    
+    private TableView<ScheduleItemTable> table = new TableView<ScheduleItemTable>();
+    private final ObservableList<ScheduleItemTable> data =
+        FXCollections.observableArrayList();
+    
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initGroups();
         initSubjects();
-        initGroups();
-    }    
+        initTeachers();
+        initTable();
+    }   
     
-    @Override
+   @Override
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
+    }
+    
+    @FXML
+    public void addItem(){
+        data.add(new ScheduleItemTable(lblOrder.getText(), cmbSubject.getValue().toString(), 
+                cmbTeacher.getValue().toString(), tfClassroom.getText()));
+        lblOrder.setText(Integer.toString(data.size() + 1));
+        tfClassroom.setText(null);
+    }
+    
+    @FXML
+    public void btnCancelIsClicked(){
+        indexDay = 0;
+        lblDay.setText("Schedule for " + Days[indexDay]);
+        btnNext.setText(Days[++indexDay]);
+        btnNext.setDisable(false);
+        btnConfirm.setDisable(true);
+        tfClassroom.setText(null);
+        cmbGroup.setDisable(false);
+        data.clear();
+    }
+    
+    @FXML
+    public void NextDay(){
+        //TODO Add subject currently
+        data.forEach(a ->{
+            scheduleToAdd.add(new LessonOverview.Builder()
+                    .order(Integer.parseInt(a.getOrder()))
+                    //!!!!!!!! get Subject By Name
+                    .subject(subjectsOverview.get(4))
+                    .classroom(a.getClassroom())
+                    .build()
+            );
+        });
+        
+        data.clear();
+        lblOrder.setText(Integer.toString(data.size() + 1));
+        tfClassroom.setText(null);
+        if(indexDay < 5){
+            lblDay.setText("Schedule for " + Days[indexDay]);
+            if(indexDay < 4)btnNext.setText(Days[++indexDay]);
+            else {
+                btnNext.setDisable(true);
+                btnConfirm.setDisable(false);
+            }                        
+        }
+        cmbGroup.setDisable(true);
     }
     
     public void initGroups(){
         groupOverview = DatabaseManager.getGroupsList();
         ObservableList<GroupOverview> groupList = FXCollections.observableArrayList(groupOverview);
-        cbGroup.setItems(groupList);
-        cbGroup.setValue(groupList.get(0));
+        cmbGroup.setItems(groupList);
+        cmbGroup.setValue(groupList.get(0));
     }
     
-    public void initTeachers(){
-        teacherOverview = DatabaseManager.getTeachersNotCurators();
-        ObservableList<TeacherOverview> teacherList = FXCollections.observableArrayList(teacherOverview);
-        cbTeachersMon.setItems(teacherList);
-        cbTeachersMon.setValue(teacherList.get(0));
-        cbTeachersTue.setItems(teacherList);
-        cbTeachersTue.setValue(teacherList.get(0));
-        cbTeachersWed.setItems(teacherList);
-        cbTeachersWed.setValue(teacherList.get(0));
-        cbTeachersThu.setItems(teacherList);
-        cbTeachersThu.setValue(teacherList.get(0));
-        cbTeachersFri.setItems(teacherList);
-        cbTeachersFri.setValue(teacherList.get(0));
-    }
-    
-    public void initSubjects(){
+     public void initSubjects(){
         subjectsOverview = DatabaseManager.getSubjectsList();
         ObservableList<SubjectOverview> subjectsList = FXCollections.observableArrayList(subjectsOverview);
-        cbSubjectsMon.setItems(subjectsList);
-        cbSubjectsMon.setValue(subjectsList.get(0));
-        cbSubjectsTue.setItems(subjectsList);
-        cbSubjectsTue.setValue(subjectsList.get(0));
-        cbSubjectsWed.setItems(subjectsList);
-        cbSubjectsWed.setValue(subjectsList.get(0));
-        cbSubjectsThu.setItems(subjectsList);
-        cbSubjectsThu.setValue(subjectsList.get(0));
-        cbSubjectsFri.setItems(subjectsList);
-        cbSubjectsFri.setValue(subjectsList.get(0));
+        cmbSubject.setItems(subjectsList);
+        cmbSubject.setValue(subjectsList.get(0));
+     }
+     
+     public void initTeachers(){
+        teacherOverview = DatabaseManager.getTeachersNotCurators();
+        ObservableList<TeacherOverview> teacherList = FXCollections.observableArrayList(teacherOverview);
+        cmbTeacher.setItems(teacherList);
+        cmbTeacher.setValue(teacherList.get(0));
+     }
+    
+    private void initTable(){
+        
+        TableColumn orderCol = new TableColumn("№");
+        orderCol.setMinWidth(25);
+        orderCol.setMaxWidth(25);
+        orderCol.setCellValueFactory(
+                new PropertyValueFactory<ScheduleItemTable,String>("order")
+        );
+
+        TableColumn subjectCol = new TableColumn("Subject");
+        subjectCol.setMinWidth(175);
+        subjectCol.setCellValueFactory(
+            new PropertyValueFactory<ScheduleItemTable,String>("subject")
+        );
+
+        TableColumn teacherCol = new TableColumn("Teacher");
+        teacherCol.setMinWidth(270);
+        teacherCol.setCellValueFactory(
+            new PropertyValueFactory<ScheduleItemTable,String>("teacher")
+        );
+        
+        TableColumn classCol = new TableColumn("Classroom");
+        classCol.setMinWidth(30);
+        classCol.setCellValueFactory(
+                new PropertyValueFactory<ScheduleItemTable, String>("classroom")
+        );
+                                     
+        table.setItems(data);
+        table.getColumns().addAll(orderCol, subjectCol, teacherCol, classCol);
+        
+        bpMain.setCenter(table);
     }
     
-    class TableItemSchedule{
+    public static class ScheduleItemTable {
         private final SimpleStringProperty order;
         private final SimpleStringProperty subject;
         private final SimpleStringProperty teacher;
         private final SimpleStringProperty classroom;
-        
-        public TableItemSchedule(String Order, String Subject, String Teacher, String Classroom){
-            order = new SimpleStringProperty(Order);
-            subject = new SimpleStringProperty(Subject);
-            teacher = new SimpleStringProperty(Teacher);
-            classroom = new SimpleStringProperty(Classroom);
+
+        private ScheduleItemTable(String sOrder, String sSubject, String sTeacher, String sClassroom) {
+            this.order = new SimpleStringProperty(sOrder);
+            this.subject = new SimpleStringProperty(sSubject);
+            this.teacher = new SimpleStringProperty(sTeacher);
+            this.classroom = new SimpleStringProperty(sClassroom);
         }
+
+        public String getOrder() {
+            return order.get();
+        }
+        public void setOrder(String sOrder) {
+            order.set(sOrder);
+        }
+       
+        public String getSubject() {
+            return subject.get();
+        }
+        public void setSubject(String sSubject) {
+            subject.set(sSubject);
+        }
+       
+        public String getTeacher() {
+            return teacher.get();
+        }
+        public void setTeacher(String sTeacher) {
+            teacher.set(sTeacher);
+        }
+        
+        public String getClassroom() {
+            return classroom.get();
+        }
+        
+        public void setClassroom(String sClassroom) {
+            classroom.set(sClassroom);
+        }
+       
     }
 }
