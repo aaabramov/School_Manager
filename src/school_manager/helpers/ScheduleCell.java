@@ -76,6 +76,12 @@ public class ScheduleCell {
             case FRIDAY:
                 day = 4;
                 break;
+            case SATURDAY:
+                day = 5;
+                break;
+            case SUNDAY:
+                day = 6;
+                break;
             default:
                 day = -1;
                 break;
